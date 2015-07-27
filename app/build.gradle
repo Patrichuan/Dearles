@@ -24,5 +24,6 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:support-v4:22.2.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

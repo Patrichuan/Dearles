@@ -40,4 +40,18 @@
         -->
     </style>
 
+
+
+
+
+    <!-- TextInput Style -->
+    <style name="TextInputStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/primary_dark</item>
+        <item name="colorControlNormal">@color/primary_dark</item>
+        <item name="colorControlActivated">@color/primary_dark</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
+
 </resources>

@@ -60,4 +60,9 @@ public class login_activity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
+
+    /*@Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }*/
 }

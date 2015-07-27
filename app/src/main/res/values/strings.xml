@@ -9,5 +9,6 @@
     <string name="login_not_account">Dont have any account?</string>
     <string name="login_sign_up">Sign up</string>
     <string name="login_appname">DEAR</string>
+    <string name="login_subappname">L</string>
 
 </resources>
