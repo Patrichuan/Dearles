@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+    compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'

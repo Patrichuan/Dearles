@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Dearles</string>
     <string name="action_settings">Settings</string>
+
+    <string name="login_mail">email</string>
+    <string name="login_password">password</string>
+    <string name="login_button">LOGIN</string>
+    <string name="login_password_forgotten">Forgot your password?</string>
+    <string name="login_not_account">Dont have any account?</string>
+    <string name="login_sign_up">Sign up</string>
+    <string name="login_appname">DEAR</string>
+
 </resources>

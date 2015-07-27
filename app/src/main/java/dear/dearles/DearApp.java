@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import dear.dearles.parse.ParseHelper;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class DearApp extends Application {
 
@@ -20,6 +21,13 @@ public class DearApp extends Application {
         instance = this;
 
         InitializeParse();
+
+        // Default Font: Roboto-Regular.ttf
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
     }
 
 

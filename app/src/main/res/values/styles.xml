@@ -14,9 +14,12 @@
             <item name="android:textColorSecondary">@color/secondary_text</item>
             <item name="android:windowBackground">@color/window_background</item>
 
+        <!-- THEME FONT
+            <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+            <item name="android:editTextStyle">@style/RobotoEditTextStyle</item>-->
 
         <!-- TRASLUCENT STATUS BAR
-            <item name="android:statusBarColor">@android:color/transparent</item>  -->
+            <item name="android:statusBarColor">@android:color/transparent</item>-->
 
     </style>
 
@@ -34,11 +37,19 @@
     </style>
 
 
-
     <style name="AppTheme" parent="AppTheme.Base">
         <!--
             All customizations that are NOT specific to a particular API-level can go here.
         -->
     </style>
+
+    <!-- FONT FAMILY
+    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="RobotoEditTextStyle" parent="android:Widget.EditText">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style> -->
 
 </resources>

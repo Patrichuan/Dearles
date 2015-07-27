@@ -1,5 +1,6 @@
 package dear.dearles.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import dear.dearles.R;
 import dear.dearles.DearApp;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 // ActionBarActivity esta deprecated a partir del API22 (Se sustituyó por AppCompatActivity)
 public class login_activity extends AppCompatActivity {
@@ -52,5 +54,10 @@ public class login_activity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 }
