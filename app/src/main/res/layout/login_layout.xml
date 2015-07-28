@@ -6,8 +6,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1.0"
-
+    android:weightSum="1"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingLeft="50dp"
@@ -54,13 +53,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:gravity="center_vertical|center_horizontal">
 
         <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:isScrollContainer="false" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,7 +81,6 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:hint="@string/login_mail"
@@ -97,7 +96,6 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
                             android:hint="@string/login_password"
                             android:textColorHint="@color/primary_dark"
                             android:inputType="textPassword"
@@ -106,15 +104,14 @@
                             android:id="@+id/editText2" />
                     </android.support.design.widget.TextInputLayout>
 
-
-
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:minHeight="40dp"
                         android:text="@string/login_button"
                         android:background="@color/primary_dark"
                         android:textColor="@color/icons"
-                        android:textSize="20sp"
+                        android:textSize="15sp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="10dp"
                         android:id="@+id/button"/>
@@ -136,7 +133,7 @@
         android:id="@+id/ll3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.3"
         android:gravity="bottom|center_horizontal">
 
         <TextView
