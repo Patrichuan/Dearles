@@ -34,7 +34,7 @@ public class DearApp extends Application {
     public void InitializeParse () {
         DB = new ParseHelper(getContext());
         DB.Initialize();
-        DB.Test();
+        //DB.Test();
     }
 
 
