@@ -3,13 +3,14 @@ package dear.dearles.activities;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import dear.dearles.R;
 
-public class SignUp1 extends ActionBarActivity {
+public class SignUp1 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
