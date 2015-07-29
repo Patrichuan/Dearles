@@ -1,5 +1,6 @@
 package dear.dearles.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,10 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import dear.dearles.R;
 
 public class SignUp1 extends AppCompatActivity {
+
+    Button Loginbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +26,27 @@ public class SignUp1 extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         setupToolbar();
+
+        Loginbtn = (Button) findViewById(R.id.Loginbtn);
+        Loginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(SignUp1.this, SignUp2.class);
+                //startActivity(intent);
+            }
+        });
     }
 
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Show menu icon
+        // Arrow menu icon
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
         ab.setDisplayHomeAsUpEnabled(true);
+
+
     }
 
     @Override

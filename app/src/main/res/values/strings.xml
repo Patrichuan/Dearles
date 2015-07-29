@@ -19,5 +19,6 @@
     <string name="signup_password">password</string>
     <string name="signup_repeatpassword">repeat password</string>
     <string name="signup_button">Sign Up</string>
+    <string name="next">Next</string>
 
 </resources>

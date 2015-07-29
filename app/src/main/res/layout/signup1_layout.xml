@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:minHeight="40dp"
-                    android:text="@string/signup_button"
+                    android:text="@string/next"
                     android:background="@color/primary_dark"
                     android:textColor="@color/icons"
                     android:textSize="15sp"
