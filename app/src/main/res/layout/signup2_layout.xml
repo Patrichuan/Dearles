@@ -18,11 +18,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/ScrollLayout"
         android:gravity="center_vertical|center_horizontal"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true">
 
         <LinearLayout
+            android:id="@+id/ScrollInnerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -75,7 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="150"
-                        android:maxLines="7"
+                        android:maxLines="6"
                         android:hint="@string/description"
                         android:textColorHint="@color/primary_dark"
                         android:id="@+id/Description" />
@@ -85,14 +87,15 @@
                     android:id="@+id/Text_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:paddingLeft="3dp"
                     android:paddingRight="3dp"
                     android:text="150"
-                    android:textColor="@color/primary_dark" />
+                    android:textColor="@color/primary_dark"/>
 
                 <Button
                     android:id="@+id/Loginbtn"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginBottom="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
