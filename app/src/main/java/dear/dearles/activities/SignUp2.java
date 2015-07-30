@@ -1,8 +1,10 @@
 package dear.dearles.activities;
 
 import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableString;
@@ -10,6 +12,7 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,6 +27,11 @@ public class SignUp2 extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup2_layout);
+
+        // For let bg behind status bar
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+        setupToolbar();
 
         TipDescription = (TextView) findViewById(R.id.TipDescription);
         Description = (EditText) findViewById(R.id.Description);
@@ -52,6 +60,16 @@ public class SignUp2 extends ActionBarActivity {
         });
         Description.length();
 
+    }
+
+    private void setupToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Arrow menu icon
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
