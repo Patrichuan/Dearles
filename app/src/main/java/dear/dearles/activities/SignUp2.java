@@ -84,10 +84,8 @@ public class SignUp2 extends AppCompatActivity {
 
         // Arrow menu icon
         final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
 

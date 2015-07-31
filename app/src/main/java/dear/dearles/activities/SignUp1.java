@@ -38,16 +38,15 @@ public class SignUp1 extends AppCompatActivity {
 
 
 
+
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Arrow menu icon
         final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
 
