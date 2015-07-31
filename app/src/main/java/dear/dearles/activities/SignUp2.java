@@ -1,27 +1,33 @@
 package dear.dearles.activities;
 
-import android.graphics.Color;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
-import android.text.SpannableString;
+import android.text.Layout;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dear.dearles.R;
 
-public class SignUp2 extends ActionBarActivity {
+public class SignUp2 extends AppCompatActivity {
 
     TextView TipDescription, TextCount;
     EditText Description;
+    ScrollView ScrollLayout;
+
+    int NumLineas = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,29 +42,50 @@ public class SignUp2 extends ActionBarActivity {
         TipDescription = (TextView) findViewById(R.id.TipDescription);
         Description = (EditText) findViewById(R.id.Description);
         TextCount = (TextView) findViewById(R.id.Text_count);
+        ScrollLayout = (ScrollView) findViewById(R.id.ScrollLayout);
 
         // Format string to html string (for blue hashthags)
         String str = getString(R.string.TipForDescription);
         CharSequence styledText = Html.fromHtml(str);
         TipDescription.setText(styledText);
 
+
+        // Todo - Limitar el maximo de lineas programaticamente a 7
+
         Description.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                ScrollLayout.scrollTo(0, TextCount.getHeight() * (int) (NumLineas * 0.9));
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                TextCount.setText(Integer.toString(150-Description.length()));
+                TextCount.setText(Integer.toString(150 - Description.length()));
+
+                if (NumLineas == Description.getLineCount()) {
+                    // do nothing because we are in the first line
+                } else {
+                    // the number of lines have changed so we count them and update NumLineas
+                    NumLineas = Description.getLineCount();
+                    // and we scroll up TextCount height dps
+                    ScrollLayout.scrollTo(0, TextCount.getHeight() * (int) (NumLineas * 0.9));
+                }
             }
         });
-        Description.length();
+
+
+        Description.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Toast.makeText(getBaseContext(),
+                        ((EditText) v).getId() + " has focus - " + hasFocus,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

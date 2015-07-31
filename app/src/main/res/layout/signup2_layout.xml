@@ -4,6 +4,7 @@
     tools:ignore="missingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -19,9 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/ScrollLayout"
-        android:gravity="center_vertical|center_horizontal"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true">
+        android:gravity="center_vertical|center_horizontal">
 
         <LinearLayout
             android:id="@+id/ScrollInnerLayout"
@@ -60,7 +59,6 @@
 
 
             <LinearLayout
-                android:focusableInTouchMode="true"
                 android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,11 +71,12 @@
                     android:layout_height="wrap_content"
                     android:theme="@style/TextInputStyle">
 
+                    <!-- textPersonName avoid the use of Enter keys -->
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="150"
-                        android:maxLines="6"
+                        android:inputType="textShortMessage|textMultiLine|textNoSuggestions"
                         android:hint="@string/description"
                         android:textColorHint="@color/primary_dark"
                         android:id="@+id/Description" />
