@@ -49,9 +49,6 @@ public class SignUp2 extends AppCompatActivity {
         CharSequence styledText = Html.fromHtml(str);
         TipDescription.setText(styledText);
 
-
-        // Todo - Limitar el maximo de lineas programaticamente a 7
-
         Description.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,7 +62,6 @@ public class SignUp2 extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 TextCount.setText(Integer.toString(150 - Description.length()));
-
                 if (NumLineas == Description.getLineCount()) {
                     // do nothing because we are in the first line
                 } else {
@@ -76,17 +72,6 @@ public class SignUp2 extends AppCompatActivity {
                 }
             }
         });
-
-
-        Description.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Toast.makeText(getBaseContext(),
-                        ((EditText) v).getId() + " has focus - " + hasFocus,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
     }
 
     private void setupToolbar(){
