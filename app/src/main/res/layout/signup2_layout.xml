@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="40dp"
-                    android:text="@string/next"
+                    android:text="@string/Finish"
                     android:background="@color/primary_dark"
                     android:textColor="@color/icons"
                     android:textSize="15sp"/>

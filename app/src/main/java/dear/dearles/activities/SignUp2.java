@@ -1,5 +1,6 @@
 package dear.dearles.activities;
 
+import android.graphics.Rect;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,15 +45,16 @@ public class SignUp2 extends AppCompatActivity {
         TextCount = (TextView) findViewById(R.id.Text_count);
         ScrollLayout = (ScrollView) findViewById(R.id.ScrollLayout);
 
-        // Format string to html string (for blue hashthags)
+        // I transform a normal string to html string (for blue hashtags)
         String str = getString(R.string.TipForDescription);
         CharSequence styledText = Html.fromHtml(str);
         TipDescription.setText(styledText);
 
+        // Listener for get an additional scroll in the edittext (we need the character count always visible)
         Description.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                ScrollLayout.scrollTo(0, TextCount.getHeight() * (int) (NumLineas * 0.9));
+                ScrollLayout.scrollTo(0, TextCount.getHeight() * (int) (NumLineas*0.9));
             }
 
             @Override
@@ -68,11 +70,13 @@ public class SignUp2 extends AppCompatActivity {
                     // the number of lines have changed so we count them and update NumLineas
                     NumLineas = Description.getLineCount();
                     // and we scroll up TextCount height dps
-                    ScrollLayout.scrollTo(0, TextCount.getHeight() * (int) (NumLineas * 0.9));
+                    ScrollLayout.scrollTo(0, TextCount.getHeight() * (int) (NumLineas*0.9));
                 }
             }
         });
     }
+
+
 
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -80,9 +84,15 @@ public class SignUp2 extends AppCompatActivity {
 
         // Arrow menu icon
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
