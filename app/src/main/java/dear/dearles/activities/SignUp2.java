@@ -1,34 +1,36 @@
 package dear.dearles.activities;
 
-import android.graphics.Rect;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import dear.dearles.DearApp;
 import dear.dearles.R;
 
 public class SignUp2 extends AppCompatActivity {
+
+    protected DearApp app;
 
     TextView TipDescription, TextCount;
     EditText Description;
     ScrollView ScrollLayout;
 
+    Button Finishbtn;
+
     int NumLineas = 1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +39,18 @@ public class SignUp2 extends AppCompatActivity {
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
         setupToolbar();
+
+        app = (DearApp) getApplication();
 
         TipDescription = (TextView) findViewById(R.id.TipDescription);
         Description = (EditText) findViewById(R.id.Description);
         TextCount = (TextView) findViewById(R.id.Text_count);
         ScrollLayout = (ScrollView) findViewById(R.id.ScrollLayout);
+        Finishbtn = (Button) findViewById(R.id.Finishbtn);
+
+        // Si no existe userdata....
+        if (app.getUserDescription()!=null)Description.setText(app.getUserDescription());
 
         // I transform a normal string to html string (for blue hashtags)
         String str = getString(R.string.TipForDescription);
@@ -74,6 +81,15 @@ public class SignUp2 extends AppCompatActivity {
                 }
             }
         });
+
+
+        Finishbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                app.setUserDescription(Description.getText().toString());
+            }
+        });
+
     }
 
 

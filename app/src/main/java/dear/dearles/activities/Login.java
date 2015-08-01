@@ -39,6 +39,9 @@ public class Login extends AppCompatActivity {
         SignUptv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Esto se ha de lanzar cuando el usuario deslogee
+                app.InitializeUserData();
+
                 Intent intent = new Intent(Login.this, SignUp1.class);
                 startActivity(intent);
             }

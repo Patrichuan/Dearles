@@ -61,22 +61,7 @@
                         android:singleLine="true"
                         android:hint="@string/signup_nick"
                         android:textColorHint="@color/primary_dark"
-                        android:id="@+id/nicktv" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/TextInputStyle">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/signup_age"
-                        android:textColorHint="@color/primary_dark"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:id="@+id/agetv" />
+                        android:id="@+id/usernametv" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -103,6 +88,21 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/signup_age"
+                        android:textColorHint="@color/primary_dark"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:id="@+id/agetv" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextInputStyle">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:hint="@string/signup_password"
                         android:textColorHint="@color/primary_dark"
                         android:maxLines="1"
@@ -118,15 +118,15 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/signup_repeatpassword"
+                        android:hint="@string/signup_confirmpassword"
                         android:textColorHint="@color/primary_dark"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:id="@+id/repeatpasswordtv" />
+                        android:id="@+id/confirmpasswordtv" />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
-                    android:id="@+id/Loginbtn"
+                    android:id="@+id/Nextbtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
