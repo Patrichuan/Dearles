@@ -1,12 +1,16 @@
 package dear.dearles.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.client.UserTokenHandler;
 
+import bolts.Bolts;
 import dear.dearles.DearApp;
 import dear.dearles.R;
 
@@ -25,8 +31,8 @@ public class SignUp1 extends AppCompatActivity {
     protected DearApp app;
 
     Button Nextbtn;
-    TextView Username, Password, RePassword, Email, Age;
-    TextInputLayout usernameTil, passwordTil, repasswordTil, emailTil, ageTil;
+    TextView Username, Password, Email, Age;
+    TextInputLayout usernameTil, passwordTil, emailTil, ageTil;
 
 
 
@@ -42,7 +48,6 @@ public class SignUp1 extends AppCompatActivity {
         emailTil = (TextInputLayout) findViewById(R.id.emailTil);
         ageTil = (TextInputLayout) findViewById(R.id.ageTil);
         passwordTil = (TextInputLayout) findViewById(R.id.passwordTil);
-        repasswordTil = (TextInputLayout) findViewById(R.id.repasswordTil);
 
         app = (DearApp) getApplication();
 
@@ -56,12 +61,10 @@ public class SignUp1 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SignUp1.this, SignUp2.class);
                 if (isAllCorrect()) {
-
                     app.setUserData(Username.getText().toString(),
                             Password.getText().toString(),
                             Age.getText().toString(),
                             Email.getText().toString());
-
                     startActivity(intent);
                 }
             }
@@ -91,6 +94,7 @@ public class SignUp1 extends AppCompatActivity {
         Username = new EditText(this);
         Username.setId(R.id.usernametv);
         Username.setLayoutParams(params);
+        Username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
         Username.setSingleLine(true);
         Username.setMaxLines(1);
         Username.setHintTextColor(getResources().getColor(R.color.primary_dark));
@@ -99,35 +103,31 @@ public class SignUp1 extends AppCompatActivity {
         Password = new EditText(this);
         Password.setId(R.id.passwordtv);
         Password.setLayoutParams(params);
+        Password.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
         Password.setSingleLine(true);
         Password.setMaxLines(1);
         Password.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Password.setHint(R.string.signup_password);
 
-        RePassword = new EditText(this);
-        RePassword.setId(R.id.repasswordtv);
-        RePassword.setLayoutParams(params);
-        RePassword.setSingleLine(true);
-        RePassword.setMaxLines(1);
-        RePassword.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        RePassword.setHint(R.string.signup_repassword);
-
         Email = new EditText(this);
         Email.setId(R.id.emailtv);
         Email.setLayoutParams(params);
+        Email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
         Email.setSingleLine(true);
         Email.setMaxLines(1);
         Email.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Email.setHint(R.string.signup_email);
+        Email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
         Age = new EditText(this);
         Age.setId(R.id.agetv);
         Age.setLayoutParams(params);
+        Age.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
         Age.setSingleLine(true);
         Age.setMaxLines(1);
         Age.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Age.setHint(R.string.signup_age);
-        Age.setInputType(InputType.TYPE_CLASS_NUMBER);
+        Age.setRawInputType(Configuration.KEYBOARD_12KEY);
 
         // And i check if they had previous information for setText or not
         // later i add them to their TextInputLayouts
@@ -143,11 +143,6 @@ public class SignUp1 extends AppCompatActivity {
             passwordTil.addView(Password);
         }
 
-        if (UserData[1]!=null) {
-            RePassword.setText(UserData[1]);
-            repasswordTil.addView(RePassword);
-        }
-
         if (UserData[2]!=null) {
             Age.setText(UserData[2]);
             ageTil.addView(Age);
@@ -160,14 +155,57 @@ public class SignUp1 extends AppCompatActivity {
     }
 
 
-
-
-    // Aqui validare todos los TextViews
     private Boolean isAllCorrect () {
-        return true;
+
+        Boolean Correct = false;
+        Boolean UsernameCorrect = false;
+        Boolean PasswordCorrect = false;
+        Boolean EmailCorrect = false;
+        Boolean AgeCorrect = false;
+
+        if (usernameTil.getEditText().getText().toString().equals("")) {
+            usernameTil.setError(getString(R.string.username_required));
+            usernameTil.setErrorEnabled(true);
+        } else {
+            usernameTil.setErrorEnabled(false);
+            UsernameCorrect = true;
+        }
+
+
+        if (passwordTil.getEditText().getText().toString().equals("")) {
+            passwordTil.setError(getString(R.string.password_required));
+            passwordTil.setErrorEnabled(true);
+        } else {
+            passwordTil.setErrorEnabled(false);
+            PasswordCorrect = true;
+        }
+
+
+        if (emailTil.getEditText().getText().toString().equals("")) {
+            emailTil.setError(getString(R.string.email_required));
+            emailTil.setErrorEnabled(true);
+        } else {
+            emailTil.setErrorEnabled(false);
+            EmailCorrect = true;
+        }
+
+
+        // && Condicion de que sea un numero
+        if (ageTil.getEditText().getText().toString().equals("")) {
+            ageTil.setError(getString(R.string.age_required));
+            ageTil.setErrorEnabled(true);
+        } else {
+            ageTil.setErrorEnabled(false);
+            AgeCorrect = true;
+        }
+
+
+        if (UsernameCorrect && PasswordCorrect && EmailCorrect && AgeCorrect) {
+            Correct = true;
+        }
+
+        return Correct;
     }
-
-
 
 
 

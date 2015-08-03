@@ -25,5 +25,9 @@
     <string name="SignUpDescribe">Describe yourself in max 150 characters</string>
     <string name="description">description</string>
     <string name="Finish">Finish</string>
+    <string name="username_required">username required</string>
+    <string name="password_required">password required</string>
+    <string name="email_required">email required</string>
+    <string name="age_required">age required</string>
 
 </resources>
