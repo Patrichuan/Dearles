@@ -49,7 +49,7 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
+                <dear.dearles.custom_classes.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextInputStyle">
@@ -62,9 +62,9 @@
                         android:hint="@string/signup_nick"
                         android:textColorHint="@color/primary_dark"
                         android:id="@+id/usernametv" />
-                </android.support.design.widget.TextInputLayout>
+                </dear.dearles.custom_classes.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <dear.dearles.custom_classes.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextInputStyle">
@@ -78,9 +78,9 @@
                         android:singleLine="true"
                         android:id="@+id/emailtv"
                         android:inputType="textEmailAddress" />
-                </android.support.design.widget.TextInputLayout>
+                </dear.dearles.custom_classes.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <dear.dearles.custom_classes.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextInputStyle">
@@ -93,9 +93,9 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:id="@+id/agetv" />
-                </android.support.design.widget.TextInputLayout>
+                </dear.dearles.custom_classes.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <dear.dearles.custom_classes.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextInputStyle">
@@ -108,9 +108,9 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:id="@+id/passwordtv" />
-                </android.support.design.widget.TextInputLayout>
+                </dear.dearles.custom_classes.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <dear.dearles.custom_classes.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextInputStyle">
@@ -123,7 +123,7 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:id="@+id/confirmpasswordtv" />
-                </android.support.design.widget.TextInputLayout>
+                </dear.dearles.custom_classes.TextInputLayout>
 
                 <Button
                     android:id="@+id/Nextbtn"
