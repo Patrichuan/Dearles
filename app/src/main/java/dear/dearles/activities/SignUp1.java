@@ -44,8 +44,7 @@ public class SignUp1 extends AppCompatActivity {
 
         Nextbtn = (Button) findViewById(R.id.Nextbtn);
 
-
-        UserData = new String[5];
+        UserData = new String[4];
         UserData = app.getUserData();
 
         // Si no existe userdata....

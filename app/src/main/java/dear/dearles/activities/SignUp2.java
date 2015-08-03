@@ -1,17 +1,24 @@
 package dear.dearles.activities;
 
+import android.graphics.Color;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -25,6 +32,7 @@ public class SignUp2 extends AppCompatActivity {
     TextView TipDescription, TextCount;
     EditText Description;
     ScrollView ScrollLayout;
+    TextInputLayout DescriptionTil;
 
     Button Finishbtn;
 
@@ -44,13 +52,28 @@ public class SignUp2 extends AppCompatActivity {
         app = (DearApp) getApplication();
 
         TipDescription = (TextView) findViewById(R.id.TipDescription);
-        Description = (EditText) findViewById(R.id.Description);
+        DescriptionTil = (TextInputLayout) findViewById(R.id.DescriptionTil);
         TextCount = (TextView) findViewById(R.id.Text_count);
         ScrollLayout = (ScrollView) findViewById(R.id.ScrollLayout);
         Finishbtn = (Button) findViewById(R.id.Finishbtn);
 
-        // Si no existe userdata....
-        if (app.getUserDescription()!=null)Description.setText(app.getUserDescription());
+        // Declaro el EditText para la descripción programaticamente
+        Description = new EditText(this);
+        Description.setId(R.id.Description);
+        //Description.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        Description.setLayoutParams(params);
+        Description.setSingleLine(false);
+        Description.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
+        Description.setFilters(new InputFilter[]{new InputFilter.LengthFilter(150)});
+        Description.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        Description.setHint(R.string.description);
+        // Y establezco el contenido de esta si ya existia previamente
+        if (app.getUserDescription()!=null) {
+            Description.setText(app.getUserDescription());
+        }
+        // Y lo añado
+        DescriptionTil.addView(Description);
 
         // I transform a normal string to html string (for blue hashtags)
         String str = getString(R.string.TipForDescription);
