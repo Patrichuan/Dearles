@@ -13,6 +13,10 @@
         <item name="android:divider">@color/divider</item>
         <item name="android:windowBackground">@color/window_background</item>
 
+        <!-- TEXTINPUT COLORS -->
+        <item name="android:textColorHint">@color/primary_dark</item>
+        <item name="colorControlNormal">@color/primary_dark</item>
+        <item name="colorControlActivated">@color/primary_dark</item>
     </style>
 
 
@@ -29,20 +33,10 @@
     </style>
 
 
-
     <style name="AppTheme" parent="AppTheme.Base">
         <!--
             All customizations that are NOT specific to a particular API-level can go here.
         -->
-    </style>
-
-
-    <!-- TextInput Style -->
-    <style name="TextInputStyle" parent="TextAppearance.AppCompat">
-        <item name="android:textColorHint">@color/primary_dark</item>
-        <item name="colorControlNormal">@color/primary_dark</item>
-        <item name="colorControlActivated">@color/primary_dark</item>
-        <item name="android:textSize">20sp</item>
     </style>
 
 

@@ -57,14 +57,16 @@ public class SignUp2 extends AppCompatActivity {
         ScrollLayout = (ScrollView) findViewById(R.id.ScrollLayout);
         Finishbtn = (Button) findViewById(R.id.Finishbtn);
 
+
+
+
         // Declaro el EditText para la descripción programaticamente
         Description = new EditText(this);
         Description.setId(R.id.Description);
-        //Description.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        Description.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         Description.setLayoutParams(params);
         Description.setSingleLine(false);
-        Description.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
         Description.setFilters(new InputFilter[]{new InputFilter.LengthFilter(150)});
         Description.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Description.setHint(R.string.description);
@@ -74,6 +76,10 @@ public class SignUp2 extends AppCompatActivity {
         }
         // Y lo añado
         DescriptionTil.addView(Description);
+
+
+
+
 
         // I transform a normal string to html string (for blue hashtags)
         String str = getString(R.string.TipForDescription);

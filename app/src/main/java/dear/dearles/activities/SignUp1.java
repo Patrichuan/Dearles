@@ -1,14 +1,18 @@
 package dear.dearles.activities;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apache.http.client.UserTokenHandler;
@@ -22,8 +26,9 @@ public class SignUp1 extends AppCompatActivity {
 
     Button Nextbtn;
     TextView Username, Password, RePassword, Email, Age;
+    TextInputLayout usernameTil, passwordTil, repasswordTil, emailTil, ageTil;
 
-    String[] UserData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,28 +37,20 @@ public class SignUp1 extends AppCompatActivity {
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        setupToolbar();
+
+        usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
+        emailTil = (TextInputLayout) findViewById(R.id.emailTil);
+        ageTil = (TextInputLayout) findViewById(R.id.ageTil);
+        passwordTil = (TextInputLayout) findViewById(R.id.passwordTil);
+        repasswordTil = (TextInputLayout) findViewById(R.id.repasswordTil);
 
         app = (DearApp) getApplication();
 
-        Username = (TextView) findViewById(R.id.usernametv);
-        Password = (TextView) findViewById(R.id.passwordtv);
-        RePassword = (TextView) findViewById(R.id.confirmpasswordtv);
-        Email = (TextView) findViewById(R.id.emailtv);
-        Age = (TextView) findViewById(R.id.agetv);
+        // Setups
+        setupToolbar();
+        setupEditTexts();
 
         Nextbtn = (Button) findViewById(R.id.Nextbtn);
-
-        UserData = new String[4];
-        UserData = app.getUserData();
-
-        // Si no existe userdata....
-        if (UserData[0]!=null)Username.setText(UserData[0]);
-        if (UserData[1]!=null)Password.setText(UserData[1]);
-        if (UserData[1]!=null)RePassword.setText(UserData[1]);
-        if (UserData[2]!=null)Age.setText(UserData[2]);
-        if (UserData[3]!=null)Email.setText(UserData[3]);
-
         Nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,10 +82,93 @@ public class SignUp1 extends AppCompatActivity {
     }
 
 
+
+
+    private void setupEditTexts () {
+        // I define programatically all the edittexts
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        Username = new EditText(this);
+        Username.setId(R.id.usernametv);
+        Username.setLayoutParams(params);
+        Username.setSingleLine(true);
+        Username.setMaxLines(1);
+        Username.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        Username.setHint(R.string.signup_username);
+
+        Password = new EditText(this);
+        Password.setId(R.id.passwordtv);
+        Password.setLayoutParams(params);
+        Password.setSingleLine(true);
+        Password.setMaxLines(1);
+        Password.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        Password.setHint(R.string.signup_password);
+
+        RePassword = new EditText(this);
+        RePassword.setId(R.id.repasswordtv);
+        RePassword.setLayoutParams(params);
+        RePassword.setSingleLine(true);
+        RePassword.setMaxLines(1);
+        RePassword.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        RePassword.setHint(R.string.signup_repassword);
+
+        Email = new EditText(this);
+        Email.setId(R.id.emailtv);
+        Email.setLayoutParams(params);
+        Email.setSingleLine(true);
+        Email.setMaxLines(1);
+        Email.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        Email.setHint(R.string.signup_email);
+
+        Age = new EditText(this);
+        Age.setId(R.id.agetv);
+        Age.setLayoutParams(params);
+        Age.setSingleLine(true);
+        Age.setMaxLines(1);
+        Age.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        Age.setHint(R.string.signup_age);
+        Age.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        // And i check if they had previous information for setText or not
+        // later i add them to their TextInputLayouts
+        String[] UserData = app.getUserData();
+
+        if (UserData[0]!=null) {
+            Username.setText(UserData[0]);
+            usernameTil.addView(Username);
+        }
+
+        if (UserData[1]!=null) {
+            Password.setText(UserData[1]);
+            passwordTil.addView(Password);
+        }
+
+        if (UserData[1]!=null) {
+            RePassword.setText(UserData[1]);
+            repasswordTil.addView(RePassword);
+        }
+
+        if (UserData[2]!=null) {
+            Age.setText(UserData[2]);
+            ageTil.addView(Age);
+        }
+
+        if (UserData[3]!=null) {
+            Email.setText(UserData[3]);
+            emailTil.addView(Email);
+        }
+    }
+
+
+
+
     // Aqui validare todos los TextViews
     private Boolean isAllCorrect () {
         return true;
     }
+
+
+
 
 
     @Override

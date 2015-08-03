@@ -12,11 +12,11 @@
     <string name="login_subappname">L</string>
 
     <string name="title_activity_sign_up1">Sign up 1/2</string>
-    <string name="signup_nick">nick</string>
+    <string name="signup_username">username</string>
     <string name="signup_age">age</string>
     <string name="signup_email">email</string>
     <string name="signup_password">password</string>
-    <string name="signup_confirmpassword">confirm password</string>
+    <string name="signup_repassword">re-password</string>
     <string name="signup_button">Sign Up</string>
     <string name="next">Next</string>
 

@@ -50,79 +50,33 @@
                 android:orientation="vertical">
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/usernameTil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/TextInputStyle">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:hint="@string/signup_nick"
-                        android:textColorHint="@color/primary_dark"
-                        android:id="@+id/usernametv" />
+                    android:layout_height="wrap_content">
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/emailTil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/TextInputStyle">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/signup_email"
-                        android:textColorHint="@color/primary_dark"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:id="@+id/emailtv"
-                        android:inputType="textEmailAddress" />
+                    android:layout_height="wrap_content">
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ageTil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/TextInputStyle">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/signup_age"
-                        android:textColorHint="@color/primary_dark"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:id="@+id/agetv" />
+                    android:layout_height="wrap_content">
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/passwordTil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/TextInputStyle">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/signup_password"
-                        android:textColorHint="@color/primary_dark"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:id="@+id/passwordtv" />
+                    android:layout_height="wrap_content">
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/repasswordTil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/TextInputStyle">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/signup_confirmpassword"
-                        android:textColorHint="@color/primary_dark"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:id="@+id/confirmpasswordtv" />
+                    android:layout_height="wrap_content">
                 </android.support.design.widget.TextInputLayout>
 
                 <Button

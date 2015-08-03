@@ -3,4 +3,19 @@
     <item
         type="id"
         name="Description" />
+    <item
+        type="id"
+        name="usernametv" />
+    <item
+        type="id"
+        name="passwordtv" />
+    <item
+        type="id"
+        name="repasswordtv" />
+    <item
+        type="id"
+        name="emailtv" />
+    <item
+        type="id"
+        name="agetv" />
 </resources>
