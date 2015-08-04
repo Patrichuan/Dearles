@@ -1,7 +1,14 @@
 package dear.dearles.activities;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -11,16 +18,23 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.client.UserTokenHandler;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import bolts.Bolts;
 import dear.dearles.DearApp;
@@ -34,6 +48,7 @@ public class SignUp1 extends AppCompatActivity {
     TextView Username, Password, Email, Age;
     TextInputLayout usernameTil, passwordTil, emailTil, ageTil;
 
+    private ImageView ProfilePictureView;
 
 
     @Override
@@ -69,7 +84,29 @@ public class SignUp1 extends AppCompatActivity {
                 }
             }
         });
+
+
+        ProfilePictureView = (ImageView) findViewById(R.id.SignUpProfileiv);
+        ProfilePictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 0);
+            }
+        });
     }
+
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Bitmap bp = (Bitmap) data.getExtras().get("data");
+        // Este bp es el que habria que guardar al final
+        ProfilePictureView.setImageBitmap(bp);
+    }
+
 
 
 
@@ -129,7 +166,7 @@ public class SignUp1 extends AppCompatActivity {
         Age.setHint(R.string.signup_age);
         Age.setRawInputType(Configuration.KEYBOARD_12KEY);
 
-        // And i check if they had previous information for setText or not
+        // And i check if they had previous information for setText or not,
         // later i add them to their TextInputLayouts
         String[] UserData = app.getUserData();
 
@@ -156,6 +193,8 @@ public class SignUp1 extends AppCompatActivity {
 
 
     private Boolean isAllCorrect () {
+
+        // Falta la validación de la foto y de la edad (si son digitos o no)
 
         Boolean Correct = false;
         Boolean UsernameCorrect = false;
