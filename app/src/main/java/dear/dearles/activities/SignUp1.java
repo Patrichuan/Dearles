@@ -151,6 +151,7 @@ public class SignUp1 extends AppCompatActivity {
         Username.setMaxLines(1);
         Username.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Username.setHint(R.string.signup_username);
+        usernameTil.setErrorEnabled(true);
 
         Password = new EditText(this);
         Password.setId(R.id.passwordtv);
@@ -160,6 +161,7 @@ public class SignUp1 extends AppCompatActivity {
         Password.setMaxLines(1);
         Password.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Password.setHint(R.string.signup_password);
+        passwordTil.setErrorEnabled(true);
 
         Email = new EditText(this);
         Email.setId(R.id.emailtv);
@@ -170,6 +172,7 @@ public class SignUp1 extends AppCompatActivity {
         Email.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Email.setHint(R.string.signup_email);
         Email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailTil.setErrorEnabled(true);
 
         Age = new EditText(this);
         Age.setId(R.id.agetv);
@@ -180,6 +183,7 @@ public class SignUp1 extends AppCompatActivity {
         Age.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Age.setHint(R.string.signup_age);
         Age.setRawInputType(Configuration.KEYBOARD_12KEY);
+        ageTil.setErrorEnabled(true);
 
         // And i check if they had previous information for setText or not,
         // later i add them to their TextInputLayouts
@@ -217,6 +221,7 @@ public class SignUp1 extends AppCompatActivity {
     }
 
 
+    // Errores preactivados pero de font color blanco para solucionar desplazamiento?????
     private Boolean isAllCorrect () {
 
         // Falta la validación de la foto y de la edad (si son digitos o no)
@@ -232,7 +237,8 @@ public class SignUp1 extends AppCompatActivity {
             usernameTil.setError(getString(R.string.username_required));
             usernameTil.setErrorEnabled(true);
         } else {
-            usernameTil.setErrorEnabled(false);
+            usernameTil.setError("");
+            //usernameTil.setErrorEnabled(false);
             UsernameCorrect = true;
         }
 
@@ -241,7 +247,8 @@ public class SignUp1 extends AppCompatActivity {
             passwordTil.setError(getString(R.string.password_required));
             passwordTil.setErrorEnabled(true);
         } else {
-            passwordTil.setErrorEnabled(false);
+            //passwordTil.setErrorEnabled(false);
+            passwordTil.setError("");
             PasswordCorrect = true;
         }
 
@@ -250,7 +257,8 @@ public class SignUp1 extends AppCompatActivity {
             emailTil.setError(getString(R.string.email_required));
             emailTil.setErrorEnabled(true);
         } else {
-            emailTil.setErrorEnabled(false);
+            //emailTil.setErrorEnabled(false);
+            emailTil.setError("");
             EmailCorrect = true;
         }
 
@@ -260,7 +268,8 @@ public class SignUp1 extends AppCompatActivity {
             ageTil.setError(getString(R.string.age_required));
             ageTil.setErrorEnabled(true);
         } else {
-            ageTil.setErrorEnabled(false);
+            //ageTil.setErrorEnabled(false);
+            ageTil.setError("");
             AgeCorrect = true;
         }
 

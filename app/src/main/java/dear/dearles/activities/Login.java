@@ -3,10 +3,12 @@ package dear.dearles.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import dear.dearles.R;
@@ -17,7 +19,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class Login extends AppCompatActivity {
 
     protected DearApp app;
+
+    TextInputLayout usernameTil, passwordTil;
     TextView SignUptv;
+
+    Button Loginbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,12 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login_layout);
 
         app = (DearApp) getApplication();
+
+        usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
+        usernameTil.setErrorEnabled(true);
+
+        passwordTil = (TextInputLayout) findViewById(R.id.passwordTil);
+        passwordTil.setErrorEnabled(true);
 
         // Note
         //      FLAG FOR TRANSPARENT COLOR -->  | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -47,7 +59,48 @@ public class Login extends AppCompatActivity {
             }
         });
 
+
+        Loginbtn = (Button) findViewById(R.id.Loginbtn);
+        Loginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NothingEmpty()) {
+
+                }
+            }
+        });
     }
+
+
+    private Boolean NothingEmpty () {
+
+        Boolean NothingEmpty = true;
+        Boolean UsernameEmpty = true;
+        Boolean PasswordEmpty = true;
+
+        if (usernameTil.getEditText().getText().toString().equals("")) {
+            usernameTil.setError(getString(R.string.username_required));
+            UsernameEmpty = true;
+        } else {
+            usernameTil.setError("");
+        }
+
+
+        if (passwordTil.getEditText().getText().toString().equals("")) {
+            passwordTil.setError(getString(R.string.password_required));
+            PasswordEmpty = true;
+        } else {
+            passwordTil.setError("");
+        }
+
+        if (UsernameEmpty || PasswordEmpty) {
+            NothingEmpty = false;
+        }
+
+        return NothingEmpty;
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
