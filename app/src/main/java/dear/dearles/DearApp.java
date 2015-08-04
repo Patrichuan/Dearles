@@ -3,6 +3,7 @@ package dear.dearles;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
@@ -46,8 +47,7 @@ public class DearApp extends Application {
         Preferences = new PreferencesHelper(getContext());
     }
 
-    public void InitializeUserData() {
-        Preferences.InitializeUserData();
+    public void InitializeUserData() { Preferences.InitializeUserPersonalData();
     }
 
     public void setUserData (String Username, String Password, String Age, String Email) {
@@ -56,6 +56,15 @@ public class DearApp extends Application {
 
     public String[] getUserData () {
         return Preferences.getUserData();
+    }
+
+
+    public void setProfilePicture (String StringUri) {
+        Preferences.setProfilePicture(StringUri);
+    }
+
+    public String getProfilePicture () {
+        return Preferences.getProfilePicture();
     }
 
     public void setUserDescription (String Description) {

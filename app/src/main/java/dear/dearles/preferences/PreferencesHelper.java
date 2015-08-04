@@ -2,6 +2,7 @@ package dear.dearles.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import dear.dearles.Constants;
 
@@ -18,13 +19,14 @@ public class PreferencesHelper {
         editor = pref.edit();
     }
 
-    public void InitializeUserData () {
+    public void InitializeUserPersonalData () {
         // User info Preferences
         editor.putString("Username", null);
         editor.putString("Password", null);
         editor.putString("Age", null);
         editor.putString("Email", null);
         editor.putString("Description", null);
+        editor.putString("ProfilePicture", null);
 
         // Settings Preferences
         // editor.putBoolean("Notifications", false);
@@ -52,6 +54,17 @@ public class PreferencesHelper {
 
         return UserData;
     }
+
+    public void setProfilePicture (String StringUri) {
+        editor.putString("ProfilePicture", StringUri);
+        editor.apply();
+    }
+
+    public String getProfilePicture () {
+        return pref.getString("ProfilePicture", null);
+    }
+
+
 
     public void setUserDescription (String Description) {
         editor.putString("Description", Description);

@@ -22,11 +22,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
@@ -40,14 +40,11 @@ public class SignUp1 extends AppCompatActivity {
     TextInputLayout usernameTil, passwordTil, emailTil, ageTil;
 
     private ImageView ProfilePictureView;
-    ScrollView ScrollViewLayout;
 
     //keep track of camera capture intent
     final int CAMERA_CAPTURE = 1;
     //captured picture uri
     private Uri picUri;
-    //keep track of cropping intent
-    final int PIC_CROP = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +58,14 @@ public class SignUp1 extends AppCompatActivity {
         emailTil = (TextInputLayout) findViewById(R.id.emailTil);
         ageTil = (TextInputLayout) findViewById(R.id.ageTil);
         passwordTil = (TextInputLayout) findViewById(R.id.passwordTil);
-        ProfilePictureView = (ImageView) findViewById(R.id.SignUpProfileiv);
+        ProfilePictureView = (ImageView) findViewById(R.id.ProfilePictureView);
 
         app = (DearApp) getApplication();
 
         // Setups
         setupToolbar();
         setupEditTexts();
+        setupProfilePicture();
 
         Nextbtn = (Button) findViewById(R.id.Nextbtn);
         Nextbtn.setOnClickListener(new View.OnClickListener() {
@@ -90,9 +88,7 @@ public class SignUp1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    //use standard intent to capture an image
                     Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    //we will handle the returned data in onActivityResult
                     startActivityForResult(captureIntent, CAMERA_CAPTURE);
                 } catch(ActivityNotFoundException anfe){
                     //display an error message
@@ -109,61 +105,25 @@ public class SignUp1 extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             //user is returning from capturing an image using the camera
             if(requestCode == CAMERA_CAPTURE){
+
+                // ESTE BITMAP HAY QUE GUARDARLO PARA LA PAGINA DE PERFIL PANTALLA COMPLETA
+                // ------------------------------------------------------------------------
+                // Bundle extras = data.getExtras();
+                // Bitmap thePic = extras.getParcelable("data");
+                // Drawable drawable = new BitmapDrawable(getApplicationContext().getResources(), thePic);
+
                 //get the Uri for the captured image
                 picUri = data.getData();
-                //carry out the crop operation
-                performCrop();
-            //user is returning from cropping the image
-            } else if (requestCode == PIC_CROP) {
-                //get the returned data
-                Bundle extras = data.getExtras();
-                //get the cropped bitmap
-                Bitmap thePic = extras.getParcelable("data");
-                //retrieve a reference to the ImageView
-                ImageView picView = (ImageView)findViewById(R.id.SignUpProfileiv);
-                //display the returned cropped image
-                picView.setImageBitmap(thePic);
+                Picasso.with(this)
+                        .load(picUri)
+                        .transform(new CropSquareTransformation())
+                        .into(ProfilePictureView);
 
-
-
-
-
-                ScrollViewLayout = (ScrollView)findViewById(R.id.ScrollViewLayout);
-                Drawable drawable = new BitmapDrawable(getResources(), thePic);
-                ScrollViewLayout.setBackground(drawable);
-
-
+                app.setProfilePicture(picUri.toString());
             }
         }
     }
 
-    // peligro
-    private void performCrop(){
-        try {
-            //call the standard crop action intent (the user device may not support it)
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            //indicate image type and Uri
-            cropIntent.setDataAndType(picUri, "image/*");
-            //set crop properties
-            cropIntent.putExtra("crop", "true");
-            //indicate aspect of desired crop
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            //indicate output X and Y
-            cropIntent.putExtra("outputX", 256);
-            cropIntent.putExtra("outputY", 256);
-            //retrieve data on return
-            cropIntent.putExtra("return-data", true);
-            //start the activity - we handle returning in onActivityResult
-            startActivityForResult(cropIntent, PIC_CROP);
-        }
-        catch(ActivityNotFoundException anfe){
-            //display an error message
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
 
 
 
@@ -247,6 +207,16 @@ public class SignUp1 extends AppCompatActivity {
     }
 
 
+    private void setupProfilePicture () {
+        if (app.getProfilePicture()!=null){
+            Picasso.with(this)
+                    .load(Uri.parse(app.getProfilePicture()))
+                    .transform(new CropSquareTransformation())
+                    .into(ProfilePictureView);
+        }
+    }
+
+
     private Boolean isAllCorrect () {
 
         // Falta la validación de la foto y de la edad (si son digitos o no)
@@ -256,6 +226,7 @@ public class SignUp1 extends AppCompatActivity {
         Boolean PasswordCorrect = false;
         Boolean EmailCorrect = false;
         Boolean AgeCorrect = false;
+
 
         if (usernameTil.getEditText().getText().toString().equals("")) {
             usernameTil.setError(getString(R.string.username_required));
@@ -323,5 +294,21 @@ public class SignUp1 extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public class CropSquareTransformation implements Transformation {
+        @Override public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
+            if (result != source) {
+                source.recycle();
+            }
+            return result;
+        }
+
+        @Override public String key() { return "square()"; }
     }
 }
