@@ -4,6 +4,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
@@ -20,8 +22,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+
 import dear.dearles.DearApp;
 import dear.dearles.R;
 
@@ -34,6 +40,7 @@ public class SignUp1 extends AppCompatActivity {
     TextInputLayout usernameTil, passwordTil, emailTil, ageTil;
 
     private ImageView ProfilePictureView;
+    ScrollView ScrollViewLayout;
 
     //keep track of camera capture intent
     final int CAMERA_CAPTURE = 1;
@@ -116,6 +123,16 @@ public class SignUp1 extends AppCompatActivity {
                 ImageView picView = (ImageView)findViewById(R.id.SignUpProfileiv);
                 //display the returned cropped image
                 picView.setImageBitmap(thePic);
+
+
+
+
+
+                ScrollViewLayout = (ScrollView)findViewById(R.id.ScrollViewLayout);
+                Drawable drawable = new BitmapDrawable(getResources(), thePic);
+                ScrollViewLayout.setBackground(drawable);
+
+
             }
         }
     }
@@ -147,6 +164,8 @@ public class SignUp1 extends AppCompatActivity {
             toast.show();
         }
     }
+
+
 
 
     private void setupToolbar(){
