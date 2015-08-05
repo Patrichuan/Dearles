@@ -34,7 +34,6 @@ public class DearApp extends Application {
 
 
     // PARSE.com METHODS----------------------------------------------------------------------------
-
     public void InitializeParse () {
         DB = new ParseHelper(getContext());
         DB.Initialize();
@@ -42,12 +41,12 @@ public class DearApp extends Application {
 
 
     // SHAREDPREFERENCES METHODS--------------------------------------------------------------------
-
     public void InitializePreferences() {
         Preferences = new PreferencesHelper(getContext());
     }
 
-    public void InitializeUserData() { Preferences.InitializeUserPersonalData();
+    public void InitializeUserData() {
+        Preferences.InitializeUserPersonalData();
     }
 
     public void setUserData (String Username, String Password, String Age, String Email, String ProfileStringUri) {
@@ -68,7 +67,6 @@ public class DearApp extends Application {
 
 
     // ---------------------------------------------------------------------------------------------
-
     public static Context getContext() {
         return instance.getApplicationContext();
     }
