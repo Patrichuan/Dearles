@@ -4,10 +4,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -18,6 +16,8 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import dear.dearles.DearApp;
@@ -43,6 +44,15 @@ public class SignUp1 extends AppCompatActivity {
 
     //keep track of camera capture intent
     final int CAMERA_CAPTURE = 1;
+    final int IMAGE_PICKER_SELECT = 2;
+
+    // Redimensiones que sufriran las imagenes que haga con la camara o tome de la galeria
+    private static final int MAX_WIDTH = 300;
+    private static final int MAX_HEIGHT = 300;
+    int size = (int) Math.ceil(Math.sqrt(MAX_WIDTH * MAX_HEIGHT));
+
+    ImageView ProgressCircle;
+    Animation a;
 
     String[] UserData;
 
@@ -62,6 +72,10 @@ public class SignUp1 extends AppCompatActivity {
 
         app = (DearApp) getApplication();
         UserData = app.getUserData();
+
+        ProgressCircle = (ImageView) findViewById(R.id.ProgressCircle);
+        a = AnimationUtils.loadAnimation(this, R.anim.progress_anim);
+        a.setDuration(1000);
 
         // Setups
         setupToolbar();
@@ -89,6 +103,10 @@ public class SignUp1 extends AppCompatActivity {
         ProfilePictureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Aqui deberia de salir 3 botones (hacer foto, carrete, ver)
+
+                /*
+                // Hacer foto
                 try {
                     Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(captureIntent, CAMERA_CAPTURE);
@@ -98,13 +116,44 @@ public class SignUp1 extends AppCompatActivity {
                     Toast toast = Toast.makeText(SignUp1.this, errorMessage, Toast.LENGTH_SHORT);
                     toast.show();
                 }
+                */
+
+
+                // Carrete
+                try {
+                    Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, IMAGE_PICKER_SELECT);
+                } catch(ActivityNotFoundException anfe){
+                    //display an error message
+                    String errorMessage = "Whoops - your device doesn't support pick images!";
+                    Toast toast = Toast.makeText(SignUp1.this, errorMessage, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                // Ver
             }
         });
     }
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+
+
         if (resultCode == RESULT_OK) {
+
+            Uri picUri = data.getData();
+            /*
+            Bundle extras = data.getExtras();
+            Bitmap thePic = extras.getParcelable("data");
+
+            ProfilePictureView.setImageBitmap(thePic);
+            UserData[4]=(picUri.toString());
+
+
+
+
             //user is returning from capturing an image using the camera
             if(requestCode == CAMERA_CAPTURE){
 
@@ -114,14 +163,51 @@ public class SignUp1 extends AppCompatActivity {
                 // Bitmap thePic = extras.getParcelable("data");
                 // Drawable drawable = new BitmapDrawable(getApplicationContext().getResources(), thePic);
 
-                //get the Uri for the captured image
-                Uri picUri = data.getData();
+                Picasso.with(this)
+                        .load(picUri)
+                        .transform(new CropSquareTransformation())
+                        .fit()
+                        .into(ProfilePictureView);
+                UserData[4]=(picUri.toString());
+
+            } else if (requestCode == IMAGE_PICKER_SELECT) {
+
+
+
                 Picasso.with(this)
                         .load(picUri)
                         .transform(new CropSquareTransformation())
                         .into(ProfilePictureView);
                 UserData[4]=(picUri.toString());
-            }
+
+            */
+
+                // Loads given image
+                Picasso.with(this)
+                        .load(picUri)
+                        .transform(new CropSquareTransformation())
+                        .resize(size, size)
+                        .centerInside()
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                ProgressCircle.clearAnimation();
+                                ProfilePictureView.setImageBitmap(bitmap);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                ProgressCircle.startAnimation(a);
+
+                                //ProgressCircle.setVisibility(View.VISIBLE);
+                            }
+                });
+                UserData[4]=(picUri.toString());
+            //}
         }
     }
 
@@ -211,10 +297,40 @@ public class SignUp1 extends AppCompatActivity {
 
         if (UserData[4]!=null){
             System.out.println("4 no es null " + UserData[4]);
+
+            /*
             Picasso.with(this)
                     .load(Uri.parse(UserData[4]))
                     .transform(new CropSquareTransformation())
+                    .skipMemoryCache()
+                    .resize(size, size)
+                    .centerInside()
                     .into(ProfilePictureView);
+            */
+
+            Picasso.with(this)
+                    .load(Uri.parse(UserData[4]))
+                    .transform(new CropSquareTransformation())
+                    .skipMemoryCache()
+                    .resize(size, size)
+                    .centerInside()
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            ProgressCircle.clearAnimation();
+                            ProfilePictureView.setImageBitmap(bitmap);
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            ProgressCircle.startAnimation(a);
+                            //ProgressCircle.setVisibility(View.VISIBLE);
+                        }
+                    });
         }
     }
 
@@ -302,7 +418,6 @@ public class SignUp1 extends AppCompatActivity {
 
 
 
-
     // Custom transformation for PICASSO profile picture
     public class CropSquareTransformation implements Transformation {
 
@@ -311,6 +426,7 @@ public class SignUp1 extends AppCompatActivity {
             int x = (source.getWidth() - size) / 2;
             int y = (source.getHeight() - size) / 2;
             Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
+
             if (result != source) {
                 source.recycle();
             }
@@ -321,4 +437,5 @@ public class SignUp1 extends AppCompatActivity {
             return "square()";
         }
     }
+
 }
