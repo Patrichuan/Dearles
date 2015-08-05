@@ -15,7 +15,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
 
-    android:background="@drawable/bglogin">
+    android:background="@drawable/background_login">
 
 
     <LinearLayout
@@ -50,23 +50,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:gravity="center_vertical|center_horizontal">
 
-        <ScrollView
-            android:id="@+id/login_form"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="25dp"
-            android:isScrollContainer="false" >
-
-            <LinearLayout
+             <LinearLayout
+                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/email_login_form"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -79,9 +72,10 @@
                             <EditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:inputType="textNoSuggestions|textVisiblePassword"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:hint="@string/login_mail"
+                                android:hint="@string/username"
                                 android:textColorHint="@color/primary_dark"
                                 android:id="@+id/usernametv" />
                     </android.support.design.widget.TextInputLayout>
@@ -94,7 +88,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/login_password"
+                            android:hint="@string/password"
                             android:textColorHint="@color/primary_dark"
                             android:inputType="textPassword"
                             android:maxLines="1"
@@ -123,7 +117,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
     </LinearLayout>
 
 
@@ -131,7 +124,7 @@
         android:id="@+id/ll3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.1"
         android:gravity="bottom|center_horizontal">
 
         <TextView

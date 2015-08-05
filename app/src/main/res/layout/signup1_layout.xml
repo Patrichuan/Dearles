@@ -38,7 +38,7 @@
                     android:id="@+id/ProfilePictureView"
                     android:layout_width="135dp"
                     android:layout_height="135dp"
-                    android:background="@drawable/pic_border"
+                    android:background="@drawable/profile_picture_border"
                     android:src="@drawable/profilecross"/>
 
             </LinearLayout>

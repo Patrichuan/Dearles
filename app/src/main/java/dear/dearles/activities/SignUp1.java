@@ -150,7 +150,7 @@ public class SignUp1 extends AppCompatActivity {
         Username.setSingleLine(true);
         Username.setMaxLines(1);
         Username.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Username.setHint(R.string.signup_username);
+        Username.setHint(R.string.username);
         usernameTil.setErrorEnabled(true);
 
         Password = new EditText(this);
@@ -160,7 +160,7 @@ public class SignUp1 extends AppCompatActivity {
         Password.setSingleLine(true);
         Password.setMaxLines(1);
         Password.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Password.setHint(R.string.signup_password);
+        Password.setHint(R.string.password);
         passwordTil.setErrorEnabled(true);
 
         Email = new EditText(this);
@@ -170,7 +170,7 @@ public class SignUp1 extends AppCompatActivity {
         Email.setSingleLine(true);
         Email.setMaxLines(1);
         Email.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Email.setHint(R.string.signup_email);
+        Email.setHint(R.string.email);
         Email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         emailTil.setErrorEnabled(true);
 
@@ -181,7 +181,7 @@ public class SignUp1 extends AppCompatActivity {
         Age.setSingleLine(true);
         Age.setMaxLines(1);
         Age.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Age.setHint(R.string.signup_age);
+        Age.setHint(R.string.age);
         Age.setRawInputType(Configuration.KEYBOARD_12KEY);
         ageTil.setErrorEnabled(true);
 

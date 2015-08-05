@@ -65,7 +65,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (NothingEmpty()) {
-
+                    // Aqui validar con Parse que los datos de usuario sean correctos o no
+                    // if (CredentialsOk())
                 }
             }
         });

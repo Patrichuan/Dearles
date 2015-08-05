@@ -2,8 +2,12 @@
     <string name="app_name">Dearles</string>
     <string name="action_settings">Settings</string>
 
-    <string name="login_mail">email</string>
-    <string name="login_password">password</string>
+    <string name="password">password</string>
+    <string name="username">username</string>
+    <string name="age">age</string>
+    <string name="email">email</string>
+    <string name="description">description</string>
+
     <string name="login_button">LOGIN</string>
     <string name="login_password_forgotten">Forgot your password?</string>
     <string name="login_not_account">Dont have any account?</string>
@@ -12,22 +16,12 @@
     <string name="login_subappname">L</string>
 
     <string name="title_activity_sign_up1">Sign up 1/2</string>
-    <string name="signup_username">username</string>
-    <string name="signup_age">age</string>
-    <string name="signup_email">email</string>
-    <string name="signup_password">password</string>
-    <string name="signup_repassword">re-password</string>
     <string name="signup_button">Sign Up</string>
     <string name="next">Next</string>
-
-    <string name="intro">Capture a picture to crop!</string>
-    <string name="picture">Picture</string>
-    <string name="capture">Launch Camera</string>
 
     <string name="title_activity_sign_up2">SignUp 2/2</string>
     <string name="TipForDescription">&lt;b>Tip:&lt;/b> Use the hashtag symbol (#) for remark the most important words and be found in the search engine, Example: I am &lt;font color="#2E9AFE">#honest&lt;/font> and i love &lt;font color="#2E9AFE">#tennis&lt;/font></string>
     <string name="SignUpDescribe">Describe yourself in max 150 characters</string>
-    <string name="description">description</string>
     <string name="Finish">Finish</string>
     <string name="username_required">username required</string>
     <string name="password_required">password required</string>
