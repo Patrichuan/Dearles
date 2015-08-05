@@ -25,8 +25,9 @@ public class PreferencesHelper {
         editor.putString("Password", null);
         editor.putString("Age", null);
         editor.putString("Email", null);
-        editor.putString("Description", null);
         editor.putString("ProfilePicture", null);
+
+        editor.putString("Description", null);
 
         // Settings Preferences
         // editor.putBoolean("Notifications", false);
@@ -36,35 +37,26 @@ public class PreferencesHelper {
         editor.apply();
     }
 
-    public void setUserData (String Username, String Password, String Age, String Email) {
+    public void setUserData (String Username, String Password, String Age, String Email, String ProfileStringUri) {
         editor.putString("Username", Username);
         editor.putString("Password", Password);
         editor.putString("Age", Age);
         editor.putString("Email", Email);
+        editor.putString("ProfilePicture", ProfileStringUri);
         editor.apply();
     }
 
     public String[] getUserData () {
-        String[] UserData = new String[4];
+        String[] UserData = new String[5];
 
-        UserData[0] = pref.getString("Username", "");
-        UserData[1] = pref.getString("Password", "");
-        UserData[2] = pref.getString("Age", "");
-        UserData[3] = pref.getString("Email", "");
+        UserData[0] = pref.getString("Username", null);
+        UserData[1] = pref.getString("Password", null);
+        UserData[2] = pref.getString("Age", null);
+        UserData[3] = pref.getString("Email", null);
+        UserData[4] = pref.getString("ProfilePicture", null);
 
         return UserData;
     }
-
-    public void setProfilePicture (String StringUri) {
-        editor.putString("ProfilePicture", StringUri);
-        editor.apply();
-    }
-
-    public String getProfilePicture () {
-        return pref.getString("ProfilePicture", null);
-    }
-
-
 
     public void setUserDescription (String Description) {
         editor.putString("Description", Description);

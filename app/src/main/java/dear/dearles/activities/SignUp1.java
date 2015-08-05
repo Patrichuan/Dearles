@@ -43,8 +43,8 @@ public class SignUp1 extends AppCompatActivity {
 
     //keep track of camera capture intent
     final int CAMERA_CAPTURE = 1;
-    //captured picture uri
-    private Uri picUri;
+
+    String[] UserData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +61,11 @@ public class SignUp1 extends AppCompatActivity {
         ProfilePictureView = (ImageView) findViewById(R.id.ProfilePictureView);
 
         app = (DearApp) getApplication();
+        UserData = app.getUserData();
 
         // Setups
         setupToolbar();
-        setupEditTexts();
-        setupProfilePicture();
+        setupEditTextsAndPicture();
 
         Nextbtn = (Button) findViewById(R.id.Nextbtn);
         Nextbtn.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +76,9 @@ public class SignUp1 extends AppCompatActivity {
                     app.setUserData(Username.getText().toString(),
                             Password.getText().toString(),
                             Age.getText().toString(),
-                            Email.getText().toString());
+                            Email.getText().toString(),
+                            UserData[4]);
+
                     startActivity(intent);
                 }
             }
@@ -113,18 +115,15 @@ public class SignUp1 extends AppCompatActivity {
                 // Drawable drawable = new BitmapDrawable(getApplicationContext().getResources(), thePic);
 
                 //get the Uri for the captured image
-                picUri = data.getData();
+                Uri picUri = data.getData();
                 Picasso.with(this)
                         .load(picUri)
                         .transform(new CropSquareTransformation())
                         .into(ProfilePictureView);
-
-                app.setProfilePicture(picUri.toString());
+                UserData[4]=(picUri.toString());
             }
         }
     }
-
-
 
 
 
@@ -139,7 +138,11 @@ public class SignUp1 extends AppCompatActivity {
     }
 
 
-    private void setupEditTexts () {
+
+
+    // Crea programaticamente los floating edittext y los inicializa o rellena con información si ya
+    // existia esta previamente. Tambien aplicable para la Profile Picture.
+    private void setupEditTextsAndPicture () {
         // I define programatically all the edittexts
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -152,6 +155,10 @@ public class SignUp1 extends AppCompatActivity {
         Username.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Username.setHint(R.string.username);
         usernameTil.setErrorEnabled(true);
+        if (UserData[0]!=null) {
+            Username.setText(UserData[0]);
+        }
+
 
         Password = new EditText(this);
         Password.setId(R.id.passwordtv);
@@ -162,17 +169,10 @@ public class SignUp1 extends AppCompatActivity {
         Password.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Password.setHint(R.string.password);
         passwordTil.setErrorEnabled(true);
+        if (UserData[1] != null) {
+            Password.setText(UserData[1]);
+        }
 
-        Email = new EditText(this);
-        Email.setId(R.id.emailtv);
-        Email.setLayoutParams(params);
-        Email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
-        Email.setSingleLine(true);
-        Email.setMaxLines(1);
-        Email.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Email.setHint(R.string.email);
-        Email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        emailTil.setErrorEnabled(true);
 
         Age = new EditText(this);
         Age.setId(R.id.agetv);
@@ -184,47 +184,43 @@ public class SignUp1 extends AppCompatActivity {
         Age.setHint(R.string.age);
         Age.setRawInputType(Configuration.KEYBOARD_12KEY);
         ageTil.setErrorEnabled(true);
-
-        // And i check if they had previous information for setText or not,
-        // later i add them to their TextInputLayouts
-        String[] UserData = app.getUserData();
-
-        if (UserData[0]!=null) {
-            Username.setText(UserData[0]);
-            usernameTil.addView(Username);
-        }
-
-        if (UserData[1]!=null) {
-            Password.setText(UserData[1]);
-            passwordTil.addView(Password);
-        }
-
         if (UserData[2]!=null) {
             Age.setText(UserData[2]);
-            ageTil.addView(Age);
         }
 
+
+        Email = new EditText(this);
+        Email.setId(R.id.emailtv);
+        Email.setLayoutParams(params);
+        Email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
+        Email.setSingleLine(true);
+        Email.setMaxLines(1);
+        Email.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        Email.setHint(R.string.email);
+        Email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailTil.setErrorEnabled(true);
         if (UserData[3]!=null) {
             Email.setText(UserData[3]);
-            emailTil.addView(Email);
         }
-    }
+
+        usernameTil.addView(Username);
+        passwordTil.addView(Password);
+        ageTil.addView(Age);
+        emailTil.addView(Email);
 
 
-    private void setupProfilePicture () {
-        if (app.getProfilePicture()!=null){
+        if (UserData[4]!=null){
+            System.out.println("4 no es null " + UserData[4]);
             Picasso.with(this)
-                    .load(Uri.parse(app.getProfilePicture()))
+                    .load(Uri.parse(UserData[4]))
                     .transform(new CropSquareTransformation())
                     .into(ProfilePictureView);
         }
     }
 
 
-    // Errores preactivados pero de font color blanco para solucionar desplazamiento?????
+    // No deja validar hasta rellenar los 4 campos (username, email, age, password)
     private Boolean isAllCorrect () {
-
-        // Falta la validación de la foto y de la edad (si son digitos o no)
 
         Boolean Correct = false;
         Boolean UsernameCorrect = false;
@@ -232,13 +228,11 @@ public class SignUp1 extends AppCompatActivity {
         Boolean EmailCorrect = false;
         Boolean AgeCorrect = false;
 
-
         if (usernameTil.getEditText().getText().toString().equals("")) {
             usernameTil.setError(getString(R.string.username_required));
             usernameTil.setErrorEnabled(true);
         } else {
             usernameTil.setError("");
-            //usernameTil.setErrorEnabled(false);
             UsernameCorrect = true;
         }
 
@@ -247,7 +241,6 @@ public class SignUp1 extends AppCompatActivity {
             passwordTil.setError(getString(R.string.password_required));
             passwordTil.setErrorEnabled(true);
         } else {
-            //passwordTil.setErrorEnabled(false);
             passwordTil.setError("");
             PasswordCorrect = true;
         }
@@ -257,18 +250,18 @@ public class SignUp1 extends AppCompatActivity {
             emailTil.setError(getString(R.string.email_required));
             emailTil.setErrorEnabled(true);
         } else {
-            //emailTil.setErrorEnabled(false);
             emailTil.setError("");
             EmailCorrect = true;
         }
 
 
         // && Condicion de que sea un numero
+        // Falta la validación de la edad (si son digitos o no)
+        // Tunear teclado numerico
         if (ageTil.getEditText().getText().toString().equals("")) {
             ageTil.setError(getString(R.string.age_required));
             ageTil.setErrorEnabled(true);
         } else {
-            //ageTil.setErrorEnabled(false);
             ageTil.setError("");
             AgeCorrect = true;
         }
@@ -290,6 +283,8 @@ public class SignUp1 extends AppCompatActivity {
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -306,7 +301,11 @@ public class SignUp1 extends AppCompatActivity {
     }
 
 
+
+
+    // Custom transformation for PICASSO profile picture
     public class CropSquareTransformation implements Transformation {
+
         @Override public Bitmap transform(Bitmap source) {
             int size = Math.min(source.getWidth(), source.getHeight());
             int x = (source.getWidth() - size) / 2;
@@ -318,6 +317,8 @@ public class SignUp1 extends AppCompatActivity {
             return result;
         }
 
-        @Override public String key() { return "square()"; }
+        @Override public String key() {
+            return "square()";
+        }
     }
 }

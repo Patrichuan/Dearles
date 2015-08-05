@@ -50,21 +50,12 @@ public class DearApp extends Application {
     public void InitializeUserData() { Preferences.InitializeUserPersonalData();
     }
 
-    public void setUserData (String Username, String Password, String Age, String Email) {
-        Preferences.setUserData(Username, Password, Age, Email);
+    public void setUserData (String Username, String Password, String Age, String Email, String ProfileStringUri) {
+        Preferences.setUserData(Username, Password, Age, Email, ProfileStringUri);
     }
 
     public String[] getUserData () {
         return Preferences.getUserData();
-    }
-
-
-    public void setProfilePicture (String StringUri) {
-        Preferences.setProfilePicture(StringUri);
-    }
-
-    public String getProfilePicture () {
-        return Preferences.getProfilePicture();
     }
 
     public void setUserDescription (String Description) {

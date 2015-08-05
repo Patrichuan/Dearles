@@ -38,22 +38,15 @@ public class Login extends AppCompatActivity {
         passwordTil = (TextInputLayout) findViewById(R.id.passwordTil);
         passwordTil.setErrorEnabled(true);
 
-        // Note
-        //      FLAG FOR TRANSPARENT COLOR -->  | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        //
-
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-
 
         SignUptv = (TextView) findViewById(R.id.SignUptv);
         SignUptv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Esto se ha de lanzar cuando el usuario deslogee
+                // Inicializo los datos de usuario para crear una nueva cuenta desde 0
                 app.InitializeUserData();
-
                 Intent intent = new Intent(Login.this, SignUp1.class);
                 startActivity(intent);
             }
@@ -73,6 +66,7 @@ public class Login extends AppCompatActivity {
     }
 
 
+    // No deja validar hasta rellenar los 2 campos (usuario y password)
     private Boolean NothingEmpty () {
 
         Boolean NothingEmpty = true;
@@ -109,6 +103,8 @@ public class Login extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_login_activity, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
