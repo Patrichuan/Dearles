@@ -28,6 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
@@ -62,6 +64,8 @@ public class SignUp1 extends AppCompatActivity {
 
     String[] UserData;
 
+    File file;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,10 @@ public class SignUp1 extends AppCompatActivity {
 
         app = (DearApp) getApplication();
         UserData = app.getUserData();
+
+        file = new File(Environment.getExternalStorageDirectory().getPath() +"/thumbnailprofilepicture.jpg");
+
+
 
         ProgressCircle = (ImageView) findViewById(R.id.ProgressCircle);
         a = AnimationUtils.loadAnimation(this, R.anim.progress_anim);
@@ -127,7 +135,9 @@ public class SignUp1 extends AppCompatActivity {
 
                 // Carrete
                 try {
-                    Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    // Limpio el cache de Picasso
+                    Picasso.with(getApplication()).invalidate(file);
+                    Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, IMAGE_PICKER_SELECT);
                 } catch(ActivityNotFoundException anfe){
                     //display an error message
@@ -199,7 +209,6 @@ public class SignUp1 extends AppCompatActivity {
                                     @Override
                                     public void run() {
 
-                                        File file = new File(Environment.getExternalStorageDirectory().getPath() +"/profilepicture.jpg");
                                         if (file.exists()) file.delete();
 
                                         try
@@ -231,7 +240,6 @@ public class SignUp1 extends AppCompatActivity {
                             @Override
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
                                 ProgressCircle.startAnimation(a);
-                                //ProgressCircle.setVisibility(View.VISIBLE);
                             }
                 });
         }
@@ -323,6 +331,7 @@ public class SignUp1 extends AppCompatActivity {
 
         if (UserData[4]!=null){
             System.out.println("4 no es null " + UserData[4]);
+            ProgressCircle.startAnimation(a);
 
             /*
             Picasso.with(this)
@@ -334,16 +343,24 @@ public class SignUp1 extends AppCompatActivity {
                     .into(ProfilePictureView);
             */
 
-            // Porque coño no da vueltas antes de cargar y las da al cargar????
 
+
+
+
+
+
+
+
+
+            // Porque coño no da vueltas antes de cargar y las da al cargar????
             Picasso.with(this)
                     .load(Uri.parse(UserData[4]))
-                    .skipMemoryCache()
                     .into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                             ProgressCircle.clearAnimation();
                             ProfilePictureView.setImageBitmap(bitmap);
+                            System.out.println("HE PASADO POR AQUI BITCH !!!");
                         }
 
                         @Override
@@ -352,10 +369,8 @@ public class SignUp1 extends AppCompatActivity {
 
                         @Override
                         public void onPrepareLoad(Drawable placeHolderDrawable) {
-                            ProgressCircle.startAnimation(a);
                         }
                     });
-
 
 
         }
