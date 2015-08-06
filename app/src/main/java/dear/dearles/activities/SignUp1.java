@@ -1,6 +1,7 @@
 package dear.dearles.activities;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -26,6 +27,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
@@ -59,7 +66,7 @@ public class SignUp1 extends AppCompatActivity {
     Animation a;
 
     String[] UserData;
-
+    Uri picUri;
     File file;
 
     @Override
@@ -78,9 +85,6 @@ public class SignUp1 extends AppCompatActivity {
 
         app = (DearApp) getApplication();
         UserData = app.getUserData();
-
-        file = new File(Environment.getExternalStorageDirectory().getPath() +"/thumbnailprofilepicture.jpg");
-
 
 
         ProgressCircle = (ImageView) findViewById(R.id.ProgressCircle);
@@ -102,7 +106,6 @@ public class SignUp1 extends AppCompatActivity {
                             Age.getText().toString(),
                             Email.getText().toString(),
                             UserData[4]);
-
                     startActivity(intent);
                 }
             }
@@ -128,11 +131,11 @@ public class SignUp1 extends AppCompatActivity {
                 }
                 */
 
+                // Limpio el cache de Picasso
+                //Glide.
 
                 // Carrete
                 try {
-                    // Limpio el cache de Picasso
-                    Picasso.with(getApplication()).invalidate(file);
                     Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, IMAGE_PICKER_SELECT);
                 } catch(ActivityNotFoundException anfe){
@@ -152,7 +155,8 @@ public class SignUp1 extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
 
-            Uri picUri = data.getData();
+            ProgressCircle.startAnimation(a);
+            picUri = data.getData();
             /*
             Bundle extras = data.getExtras();
             Bitmap thePic = extras.getParcelable("data");
@@ -191,53 +195,22 @@ public class SignUp1 extends AppCompatActivity {
 
             */
 
+
+            //Cache de Glide ----> File cacheFile = Glide.getPhotoCacheDir();
+
                 // Loads given image (LO LEO EN EL IMAGEVIEW)
-                Picasso.with(this)
+                Glide.with(this)
                         .load(picUri)
-                        .transform(new CropSquareTransformation())
-                        .resize(size, size)
-                        .centerInside()
-                        .into(new Target() {
+                        .asBitmap()
+                        .transform(new CropSquareTransformation(this))
+                        .into(new SimpleTarget<Bitmap>() {
                             @Override
-                            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        if (file.exists()) file.delete();
-
-                                        try
-                                        {
-                                            file.createNewFile();
-                                            FileOutputStream ostream = new FileOutputStream(file);
-                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
-                                            ostream.close();
-                                            // Guardo la URI a la imagen reducida pequeña hecha ya thumbnail
-                                            UserData[4] = Uri.fromFile(file).toString();
-
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                }).start();
-
+                            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                UserData[4] = picUri.toString();
                                 ProgressCircle.clearAnimation();
-                                ProfilePictureView.setImageBitmap(bitmap);
+                                ProfilePictureView.setImageBitmap(resource);
                             }
-
-                            @Override
-                            public void onBitmapFailed(Drawable errorDrawable) {
-                            }
-
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                ProgressCircle.startAnimation(a);
-                            }
-                });
+                        });
         }
     }
 
@@ -252,7 +225,6 @@ public class SignUp1 extends AppCompatActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
         ab.setDisplayHomeAsUpEnabled(true);
     }
-
 
 
 
@@ -326,26 +298,17 @@ public class SignUp1 extends AppCompatActivity {
 
 
         if (UserData[4]!=null){
-            System.out.println("4 no es null " + UserData[4]);
             ProgressCircle.startAnimation(a);
 
-            // Porque coño no da vueltas antes de cargar y las da al cargar????
-            Picasso.with(this)
+            Glide.with(this)
                     .load(Uri.parse(UserData[4]))
-                    .into(new Target() {
+                    .asBitmap()
+                    .transform(new CropSquareTransformation(this))
+                    .into(new SimpleTarget<Bitmap>() {
                         @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                             ProgressCircle.clearAnimation();
-                            ProfilePictureView.setImageBitmap(bitmap);
-                            System.out.println("HE PASADO POR AQUI BITCH !!!");
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            ProfilePictureView.setImageBitmap(resource);
                         }
                     });
         }
@@ -435,24 +398,29 @@ public class SignUp1 extends AppCompatActivity {
 
 
 
-    // Custom transformation for PICASSO profile picture
-    public class CropSquareTransformation implements Transformation {
+    // Custom transformation for GLIDE profile picture
+    public class CropSquareTransformation extends BitmapTransformation {
 
-        @Override public Bitmap transform(Bitmap source) {
-            int size = Math.min(source.getWidth(), source.getHeight());
-            int x = (source.getWidth() - size) / 2;
-            int y = (source.getHeight() - size) / 2;
-            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
-
-            if (result != source) {
-                source.recycle();
-            }
-            return result;
+        public CropSquareTransformation(Context context) {
+            super(context);
         }
 
-        @Override public String key() {
-            return "square()";
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+
+            Bitmap MyBitmapTransformed;
+
+            int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
+            int x = (toTransform.getWidth() - size) / 2;
+            int y = (toTransform.getHeight() - size) / 2;
+            MyBitmapTransformed = Bitmap.createBitmap(toTransform, x, y, size, size);
+
+            return MyBitmapTransformed;
+        }
+
+        @Override
+        public String getId() {
+            return "square";
         }
     }
-
 }
