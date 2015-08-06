@@ -4,11 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -28,8 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
@@ -333,25 +329,6 @@ public class SignUp1 extends AppCompatActivity {
             System.out.println("4 no es null " + UserData[4]);
             ProgressCircle.startAnimation(a);
 
-            /*
-            Picasso.with(this)
-                    .load(Uri.parse(UserData[4]))
-                    .transform(new CropSquareTransformation())
-                    .skipMemoryCache()
-                    .resize(size, size)
-                    .centerInside()
-                    .into(ProfilePictureView);
-            */
-
-
-
-
-
-
-
-
-
-
             // Porque coño no da vueltas antes de cargar y las da al cargar????
             Picasso.with(this)
                     .load(Uri.parse(UserData[4]))
@@ -371,8 +348,6 @@ public class SignUp1 extends AppCompatActivity {
                         public void onPrepareLoad(Drawable placeHolderDrawable) {
                         }
                     });
-
-
         }
     }
 
