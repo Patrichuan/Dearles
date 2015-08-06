@@ -4,8 +4,11 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -28,6 +31,9 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
@@ -138,9 +144,6 @@ public class SignUp1 extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
-
-
         if (resultCode == RESULT_OK) {
 
             Uri picUri = data.getData();
@@ -182,7 +185,7 @@ public class SignUp1 extends AppCompatActivity {
 
             */
 
-                // Loads given image
+                // Loads given image (LO LEO EN EL IMAGEVIEW)
                 Picasso.with(this)
                         .load(picUri)
                         .transform(new CropSquareTransformation())
@@ -190,7 +193,33 @@ public class SignUp1 extends AppCompatActivity {
                         .centerInside()
                         .into(new Target() {
                             @Override
-                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        File file = new File(Environment.getExternalStorageDirectory().getPath() +"/profilepicture.jpg");
+                                        if (file.exists()) file.delete();
+
+                                        try
+                                        {
+                                            file.createNewFile();
+                                            FileOutputStream ostream = new FileOutputStream(file);
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                                            ostream.close();
+                                            // Guardo la URI a la imagen reducida pequeña hecha ya thumbnail
+                                            UserData[4] = Uri.fromFile(file).toString();
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }).start();
+
                                 ProgressCircle.clearAnimation();
                                 ProfilePictureView.setImageBitmap(bitmap);
                             }
@@ -202,12 +231,9 @@ public class SignUp1 extends AppCompatActivity {
                             @Override
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
                                 ProgressCircle.startAnimation(a);
-
                                 //ProgressCircle.setVisibility(View.VISIBLE);
                             }
                 });
-                UserData[4]=(picUri.toString());
-            //}
         }
     }
 
@@ -308,12 +334,11 @@ public class SignUp1 extends AppCompatActivity {
                     .into(ProfilePictureView);
             */
 
+            // Porque coño no da vueltas antes de cargar y las da al cargar????
+
             Picasso.with(this)
                     .load(Uri.parse(UserData[4]))
-                    .transform(new CropSquareTransformation())
                     .skipMemoryCache()
-                    .resize(size, size)
-                    .centerInside()
                     .into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -328,9 +353,11 @@ public class SignUp1 extends AppCompatActivity {
                         @Override
                         public void onPrepareLoad(Drawable placeHolderDrawable) {
                             ProgressCircle.startAnimation(a);
-                            //ProgressCircle.setVisibility(View.VISIBLE);
                         }
                     });
+
+
+
         }
     }
 
