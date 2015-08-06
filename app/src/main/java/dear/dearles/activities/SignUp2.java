@@ -1,5 +1,6 @@
 package dear.dearles.activities;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignUp2 extends AppCompatActivity {
 
@@ -158,5 +160,11 @@ public class SignUp2 extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 }

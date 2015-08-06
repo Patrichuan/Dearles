@@ -51,6 +51,7 @@ import java.io.FileOutputStream;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignUp1 extends AppCompatActivity {
 
@@ -149,7 +150,7 @@ public class SignUp1 extends AppCompatActivity {
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 d.setContentView(R.layout.camera_gallery_or_see);
                 WindowManager.LayoutParams p = d.getWindow().getAttributes();
-                p.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+                p.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 d.getWindow().setAttributes(p);
                 d.show();
 
@@ -464,5 +465,11 @@ public class SignUp1 extends AppCompatActivity {
         public String getId() {
             return "square";
         }
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 }

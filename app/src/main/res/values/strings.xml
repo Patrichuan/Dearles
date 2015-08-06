@@ -27,5 +27,7 @@
     <string name="password_required">password required</string>
     <string name="email_required">email required</string>
     <string name="age_required">age required</string>
+    <string name="ChooseExistingPhoto">Choose an existing photo</string>
+    <string name="TakeAPhoto">Take a photo</string>
 
 </resources>
