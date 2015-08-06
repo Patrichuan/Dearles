@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:background="@color/primary_dark"
+            android:textColor="@color/icons"
+            android:textSize="15sp"
+            android:minHeight="40dp"
+            android:id="@+id/Camerabtn"
+            android:text="Camera"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_below="@+id/Camerabtn"
+            android:layout_marginTop="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/primary_dark"
+            android:textColor="@color/icons"
+            android:textSize="15sp"
+            android:minHeight="40dp"
+            android:id="@+id/Gallerytn"
+            android:text="Gallery"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
