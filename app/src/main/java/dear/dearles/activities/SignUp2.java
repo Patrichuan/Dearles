@@ -1,7 +1,7 @@
 package dear.dearles.activities;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -12,12 +12,9 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -42,7 +39,6 @@ public class SignUp2 extends AppCompatActivity {
     int NumLineas = 1;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +57,7 @@ public class SignUp2 extends AppCompatActivity {
         Finishbtn = (Button) findViewById(R.id.Finishbtn);
 
 
-
-
-        // Declaro el EditText para la descripción programaticamente
+        // Declaro el EditText para la descripción
         Description = new EditText(this);
         Description.setId(R.id.Description);
         Description.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
@@ -81,13 +75,11 @@ public class SignUp2 extends AppCompatActivity {
         DescriptionTil.addView(Description);
 
 
-
-
-
         // I transform a normal string to html string (for blue hashtags)
         String str = getString(R.string.TipForDescription);
         CharSequence styledText = Html.fromHtml(str);
         TipDescription.setText(styledText);
+
 
         // Listener for get an additional scroll in the edittext (we need the character count always visible)
         Description.addTextChangedListener(new TextWatcher() {
@@ -118,11 +110,18 @@ public class SignUp2 extends AppCompatActivity {
         Finishbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Y aqui es donde he de subir a Parse los datos del usuario
                 app.setUserDescription(Description.getText().toString());
+                String[] UserData = app.getUserData();
+                app.SignUpUser(UserData, Description.getText().toString());
+
+                // Y me vuelvo a la pantalla de Login
+                Intent intent = new Intent(SignUp2.this, Login.class);
+                startActivity(intent);
             }
         });
-
     }
+
 
 
 
@@ -137,15 +136,13 @@ public class SignUp2 extends AppCompatActivity {
     }
 
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_sign_up2, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

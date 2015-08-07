@@ -2,8 +2,6 @@ package dear.dearles;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
 
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
@@ -33,11 +31,19 @@ public class DearApp extends Application {
     }
 
 
+
+
+
     // PARSE.com METHODS----------------------------------------------------------------------------
     public void InitializeParse () {
         DB = new ParseHelper(getContext());
         DB.Initialize();
     }
+
+    public void SignUpUser(String[] UserData, String Description) {
+        DB.SignUpUser (UserData, Description, this);
+    }
+
 
 
     // SHAREDPREFERENCES METHODS--------------------------------------------------------------------
@@ -66,8 +72,16 @@ public class DearApp extends Application {
     }
 
 
+
+
+
+
+
+
     // ---------------------------------------------------------------------------------------------
     public static Context getContext() {
         return instance.getApplicationContext();
     }
+
+
 }
