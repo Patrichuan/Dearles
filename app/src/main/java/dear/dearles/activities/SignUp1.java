@@ -235,7 +235,7 @@ public class SignUp1 extends AppCompatActivity {
         Age.setMaxLines(1);
         Age.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Age.setHint(R.string.age);
-        Age.setRawInputType(Configuration.KEYBOARD_12KEY);
+        Age.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_CLASS_NUMBER);
         ageTil.setErrorEnabled(true);
         if (UserData[2]!=null) {
             Age.setText(UserData[2]);
