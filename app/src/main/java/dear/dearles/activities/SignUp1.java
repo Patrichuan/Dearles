@@ -163,7 +163,6 @@ public class SignUp1 extends AppCompatActivity {
             picUri = data.getData();
 
             // Loads given image (LO LEO EN EL IMAGEVIEW)
-            // Todo Guardar la imagen ya tratada, y no full size
             Glide.with(this)
                     .load(picUri)
                     .asBitmap()
