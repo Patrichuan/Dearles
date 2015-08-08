@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -22,6 +23,7 @@ import dear.dearles.custom_classes.Imagecompressor;
 public class ParseHelper {
 
     Context context;
+    public Boolean aux;
 
     public ParseHelper (Context context) {
         this.context = context;
@@ -40,7 +42,7 @@ public class ParseHelper {
         testObject.saveInBackground();
     }
 
-    // Todo Refactorizar
+    // Todo - Crear caso en que no haya foto de perfil
     public void SignUpUser(final String[] UserData, final String Description, Context context) {
 
         Imagecompressor Ic = new Imagecompressor(context);
@@ -95,4 +97,45 @@ public class ParseHelper {
             }
         }
     }
+
+
+
+    public void SignInUser(String username, String password) {
+        System.out.println("ESTOY EN SIGNIN USER !!");
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+                    // Hooray! The user is logged in.
+                    System.out.println("ESTAS DENTRO, BIEN POR TI !!");
+                } else {
+                    // Signup failed. Look at the ParseException to see what happened.
+                    System.out.println("FUCKING IMPOSTOR, NOOOO PASARAAS!!");
+                }
+            }
+        });
+    }
+
+
+    public void LogOutUser() {
+        ParseUser currentuser = ParseUser.getCurrentUser();
+        if ((currentuser!=null)&&(currentuser.getUsername()!=null)) {
+            System.out.println("Successfully Logged out");
+            ParseUser.logOut();
+        }
+    }
+
+
+    public Boolean isUserLoggedIn () {
+        Boolean UserInside = false;
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // do stuff with the user
+            UserInside = true;
+        } else {
+            // show the signup or login screen
+        }
+        return UserInside;
+    }
+
+
 }

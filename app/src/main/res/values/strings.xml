@@ -29,5 +29,9 @@
     <string name="age_required">age required</string>
     <string name="ChooseExistingPhoto">Choose an existing photo</string>
     <string name="TakeAPhoto">Take a photo</string>
+    <string name="title_activity_main">Main</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="LogOut">LOG OUT</string>
 
 </resources>

@@ -10,6 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import dear.dearles.R;
 import dear.dearles.DearApp;
@@ -24,6 +29,7 @@ public class Login extends AppCompatActivity {
     TextView SignUptv;
 
     Button Loginbtn;
+    String Username, Password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +63,22 @@ public class Login extends AppCompatActivity {
         Loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NothingEmpty()) {
-                    // Aqui validar con Parse que los datos de usuario sean correctos o no
-                    // if (CredentialsOk())
+                if (isAllCorrect()) {
+                    // Todo - Externalizar esto en la clase ParseHelper
+                    ParseUser.logInInBackground(Username, Password, new LogInCallback() {
+                        public void done(ParseUser user, ParseException e) {
+                            if (user != null) {
+                                System.out.println("CREDENCIALES CORRECTAS");
+                                Toast.makeText(app.getContext(), "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Login.this, Main.class);
+                                startActivity(intent);
+                            } else {
+                                // Signup failed. Look at the ParseException to see what happened.
+                                System.out.println("FUCKING IMPOSTOR, NOOOO PASARAAS!!");
+                                Toast.makeText(app.getContext(), "FUCKING IMPOSTOR, NOOOO PASARAAS!!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -67,32 +86,34 @@ public class Login extends AppCompatActivity {
 
 
     // No deja validar hasta rellenar los 2 campos (usuario y password)
-    private Boolean NothingEmpty () {
+    private Boolean isAllCorrect () {
 
-        Boolean NothingEmpty = true;
-        Boolean UsernameEmpty = true;
-        Boolean PasswordEmpty = true;
+        Username = usernameTil.getEditText().getText().toString();
+        Password = passwordTil.getEditText().getText().toString();
 
-        if (usernameTil.getEditText().getText().toString().equals("")) {
+        Boolean Correct = false;
+        Boolean UsernameCorrect = false;
+        Boolean PasswordCorrect = false;
+
+        if (Username.equals("")) {
             usernameTil.setError(getString(R.string.username_required));
-            UsernameEmpty = true;
         } else {
             usernameTil.setError("");
+            UsernameCorrect = true;
         }
 
-
-        if (passwordTil.getEditText().getText().toString().equals("")) {
+        if (Password.equals("")) {
             passwordTil.setError(getString(R.string.password_required));
-            PasswordEmpty = true;
         } else {
             passwordTil.setError("");
+            PasswordCorrect = true;
         }
 
-        if (UsernameEmpty || PasswordEmpty) {
-            NothingEmpty = false;
+        if (UsernameCorrect && PasswordCorrect) {
+            Correct = true;
         }
 
-        return NothingEmpty;
+        return Correct;
     }
 
 

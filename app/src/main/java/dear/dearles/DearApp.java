@@ -40,18 +40,30 @@ public class DearApp extends Application {
         DB.Initialize();
     }
 
-    public void SignUpUser(String[] UserData, String Description) {
-        DB.SignUpUser (UserData, Description, this);
+    public void SignUpUser (String[] UserData, String Description) {
+        DB.SignUpUser(UserData, Description, this);
+    }
+
+    public void SignInUser(String username, String password) {
+        DB.SignInUser(username, password);
+    }
+
+    public void LogOutUser() {
+        DB.LogOutUser();
+    }
+
+    public Boolean isUserLoggedIn () {
+        return DB.isUserLoggedIn();
     }
 
 
 
     // SHAREDPREFERENCES METHODS--------------------------------------------------------------------
-    public void InitializePreferences() {
+    public void InitializePreferences () {
         Preferences = new PreferencesHelper(getContext());
     }
 
-    public void InitializeUserData() {
+    public void InitializeUserData () {
         Preferences.InitializeUserPersonalData();
     }
 
@@ -82,6 +94,7 @@ public class DearApp extends Application {
     public static Context getContext() {
         return instance.getApplicationContext();
     }
+
 
 
 }

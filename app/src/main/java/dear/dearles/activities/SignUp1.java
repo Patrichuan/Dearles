@@ -293,7 +293,7 @@ public class SignUp1 extends AppCompatActivity {
 
         if (usernameTil.getEditText().getText().toString().equals("")) {
             usernameTil.setError(getString(R.string.username_required));
-            usernameTil.setErrorEnabled(true);
+            //usernameTil.setErrorEnabled(true);
         } else {
             usernameTil.setError("");
             UsernameCorrect = true;
@@ -301,7 +301,7 @@ public class SignUp1 extends AppCompatActivity {
 
         if (passwordTil.getEditText().getText().toString().equals("")) {
             passwordTil.setError(getString(R.string.password_required));
-            passwordTil.setErrorEnabled(true);
+            //passwordTil.setErrorEnabled(true);
         } else {
             passwordTil.setError("");
             PasswordCorrect = true;
@@ -309,7 +309,7 @@ public class SignUp1 extends AppCompatActivity {
 
         if (emailTil.getEditText().getText().toString().equals("")) {
             emailTil.setError(getString(R.string.email_required));
-            emailTil.setErrorEnabled(true);
+            //emailTil.setErrorEnabled(true);
         } else {
             emailTil.setError("");
             EmailCorrect = true;
@@ -319,7 +319,7 @@ public class SignUp1 extends AppCompatActivity {
         // Tunear teclado numerico
         if (ageTil.getEditText().getText().toString().equals("")) {
             ageTil.setError(getString(R.string.age_required));
-            ageTil.setErrorEnabled(true);
+            //ageTil.setErrorEnabled(true);
         } else {
             ageTil.setError("");
             AgeCorrect = true;

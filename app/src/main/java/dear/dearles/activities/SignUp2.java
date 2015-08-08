@@ -117,7 +117,7 @@ public class SignUp2 extends AppCompatActivity {
 
                 // Y me vuelvo a la pantalla de Login
                 Intent intent = new Intent(SignUp2.this, Login.class);
-                //startActivity(intent);
+                startActivity(intent);
             }
         });
     }
