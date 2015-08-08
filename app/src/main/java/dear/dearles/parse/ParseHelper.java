@@ -1,12 +1,7 @@
 package dear.dearles.parse;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -16,9 +11,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
-import java.io.ByteArrayOutputStream;
-
-import dear.dearles.custom_classes.Imagecompressor;
+import dear.dearles.customclasses.Imagecompressor;
 
 public class ParseHelper {
 
