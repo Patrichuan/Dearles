@@ -39,6 +39,7 @@ public class Login extends AppCompatActivity {
 
         app = (DearApp) getApplication();
 
+        // Todo - Si estas logead@ saltar directamente a Main
         usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
         usernameTil.setErrorEnabled(true);
 

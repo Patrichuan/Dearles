@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -28,6 +29,12 @@ public class ParseHelper {
         // Inicializamos PARSE
         Parse.enableLocalDatastore(context);
         Parse.initialize(context, "lDDd2LJ3svpj9w0OmjTWH5pKuOHduHPkOVwssvis", "TxamZobM8yshdA1QvmaM96ICxTCpV06iE8FVEBNC");
+
+        ParseUser.enableAutomaticUser();
+        ParseACL defaultACL = new ParseACL();
+        // If you would like all objects to be private by default, remove this line.
+        defaultACL.setPublicReadAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
     }
 
     public void Test () {
@@ -95,6 +102,7 @@ public class ParseHelper {
 
 
     public void SignInUser (final Context LoginContext, String Username, String Password) {
+        // Todo - Cada vez que logees actualizar un campo Geopoint para poder poner las distancias
         System.out.println("ESTOY EN SIGNIN USER !!");
         ParseUser.logInInBackground(Username, Password, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
