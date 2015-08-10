@@ -16,17 +16,11 @@
         android:elevation="4dp"
         android:background="?attr/colorPrimary"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
         <ListView
             android:id="@+id/listview"
+            android:textColor="@color/primary_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
         </ListView>
-
-    </ScrollView>
 
 </LinearLayout>
