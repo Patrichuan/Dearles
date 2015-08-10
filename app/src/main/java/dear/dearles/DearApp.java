@@ -1,5 +1,6 @@
 package dear.dearles;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -44,8 +45,8 @@ public class DearApp extends Application {
         DB.SignUpUser(UserData, Description, this);
     }
 
-    public void SignInUser(String username, String password) {
-        DB.SignInUser(username, password);
+    public void SignInUser(Context LoginContext, String Username, String Password) {
+        DB.SignInUser(LoginContext, Username, Password);
     }
 
     public void LogOutUser() {
@@ -94,7 +95,4 @@ public class DearApp extends Application {
     public static Context getContext() {
         return instance.getApplicationContext();
     }
-
-
-
 }

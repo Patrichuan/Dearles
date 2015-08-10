@@ -1,6 +1,8 @@
 package dear.dearles.parse;
 
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -11,12 +13,12 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import dear.dearles.activities.Main;
 import dear.dearles.customclasses.Imagecompressor;
 
 public class ParseHelper {
 
     Context context;
-    public Boolean aux;
 
     public ParseHelper (Context context) {
         this.context = context;
@@ -92,24 +94,27 @@ public class ParseHelper {
     }
 
 
-
-    public void SignInUser(String username, String password) {
+    public void SignInUser (final Context LoginContext, String Username, String Password) {
         System.out.println("ESTOY EN SIGNIN USER !!");
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
+        ParseUser.logInInBackground(Username, Password, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
-                    // Hooray! The user is logged in.
-                    System.out.println("ESTAS DENTRO, BIEN POR TI !!");
+                    System.out.println("CREDENCIALES CORRECTAS");
+                    Toast.makeText(context, "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginContext, Main.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 } else {
                     // Signup failed. Look at the ParseException to see what happened.
                     System.out.println("FUCKING IMPOSTOR, NOOOO PASARAAS!!");
+                    Toast.makeText(context, "FUCKING IMPOSTOR, NOOOO PASARAAS!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
 
-    public void LogOutUser() {
+    public void LogOutUser () {
         ParseUser currentuser = ParseUser.getCurrentUser();
         if ((currentuser!=null)&&(currentuser.getUsername()!=null)) {
             System.out.println("Successfully Logged out");

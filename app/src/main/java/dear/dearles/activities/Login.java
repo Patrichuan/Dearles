@@ -1,5 +1,6 @@
 package dear.dearles.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,21 +65,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isAllCorrect()) {
-                    // Todo - Externalizar esto en la clase ParseHelper
-                    ParseUser.logInInBackground(Username, Password, new LogInCallback() {
-                        public void done(ParseUser user, ParseException e) {
-                            if (user != null) {
-                                System.out.println("CREDENCIALES CORRECTAS");
-                                Toast.makeText(app.getContext(), "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Login.this, Main.class);
-                                startActivity(intent);
-                            } else {
-                                // Signup failed. Look at the ParseException to see what happened.
-                                System.out.println("FUCKING IMPOSTOR, NOOOO PASARAAS!!");
-                                Toast.makeText(app.getContext(), "FUCKING IMPOSTOR, NOOOO PASARAAS!!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    app.SignInUser(Login.this, Username, Password);
                 }
             }
         });
