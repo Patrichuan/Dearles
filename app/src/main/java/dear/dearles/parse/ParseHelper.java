@@ -16,6 +16,7 @@ import com.parse.SignUpCallback;
 
 import dear.dearles.activities.Main;
 import dear.dearles.customclasses.Imagecompressor;
+import dear.dearles.customclasses.User;
 
 public class ParseHelper {
 
@@ -45,13 +46,13 @@ public class ParseHelper {
     }
 
     // Todo - Crear caso en que no haya foto de perfil
-    public void SignUpUser(final String[] UserData, final String Description, Context context) {
+    public void SignUpUser(final User user, Context context) {
 
         Imagecompressor Ic = new Imagecompressor(context);
         byte[] data;
 
-        if (UserData[4] != null) {
-            data = Ic.compressImage(UserData[4]);
+        if (user.getProfilePicture() != null) {
+            data = Ic.compressImage(user.getProfilePicture());
             if (data != null) {
                 final ParseFile pFile = new ParseFile("profile_thumbnail.jpg", data);
                 System.out.println("HOLAAAA, VOY AL SAVEINBG");
@@ -62,19 +63,21 @@ public class ParseHelper {
                         // If successful -> add file to user and signUpInBackground
                         if (null == e) {
                             System.out.println("HE ENTRADO AL SAVEUSERTOPARSE");
-                            ParseUser user = new ParseUser();
+                            ParseUser aux = new ParseUser();
 
                             // Para evitar el bug del invalid token
                             ParseUser.enableRevocableSessionInBackground();
 
-                            user.setUsername(UserData[0]);
-                            user.setPassword(UserData[1]);
-                            user.put("Age", UserData[2]);
-                            user.setEmail(UserData[3]);
-                            user.put("Description", Description);
-                            user.put("Thumbnail", pFile);
+                            aux.setUsername(user.getUsername());
+                            aux.setPassword(user.getPassword());
+                            aux.put("age", user.getAge());
+                            aux.setEmail(user.getEmail());
+                            aux.put("profilePicture", pFile);
+                            aux.put("description", user.getDescription());
+                            // Todo - Habilitar geopoints
+                            //aux.put("geopoint", user.getGeopoint());
 
-                            user.signUpInBackground(new SignUpCallback() {
+                            aux.signUpInBackground(new SignUpCallback() {
                                 public void done(ParseException e) {
                                     if (e == null) {
                                         // Hooray! Let them use the app now.
@@ -101,10 +104,10 @@ public class ParseHelper {
     }
 
 
-    public void SignInUser (final Context LoginContext, String Username, String Password) {
+    public void SignInUser (User user, final Context LoginContext) {
         // Todo - Cada vez que logees actualizar un campo Geopoint para poder poner las distancias
         System.out.println("ESTOY EN SIGNIN USER !!");
-        ParseUser.logInInBackground(Username, Password, new LogInCallback() {
+        ParseUser.logInInBackground(user.getUsername(), user.getPassword(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     System.out.println("CREDENCIALES CORRECTAS");

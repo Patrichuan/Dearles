@@ -45,13 +45,11 @@ public class ListViewAdapter extends BaseAdapter {
 
 
 
-
-
     public class ViewHolder {
         TextView Username;
         TextView Age;
         TextView Description;
-        ImageView Thumbnail;
+        ImageView ProfilePicture;
     }
 
     @Override
@@ -80,7 +78,7 @@ public class ListViewAdapter extends BaseAdapter {
             holder.Username = (TextView) view.findViewById(R.id.Username);
             holder.Age = (TextView) view.findViewById(R.id.Age);
             holder.Description = (TextView) view.findViewById(R.id.Description);
-            holder.Thumbnail = (ImageView) view.findViewById(R.id.Thumbnail);
+            holder.ProfilePicture = (ImageView) view.findViewById(R.id.ProfilePicture);
 
             view.setTag(holder);
         } else {
@@ -93,13 +91,13 @@ public class ListViewAdapter extends BaseAdapter {
         holder.Description.setText(UserList.get(position).getDescription());
 
         Glide.with(context)
-                .load(Uri.parse(UserList.get(position).getThumbnail()))
+                .load(Uri.parse(UserList.get(position).getProfilePicture()))
                 .asBitmap()
                 .transform(new CropSquareTransformation(context))
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        holder.Thumbnail.setImageBitmap(resource);
+                        holder.ProfilePicture.setImageBitmap(resource);
                     }
                 });
 
@@ -113,8 +111,8 @@ public class ListViewAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, UserBigProfile.class);
                 intent.putExtra("username", (UserList.get(position).getUsername()));
                 intent.putExtra("age", (UserList.get(position).getAge()));
-                intent.putExtra("Description", UserList.get(position).getDescription());
-                intent.putExtra("Thumbnail", (UserList.get(position).getThumbnail()));
+                intent.putExtra("description", UserList.get(position).getDescription());
+                intent.putExtra("profilePicture", (UserList.get(position).getProfilePicture()));
 
                 // Start UserBigProfile Class
                 context.startActivity(intent);

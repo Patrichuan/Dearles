@@ -82,8 +82,6 @@ public class Main extends AppCompatActivity {
             super.onPreExecute();
             // Create a progressdialog
             mProgressDialog = new ProgressDialog(Main.this);
-            // Set progressdialog title
-            mProgressDialog.setTitle("Parse.com Simple ListView Tutorial");
             // Set progressdialog message
             mProgressDialog.setMessage("Loading...");
             mProgressDialog.setIndeterminate(false);
@@ -105,13 +103,14 @@ public class Main extends AppCompatActivity {
             }
 
             for (ParseObject userObject : ob) {
-                ParseFile image = (ParseFile) userObject.get("Thumbnail");
-
                 User user = new User();
+
                 user.setUsername(userObject.getString("username"));
-                user.setAge(userObject.getString("Age"));
-                user.setDescription(userObject.getString("Description"));
-                user.setThumbnail (image.getUrl());
+                user.setAge(userObject.getString("age"));
+                ParseFile image = (ParseFile) userObject.get("profilePicture");
+                user.setDescription(userObject.getString("description"));
+                user.setGeopoint(userObject.getString("geopoint"));
+                user.setProfilePicture(image.getUrl());
                 UserList.add(user);
             }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import dear.dearles.customclasses.User;
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -41,12 +42,12 @@ public class DearApp extends Application {
         DB.Initialize();
     }
 
-    public void SignUpUser (String[] UserData, String Description) {
-        DB.SignUpUser(UserData, Description, this);
+    public void SignUpUser (User user) {
+        DB.SignUpUser(user, this);
     }
 
-    public void SignInUser(Context LoginContext, String Username, String Password) {
-        DB.SignInUser(LoginContext, Username, Password);
+    public void SignInUser(User user, Context LoginContext) {
+        DB.SignInUser(user, LoginContext);
     }
 
     public void LogOutUser() {
@@ -64,28 +65,17 @@ public class DearApp extends Application {
         Preferences = new PreferencesHelper(getContext());
     }
 
-    public void InitializeUserData () {
-        Preferences.InitializeUserPersonalData();
+    public void InitializeUserFromSharedpref () {
+        Preferences.InitializeUserFromSharedpref();
     }
 
-    public void setUserData (String Username, String Password, String Age, String Email, String ProfileStringUri) {
-        Preferences.setUserData(Username, Password, Age, Email, ProfileStringUri);
+    public void saveUserToSharedpref (User user) {
+        Preferences.saveUserToSharedpref(user);
     }
 
-    public String[] getUserData () {
-        return Preferences.getUserData();
+    public User getUserFromSharedpref () {
+        return Preferences.getUserFromSharedpref();
     }
-
-    public void setUserDescription (String Description) {
-        Preferences.setUserDescription(Description);
-    }
-
-    public String getUserDescription () {
-        return Preferences.getUserDescription();
-    }
-
-
-
 
 
 

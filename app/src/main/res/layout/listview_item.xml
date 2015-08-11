@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.25">
+        android:layout_weight="0.3">
 
         <ImageView
             android:layout_width="8dp"
@@ -21,7 +21,9 @@
             android:background="@color/primary"/>
 
         <ImageView
-            android:id="@+id/Thumbnail"
+            android:id="@+id/ProfilePicture"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
             android:src="@drawable/bglogin"
             android:layout_width="100dp"
             android:layout_height="100dp">
@@ -34,7 +36,7 @@
         android:layout_width="0dp"
         android:paddingStart="6dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.75"
+        android:layout_weight="0.7"
         android:orientation="vertical">
 
         <TextView

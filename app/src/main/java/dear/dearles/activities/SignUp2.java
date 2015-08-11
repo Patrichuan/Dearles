@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import dear.dearles.customclasses.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignUp2 extends AppCompatActivity {
@@ -35,6 +36,8 @@ public class SignUp2 extends AppCompatActivity {
     TextInputLayout DescriptionTil;
 
     Button Finishbtn;
+
+    User user;
 
     int NumLineas = 1;
 
@@ -49,6 +52,9 @@ public class SignUp2 extends AppCompatActivity {
         setupToolbar();
 
         app = (DearApp) getApplication();
+
+        user = new User();
+        user = app.getUserFromSharedpref();
 
         TipDescription = (TextView) findViewById(R.id.TipDescription);
         DescriptionTil = (TextInputLayout) findViewById(R.id.DescriptionTil);
@@ -68,8 +74,8 @@ public class SignUp2 extends AppCompatActivity {
         Description.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Description.setHint(R.string.description);
         // Y establezco el contenido de esta si ya existia previamente
-        if (app.getUserDescription()!=null) {
-            Description.setText(app.getUserDescription());
+        if (user.getDescription()!=null) {
+            Description.setText(user.getDescription());
         }
         // Y lo añado
         DescriptionTil.addView(Description);
@@ -111,9 +117,9 @@ public class SignUp2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Y aqui es donde he de subir a Parse los datos del usuario
-                app.setUserDescription(Description.getText().toString());
-                String[] UserData = app.getUserData();
-                app.SignUpUser(UserData, Description.getText().toString());
+                user.setDescription(Description.getText().toString());
+                // Todo - Aqui deberia de pillar el geopoint para subirlo
+                app.SignUpUser(user);
 
                 // Y me vuelvo a la pantalla de Login
                 Intent intent = new Intent(SignUp2.this, Login.class);

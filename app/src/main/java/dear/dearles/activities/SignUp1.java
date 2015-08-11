@@ -37,28 +37,27 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import dear.dearles.customclasses.User;
 import dear.dearles.glide.CropSquareTransformation;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignUp1 extends AppCompatActivity {
 
-    protected DearApp app;
+    DearApp app;
 
     Button Nextbtn;
-    TextView Username, Password, Email, Age;
+    TextView usernametv, passwordtv, emailtv, agetv;
     TextInputLayout usernameTil, passwordTil, emailTil, ageTil;
+    ImageView ProfilePictureView;
 
-    private ImageView ProfilePictureView;
+    ImageView ProgressCircle;
+    Animation a;
+    Uri picUri;
+    User user;
 
     //keep track of camera capture intent
     final int CAMERA_CAPTURE = 1;
     final int IMAGE_PICKER_SELECT = 2;
-
-    ImageView ProgressCircle;
-    Animation a;
-
-    String[] UserData;
-    Uri picUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,9 @@ public class SignUp1 extends AppCompatActivity {
         ProfilePictureView = (ImageView) findViewById(R.id.ProfilePictureView);
 
         app = (DearApp) getApplication();
-        UserData = app.getUserData();
+
+        user = new User();
+        user = app.getUserFromSharedpref();
 
         ProgressCircle = (ImageView) findViewById(R.id.ProgressCircle);
         a = AnimationUtils.loadAnimation(this, R.anim.progress_anim);
@@ -91,11 +92,11 @@ public class SignUp1 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SignUp1.this, SignUp2.class);
                 if (isAllCorrect()) {
-                    app.setUserData(Username.getText().toString(),
-                            Password.getText().toString(),
-                            Age.getText().toString(),
-                            Email.getText().toString(),
-                            UserData[4]);
+                    user.setUsername(usernametv.getText().toString());
+                    user.setPassword(passwordtv.getText().toString());
+                    user.setAge(agetv.getText().toString());
+                    user.setEmail(emailtv.getText().toString());
+                    app.saveUserToSharedpref(user);
                     startActivity(intent);
                 }
             }
@@ -170,7 +171,7 @@ public class SignUp1 extends AppCompatActivity {
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            UserData[4] = picUri.toString();
+                            user.setProfilePicture(picUri.toString());
                             ProgressCircle.clearAnimation();
                             ProfilePictureView.setImageBitmap(resource);
                         }
@@ -196,77 +197,77 @@ public class SignUp1 extends AppCompatActivity {
     // Crea programaticamente los floating edittext y los inicializa o rellena con información si ya
     // existia esta previamente. Tambien aplicable para la Profile Picture.
     private void setupEditTextsAndPicture () {
-        // I define programatically all the edittexts
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        Username = new EditText(this);
-        Username.setId(R.id.usernametv);
-        Username.setLayoutParams(params);
-        Username.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
-        Username.setSingleLine(true);
-        Username.setMaxLines(1);
-        Username.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Username.setHint(R.string.username);
+        usernametv = new EditText(this);
+        usernametv.setId(R.id.usernametv);
+        usernametv.setLayoutParams(params);
+        usernametv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
+        usernametv.setSingleLine(true);
+        usernametv.setMaxLines(1);
+        usernametv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        usernametv.setHint(R.string.username);
         usernameTil.setErrorEnabled(true);
-        if (UserData[0]!=null) {
-            Username.setText(UserData[0]);
+        if (user.getUsername()!=null) {
+            usernametv.setText(user.getUsername());
         }
 
 
-        Password = new EditText(this);
-        Password.setId(R.id.passwordtv);
-        Password.setLayoutParams(params);
-        Password.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
-        Password.setSingleLine(true);
-        Password.setMaxLines(1);
-        Password.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Password.setHint(R.string.password);
+        passwordtv = new EditText(this);
+        passwordtv.setId(R.id.passwordtv);
+        passwordtv.setLayoutParams(params);
+        passwordtv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
+        passwordtv.setSingleLine(true);
+        passwordtv.setMaxLines(1);
+        passwordtv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        passwordtv.setHint(R.string.password);
         passwordTil.setErrorEnabled(true);
-        if (UserData[1] != null) {
-            Password.setText(UserData[1]);
+        if (user.getPassword()!= null) {
+            passwordtv.setText(user.getPassword());
         }
 
 
-        Age = new EditText(this);
-        Age.setId(R.id.agetv);
-        Age.setLayoutParams(params);
-        Age.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
-        Age.setSingleLine(true);
-        Age.setMaxLines(1);
-        Age.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Age.setHint(R.string.age);
-        Age.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_CLASS_NUMBER);
+        agetv = new EditText(this);
+        agetv.setId(R.id.agetv);
+        agetv.setLayoutParams(params);
+        agetv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
+        agetv.setSingleLine(true);
+        agetv.setMaxLines(1);
+        agetv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        agetv.setHint(R.string.age);
+        agetv.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_CLASS_NUMBER);
         ageTil.setErrorEnabled(true);
-        if (UserData[2]!=null) {
-            Age.setText(UserData[2]);
+        if (user.getAge()!=null) {
+            agetv.setText(user.getAge());
         }
 
 
-        Email = new EditText(this);
-        Email.setId(R.id.emailtv);
-        Email.setLayoutParams(params);
-        Email.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
-        Email.setSingleLine(true);
-        Email.setMaxLines(1);
-        Email.setHintTextColor(getResources().getColor(R.color.primary_dark));
-        Email.setHint(R.string.email);
-        Email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailtv = new EditText(this);
+        emailtv.setId(R.id.emailtv);
+        emailtv.setLayoutParams(params);
+        emailtv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
+        emailtv.setSingleLine(true);
+        emailtv.setMaxLines(1);
+        emailtv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        emailtv.setHint(R.string.email);
+        emailtv.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         emailTil.setErrorEnabled(true);
-        if (UserData[3]!=null) {
-            Email.setText(UserData[3]);
+        if (user.getEmail()!=null) {
+            emailtv.setText(user.getEmail());
         }
 
 
-        usernameTil.addView(Username);
-        passwordTil.addView(Password);
-        ageTil.addView(Age);
-        emailTil.addView(Email);
+        usernameTil.addView(usernametv);
+        passwordTil.addView(passwordtv);
+        ageTil.addView(agetv);
+        emailTil.addView(emailtv);
 
 
-        if (UserData[4]!=null){
+        if (user.getProfilePicture()!=null){
             ProgressCircle.startAnimation(a);
             Glide.with(this)
-                    .load(Uri.parse(UserData[4]))
+                    .load(Uri.parse(user.getProfilePicture()))
                     .asBitmap()
                     .transform(new CropSquareTransformation(this))
                     .into(new SimpleTarget<Bitmap>() {
@@ -292,7 +293,6 @@ public class SignUp1 extends AppCompatActivity {
 
         if (usernameTil.getEditText().getText().toString().equals("")) {
             usernameTil.setError(getString(R.string.username_required));
-            //usernameTil.setErrorEnabled(true);
         } else {
             usernameTil.setError("");
             UsernameCorrect = true;
@@ -300,7 +300,6 @@ public class SignUp1 extends AppCompatActivity {
 
         if (passwordTil.getEditText().getText().toString().equals("")) {
             passwordTil.setError(getString(R.string.password_required));
-            //passwordTil.setErrorEnabled(true);
         } else {
             passwordTil.setError("");
             PasswordCorrect = true;
@@ -308,17 +307,13 @@ public class SignUp1 extends AppCompatActivity {
 
         if (emailTil.getEditText().getText().toString().equals("")) {
             emailTil.setError(getString(R.string.email_required));
-            //emailTil.setErrorEnabled(true);
         } else {
             emailTil.setError("");
             EmailCorrect = true;
         }
 
-        // Falta la validación de la edad (si son digitos o no)
-        // Tunear teclado numerico
         if (ageTil.getEditText().getText().toString().equals("")) {
             ageTil.setError(getString(R.string.age_required));
-            //ageTil.setErrorEnabled(true);
         } else {
             ageTil.setError("");
             AgeCorrect = true;

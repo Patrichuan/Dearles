@@ -13,18 +13,17 @@ import android.widget.TextView;
 
 import dear.dearles.R;
 import dear.dearles.DearApp;
+import dear.dearles.customclasses.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 // ActionBarActivity esta deprecated a partir del API22 (Se sustituyó por AppCompatActivity)
 public class Login extends AppCompatActivity {
 
-    protected DearApp app;
-
+    DearApp app;
     TextInputLayout usernameTil, passwordTil;
     TextView SignUptv;
-
     Button Loginbtn;
-    String Username, Password;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +31,10 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login_layout);
 
         app = (DearApp) getApplication();
+        app.InitializeUserFromSharedpref();
+
+        user = new User();
+        user = app.getUserFromSharedpref();
 
         // Todo - Si estas logead@ saltar directamente a Main
         usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
@@ -47,8 +50,6 @@ public class Login extends AppCompatActivity {
         SignUptv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Inicializo los datos de usuario para crear una nueva cuenta desde 0
-                app.InitializeUserData();
                 Intent intent = new Intent(Login.this, SignUp1.class);
                 startActivity(intent);
             }
@@ -60,7 +61,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isAllCorrect()) {
-                    app.SignInUser(Login.this, Username, Password);
+                    app.SignInUser(user, Login.this);
                 }
             }
         });
@@ -70,8 +71,8 @@ public class Login extends AppCompatActivity {
     // No deja validar hasta rellenar los 2 campos (usuario y password)
     private Boolean isAllCorrect () {
 
-        Username = usernameTil.getEditText().getText().toString();
-        Password = passwordTil.getEditText().getText().toString();
+        String Username = usernameTil.getEditText().getText().toString();
+        String Password = passwordTil.getEditText().getText().toString();
 
         Boolean Correct = false;
         Boolean UsernameCorrect = false;
@@ -92,6 +93,8 @@ public class Login extends AppCompatActivity {
         }
 
         if (UsernameCorrect && PasswordCorrect) {
+            user.setUsername(usernameTil.getEditText().getText().toString());
+            user.setPassword(passwordTil.getEditText().getText().toString());
             Correct = true;
         }
 

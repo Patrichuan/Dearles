@@ -1,50 +1,92 @@
 package dear.dearles.customclasses;
 
-/**
- * Created by Pat on 10/08/2015.
- */
+
 public class User {
 
-    String Username, Age, Description, Thumbnail;
+    // Todo - Comprobar al registrarse que el email no esta en uso
 
+    String Username, Email, Age, Description, ProfilePicture;
+    String Password, Geopoint;
+
+    // CONSTRUCTOR
     public User () {
-
+        Username = null;
+        Email = null;
+        Age = null;
+        Description = null;
+        ProfilePicture = null;
+        Password = null;
+        Geopoint = null;
     }
 
-    public User (String Username, String Description) {
+    // Profile es una URI
+    public User (String Username, String Email, String Age, String Description, String ProfilePicture, String Password, String Geopoint) {
         this.Username = Username;
+        this.Email = Email;
+        this.Age = Age;
         this.Description = Description;
+        this.ProfilePicture = ProfilePicture;
+        this.Password = Password;
+        this.Geopoint = Geopoint;
     }
 
-    public void setDescription(String description) {
-        this.Description = description;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.Thumbnail = thumbnail;
-    }
-
+    // SETTERS
     public void setUsername(String username) {
         this.Username = username;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
 
     public void setAge(String Age) {
         this.Age = Age;
     }
 
-    public String getDescription() {
-        return Description;
+    public void setDescription(String description) {
+        this.Description = description;
     }
 
-    public String getThumbnail() {
-        return Thumbnail;
+    public void setProfilePicture(String ProfilePicture) {
+        this.ProfilePicture = ProfilePicture;
     }
 
+    public void setGeopoint(String geopoint) {
+        this.Geopoint = Geopoint;
+    }
+
+
+
+    // GETTERS
     public String getUsername() {
         return Username;
     }
 
+    public String getPassword() {
+        return Password;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
     public String getAge() {
         return Age;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public String getProfilePicture() {
+        return ProfilePicture;
+    }
+
+    public String getGeopoint() {
+        return Geopoint;
     }
 }
