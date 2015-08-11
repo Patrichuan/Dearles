@@ -5,8 +5,11 @@ package dear.dearles.customclasses;
  */
 public class User {
 
-    String Username, Password, Email;
-    String Description, Thumbnail;
+    String Username, Age, Description, Thumbnail;
+
+    public User () {
+
+    }
 
     public User (String Username, String Description) {
         this.Username = Username;
@@ -17,14 +20,6 @@ public class User {
         this.Description = description;
     }
 
-    public void setEmail(String email) {
-        this.Email = email;
-    }
-
-    public void setPassword(String password) {
-        this.Password = password;
-    }
-
     public void setThumbnail(String thumbnail) {
         this.Thumbnail = thumbnail;
     }
@@ -33,16 +28,12 @@ public class User {
         this.Username = username;
     }
 
+    public void setAge(String Age) {
+        this.Age = Age;
+    }
+
     public String getDescription() {
         return Description;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public String getPassword() {
-        return Password;
     }
 
     public String getThumbnail() {
@@ -51,5 +42,9 @@ public class User {
 
     public String getUsername() {
         return Username;
+    }
+
+    public String getAge() {
+        return Age;
     }
 }

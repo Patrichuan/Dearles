@@ -2,7 +2,6 @@ package dear.dearles.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -12,25 +11,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import java.util.List;
 import java.util.ArrayList;
-import android.widget.AdapterView.OnItemClickListener;
+import java.util.List;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import dear.dearles.customclasses.ListViewAdapter;
 import dear.dearles.customclasses.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -45,7 +40,8 @@ public class Main extends AppCompatActivity {
     ListView listview;
     List<ParseUser> ob;
     ProgressDialog mProgressDialog;
-    ArrayAdapter<String> adapter;
+    ListViewAdapter adapter;
+    private List<User> UserList = null;
 
 
 
@@ -61,7 +57,6 @@ public class Main extends AppCompatActivity {
 
         // Setups
         setupToolbar();
-
         /*
         LogOutbtn = (Button) findViewById(R.id.LogOut);
         LogOutbtn.setOnClickListener(new View.OnClickListener() {
@@ -70,25 +65,6 @@ public class Main extends AppCompatActivity {
                 app.LogOutUser();
                 Intent intent = new Intent(Main.this, Login.class);
                 startActivity(intent);
-            }
-        });
-
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> userObjects, ParseException e) {
-                if (e == null) {
-                    // The query was successful.
-                    if (userObjects != null) {
-                        //mUserAdapter.clear();
-                        for (int i = 0; i < userObjects.size(); i++) {
-                            // cada item de la lista es del tipo ParseUser
-                            //mUserAdapter.add(userObjects.get(i));
-                            System.out.println("USUARIO -> " + userObjects.get(i).getString("username"));
-                        }
-                    }
-                } else {
-                    // Something went wrong.
-                }
             }
         });
         */
@@ -115,6 +91,9 @@ public class Main extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
+            // Create the array
+            UserList = new ArrayList<User>();
+
             // Locate the class table named "Country" in Parse.com
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             try {
@@ -123,6 +102,18 @@ public class Main extends AppCompatActivity {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
+
+            for (ParseObject userObject : ob) {
+                ParseFile image = (ParseFile) userObject.get("Thumbnail");
+
+                User user = new User();
+                user.setUsername(userObject.getString("username"));
+                user.setAge(userObject.getString("age"));
+                user.setDescription(userObject.getString("Description"));
+                user.setThumbnail (image.getUrl());
+                UserList.add(user);
+            }
+
             return null;
         }
 
@@ -131,29 +122,11 @@ public class Main extends AppCompatActivity {
             // Locate the listview in listview_main.xml
             listview = (ListView) findViewById(R.id.listview);
             // Pass the results into an ArrayAdapter
-            adapter = new ArrayAdapter<String>(Main.this, R.layout.listview_item);
-            // Retrieve object "username" from Parse.com database
-            for (ParseObject userObject : ob) {
-                System.out.println(userObject.getString("username"));
-                adapter.add(userObject.getString("username"));
-            }
+            adapter = new ListViewAdapter (Main.this, UserList);
             // Binds the Adapter to the ListView
             listview.setAdapter(adapter);
-            // Todo - Si pilla bien la info porque no la muestra???
             // Close the progressdialog
             mProgressDialog.dismiss();
-            // Capture button clicks on ListView items
-            listview.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // Send single item click data to SingleItemView Class
-                    //Intent i = new Intent(Main.this, SingleItemView.class);
-                    // Pass data "name" followed by the position
-                    //i.putExtra("name", ob.get(position).getString("name").toString());
-                    // Open SingleItemView.java Activity
-                    //startActivity(i);
-                }
-            });
         }
     }
 

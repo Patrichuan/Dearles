@@ -33,5 +33,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="LogOut">LOG OUT</string>
+    <string name="title_activity_single_item_view">SingleItemView</string>
 
 </resources>
