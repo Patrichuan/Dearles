@@ -21,7 +21,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import dear.dearles.R;
-import dear.dearles.activities.SingleItemView;
+import dear.dearles.activities.UserBigProfile;
 
 
 public class ListViewAdapter extends BaseAdapter {
@@ -41,6 +41,10 @@ public class ListViewAdapter extends BaseAdapter {
         arraylist = new ArrayList<User>();
         arraylist.addAll(UserList);
     }
+
+
+
+
 
     public class ViewHolder {
         TextView Username;
@@ -69,7 +73,7 @@ public class ListViewAdapter extends BaseAdapter {
 
         if (view == null) {
             holder = new ViewHolder();
-            view = inflater.inflate(R.layout.singleitemview, null);
+            view = inflater.inflate(R.layout.listview_item, null);
 
             // Locate the TextViews in listview_item.xml
             holder.Username = (TextView) view.findViewById(R.id.Username);
@@ -103,17 +107,15 @@ public class ListViewAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View arg0) {
-                // Send single item click data to SingleItemView Class
-                Intent intent = new Intent(context, SingleItemView.class);
-                // Pass all data rank
+
+                // Send single item click data to UserBigProfile Class
+                Intent intent = new Intent(context, UserBigProfile.class);
                 intent.putExtra("username", (UserList.get(position).getUsername()));
-                // Pass all data country
                 intent.putExtra("age", (UserList.get(position).getAge()));
-                 // Pass all data population
                 intent.putExtra("Description", UserList.get(position).getDescription());
-                // Pass all data flag
                 intent.putExtra("Thumbnail", (UserList.get(position).getThumbnail()));
-                // Start SingleItemView Class
+
+                // Start UserBigProfile Class
                 context.startActivity(intent);
             }
         });

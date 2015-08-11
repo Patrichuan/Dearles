@@ -18,7 +18,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import dear.dearles.R;
 
-public class SingleItemView extends AppCompatActivity {
+public class UserBigProfile extends AppCompatActivity {
 
     String Username, Age, Description, Thumbnail;
     TextView txtUsername,txtAge, txtDescription;
@@ -27,7 +27,7 @@ public class SingleItemView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.singleitemview);
+        setContentView(R.layout.userbigprofile_layout);
 
         Intent i = getIntent();
         Username = i.getStringExtra("username");
@@ -35,7 +35,7 @@ public class SingleItemView extends AppCompatActivity {
         Description = i.getStringExtra("Description");
         Thumbnail = i.getStringExtra("Thumbnail");
 
-        // Locate the TextViews in singleitemview.xml
+        // Locate the TextViews in userbigprofile_layout_layout.xml
         txtUsername = (TextView) findViewById(R.id.Username);
         txtAge = (TextView) findViewById(R.id.Age);
         txtDescription = (TextView) findViewById(R.id.Description);
@@ -60,7 +60,7 @@ public class SingleItemView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_single_item_view, menu);
+        getMenuInflater().inflate(R.menu.menu_userbigprofile, menu);
         return true;
     }
 

@@ -67,6 +67,16 @@
             android:textSize="12sp">
         </TextView>
 
+        <TextView
+            android:id="@+id/fsd"
+            customFont="fonts/Roboto-Light.ttf"
+            android:text="VERSION GIGANTE DE PROFILEEEEEEEEEEE"
+            android:textColor="@color/primary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp">
+        </TextView>
+
     </LinearLayout>
 
 </LinearLayout>

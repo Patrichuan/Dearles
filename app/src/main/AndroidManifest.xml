@@ -50,8 +50,9 @@
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name=".activities.SingleItemView"
-            android:label="@string/title_activity_single_item_view" >
+            android:name=".activities.UserBigProfile"
+            android:label="@string/title_activity_userbigprofile"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
