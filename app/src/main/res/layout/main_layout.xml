@@ -18,6 +18,7 @@
         android:background="?attr/colorPrimary"/>
 
         <ListView
+            android:layout_margin="5dp"
             android:id="@+id/listview"
             android:textColor="@color/primary_text"
             android:layout_width="match_parent"

@@ -43,7 +43,11 @@ public class Main extends AppCompatActivity {
     ListViewAdapter adapter;
     private List<User> UserList = null;
 
-
+    // Todo - Usar Glide para cargar las fotos en singleitemview.xml
+    // Todo - Tunear singleitemview.xml
+    // Todo - Poner un campo mas a user (geopoint) para el color del marcador
+    // Todo - Listener ha de llevar a Foto match parent, match parent
+    // Todo - Sumar barra adicional a Toolbar para swipes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
