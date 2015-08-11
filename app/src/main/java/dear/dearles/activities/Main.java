@@ -98,7 +98,6 @@ public class Main extends AppCompatActivity {
             // Create the array
             UserList = new ArrayList<User>();
 
-            // Locate the class table named "Country" in Parse.com
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             try {
                 ob = query.find();
@@ -113,7 +112,6 @@ public class Main extends AppCompatActivity {
                 User user = new User();
                 user.setUsername(userObject.getString("username"));
                 user.setAge(userObject.getString("Age"));
-                System.out.println("EDAD: " + userObject.getString("Age"));
                 user.setDescription(userObject.getString("Description"));
                 user.setThumbnail (image.getUrl());
                 UserList.add(user);

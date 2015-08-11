@@ -1,59 +1,60 @@
 package dear.dearles.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+
 import dear.dearles.R;
-import dear.dearles.customclasses.ImageLoader;
-import dear.dearles.customclasses.User;
 
-public class SingleItemView extends ActionBarActivity {
+public class SingleItemView extends AppCompatActivity {
 
-    // Declare Variables
-    String Username;
-    String Age;
-    String Description;
-    String Thumbnail;
-
-    ImageLoader imageLoader = new ImageLoader(this);
+    String Username, Age, Description, Thumbnail;
+    TextView txtUsername,txtAge, txtDescription;
+    ImageView imgThumbnail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.singleitemview);
 
-
         Intent i = getIntent();
-        // Get the result of rank
         Username = i.getStringExtra("username");
-        // Get the result of country
         Age = i.getStringExtra("age");
-        // Get the result of population
         Description = i.getStringExtra("Description");
-        // Get the result of flag
         Thumbnail = i.getStringExtra("Thumbnail");
 
         // Locate the TextViews in singleitemview.xml
-        TextView txtUsername = (TextView) findViewById(R.id.Username);
-        TextView txtAge = (TextView) findViewById(R.id.Age);
-        TextView txtDescription = (TextView) findViewById(R.id.Description);
-
-        // Locate the ImageView in singleitemview.xml
-        ImageView imgThumbnail = (ImageView) findViewById(R.id.Thumbnail);
+        txtUsername = (TextView) findViewById(R.id.Username);
+        txtAge = (TextView) findViewById(R.id.Age);
+        txtDescription = (TextView) findViewById(R.id.Description);
+        imgThumbnail = (ImageView) findViewById(R.id.Thumbnail);
 
         // Set results to the TextViews
         txtUsername.setText(Username);
         txtAge.setText(Age);
         txtDescription.setText(Description);
-
-        // Capture position and set results to the ImageView
-        // Passes Thumbnail images URL into ImageLoader.class
-        imageLoader.DisplayImage(Thumbnail, imgThumbnail);
+        Glide.with(this)
+                .load(Thumbnail)
+                .asBitmap()
+                .transform(new CropSquareTransformation(this))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        imgThumbnail.setImageBitmap(resource);
+                    }
+                });
     }
 
     @Override
@@ -76,5 +77,29 @@ public class SingleItemView extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    // Custom transformation for GLIDE profile picture
+    public class CropSquareTransformation extends BitmapTransformation {
+
+        public CropSquareTransformation(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            Bitmap MyBitmapTransformed;
+            int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
+            int x = (toTransform.getWidth() - size) / 2;
+            int y = (toTransform.getHeight() - size) / 2;
+            MyBitmapTransformed = Bitmap.createBitmap(toTransform, x, y, size, size);
+            return MyBitmapTransformed;
+        }
+
+        @Override
+        public String getId() {
+            return "square";
+        }
     }
 }
