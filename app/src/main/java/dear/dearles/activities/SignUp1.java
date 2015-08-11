@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -38,6 +37,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import dear.dearles.glide.CropSquareTransformation;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignUp1 extends AppCompatActivity {
@@ -336,7 +336,7 @@ public class SignUp1 extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sign_up1, menu);
+        getMenuInflater().inflate(R.menu.menu_signup1, menu);
         return true;
     }
 
@@ -355,31 +355,6 @@ public class SignUp1 extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    // Custom transformation for GLIDE profile picture
-    public class CropSquareTransformation extends BitmapTransformation {
-
-        public CropSquareTransformation(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-            Bitmap MyBitmapTransformed;
-            int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
-            int x = (toTransform.getWidth() - size) / 2;
-            int y = (toTransform.getHeight() - size) / 2;
-            MyBitmapTransformed = Bitmap.createBitmap(toTransform, x, y, size, size);
-            return MyBitmapTransformed;
-        }
-
-        @Override
-        public String getId() {
-            return "square";
-        }
     }
 
 

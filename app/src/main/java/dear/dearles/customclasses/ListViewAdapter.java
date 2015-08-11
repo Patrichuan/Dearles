@@ -22,6 +22,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import dear.dearles.R;
 import dear.dearles.activities.UserBigProfile;
+import dear.dearles.glide.CropSquareTransformation;
 
 
 public class ListViewAdapter extends BaseAdapter {
@@ -123,28 +124,4 @@ public class ListViewAdapter extends BaseAdapter {
         return view;
     }
 
-
-
-    // Custom transformation for GLIDE profile picture
-    public class CropSquareTransformation extends BitmapTransformation {
-
-        public CropSquareTransformation(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-            Bitmap MyBitmapTransformed;
-            int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
-            int x = (toTransform.getWidth() - size) / 2;
-            int y = (toTransform.getHeight() - size) / 2;
-            MyBitmapTransformed = Bitmap.createBitmap(toTransform, x, y, size, size);
-            return MyBitmapTransformed;
-        }
-
-        @Override
-        public String getId() {
-            return "square";
-        }
-    }
 }

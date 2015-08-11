@@ -1,6 +1,5 @@
 package dear.dearles.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import dear.dearles.R;
 import dear.dearles.DearApp;
@@ -109,7 +103,7 @@ public class Login extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login_activity, menu);
+        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
