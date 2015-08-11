@@ -1,44 +1,69 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="missingPrefix"
+    android:background="@color/window_background"
+    android:weightSum="1"
+    android:elevation="4dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/Thumbnail"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:paddingTop="3dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:padding="5sp">
-    </ImageView>
+        android:layout_weight="0.25">
 
-    <TextView
-        android:id="@+id/Username"
-        android:layout_below="@+id/Thumbnail"
-        android:textColor="@color/primary_text"
-        android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/Thumbnail"
+            android:src="@drawable/bglogin"
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+        </ImageView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:paddingTop="3dp"
+        android:paddingStart="6dp"
         android:layout_height="match_parent"
-        android:padding="5sp"
-        android:textSize="25sp">
-    </TextView>
+        android:layout_weight="0.75"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/Age"
-        android:layout_below="@+id/Username"
-        android:textColor="@color/primary_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5sp"
-        android:textSize="25sp">
-    </TextView>
+        <TextView
+            android:id="@+id/Username"
+            customFont="fonts/Roboto-Light.ttf"
+            android:text="USERNAME"
+            android:textColor="@color/primary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp">
+        </TextView>
 
-    <TextView
-        android:id="@+id/Description"
-        android:layout_below="@+id/Age"
-        android:textColor="@color/primary_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5sp"
-        android:textSize="25sp">
-    </TextView>
+        <TextView
+            android:id="@+id/Age"
+            customFont="fonts/Roboto-Light.ttf"
+            android:text="AGE"
+            android:textColor="@color/primary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp">
+        </TextView>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/Description"
+            customFont="fonts/Roboto-Light.ttf"
+            android:text="DESCRIPTION"
+            android:textColor="@color/primary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp">
+        </TextView>
+
+    </LinearLayout>
+
+</LinearLayout>

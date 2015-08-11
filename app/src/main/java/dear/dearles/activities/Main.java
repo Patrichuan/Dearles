@@ -108,7 +108,8 @@ public class Main extends AppCompatActivity {
 
                 User user = new User();
                 user.setUsername(userObject.getString("username"));
-                user.setAge(userObject.getString("age"));
+                user.setAge(userObject.getString("Age"));
+                System.out.println("EDAD: " + userObject.getString("Age"));
                 user.setDescription(userObject.getString("Description"));
                 user.setThumbnail (image.getUrl());
                 UserList.add(user);
