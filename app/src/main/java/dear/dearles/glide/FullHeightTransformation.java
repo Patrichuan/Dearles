@@ -15,16 +15,18 @@ import dear.dearles.R;
 // Custom transformation for GLIDE profile picture
 public class FullHeightTransformation extends BitmapTransformation {
 
-    private Context aContext;
+    private int DesiredWidth, DesiredHeight;
 
-    public FullHeightTransformation(Context context) {
+    public FullHeightTransformation(Context context, int DesiredWidth, int DesiredHeight) {
         super(context);
-        aContext = context;
+        this.DesiredHeight = DesiredHeight;
+        this.DesiredWidth = DesiredWidth;
     }
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-        return bitmapChanger(toTransform, outWidth, outHeight);
+        System.out.println("ImgWidth: " + outWidth + " ................. ImgHeight: " + outHeight);
+        return bitmapChanger(toTransform, DesiredWidth, DesiredHeight);
     }
 
     @Override
@@ -52,10 +54,16 @@ public class FullHeightTransformation extends BitmapTransformation {
             matrix.postTranslate(-tx, 0f);
         }
 
+
         Bitmap result = Bitmap.createBitmap(desiredWidth, desiredHeight, bitmap.getConfig() != null ? bitmap.getConfig() : Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(bitmap, matrix, new Paint());
+
+
+        System.out.println("ResultWidth: " + result.getWidth() + " ................. ResultHeight: " + result.getHeight());
+
         return result;
+
 
         //return Bitmap.createBitmap(bitmap, 0, 0, (int) originalWidth, (int) originalHeight, matrix, true);
     }

@@ -111,7 +111,7 @@ public class ParseHelper {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     System.out.println("CREDENCIALES CORRECTAS");
-                    Toast.makeText(context, "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginContext, Main.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

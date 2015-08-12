@@ -80,6 +80,7 @@ public class Main extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            /*
             // Create a progressdialog
             mProgressDialog = new ProgressDialog(Main.this);
             // Set progressdialog message
@@ -87,6 +88,7 @@ public class Main extends AppCompatActivity {
             mProgressDialog.setIndeterminate(false);
             // Show progressdialog
             mProgressDialog.show();
+            */
         }
 
         @Override
@@ -127,7 +129,7 @@ public class Main extends AppCompatActivity {
             // Binds the Adapter to the ListView
             listview.setAdapter(adapter);
             // Close the progressdialog
-            mProgressDialog.dismiss();
+            // mProgressDialog.dismiss();
         }
     }
 
