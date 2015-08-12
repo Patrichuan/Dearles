@@ -78,6 +78,7 @@ public class UserBigProfile extends AppCompatActivity {
 
 
 
+        // Añadir programaticamente el ImageView a ver que ocurre
         /*
         imgProfilePicture.post(new Runnable() {
             @Override
