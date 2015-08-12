@@ -19,7 +19,10 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import java.util.Arrays;
+
 import dear.dearles.R;
+import dear.dearles.customclasses.Imagecompressor;
 import dear.dearles.glide.CropSquareTransformation;
 import dear.dearles.glide.FullHeightTransformation;
 
@@ -28,6 +31,8 @@ public class UserBigProfile extends AppCompatActivity {
     String Username, Age, Description, ProfilePicture;
     TextView txtUsername,txtAge, txtDescription;
     ImageView imgProfilePicture;
+
+    Imagecompressor ic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,8 @@ public class UserBigProfile extends AppCompatActivity {
         Age = i.getStringExtra("age");
         Description = i.getStringExtra("description");
         ProfilePicture = i.getStringExtra("profilePicture");
+
+        ic = new Imagecompressor(this);
 
         // Locate the TextViews in userbigprofile_layout_layout.xml
         txtUsername = (TextView) findViewById(R.id.Username);

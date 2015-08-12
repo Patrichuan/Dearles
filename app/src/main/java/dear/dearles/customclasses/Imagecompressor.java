@@ -9,10 +9,14 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 
@@ -124,7 +128,7 @@ public class Imagecompressor {
             if (scaledBitmap != null) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                 return stream.toByteArray();
             }
         } catch (IOException e) {
