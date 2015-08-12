@@ -1,9 +1,9 @@
 package dear.dearles;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import dear.dearles.customclasses.ScreenProportion;
 import dear.dearles.customclasses.User;
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
@@ -13,6 +13,7 @@ public class DearApp extends Application {
 
     private static DearApp instance;
 
+    private ScreenProportion SP;
     private ParseHelper DB;
     private PreferencesHelper Preferences;
 
@@ -21,6 +22,7 @@ public class DearApp extends Application {
         super.onCreate();
         instance = this;
 
+        InitializeScreenMeasurement();
         InitializeParse();
         InitializePreferences();
 
@@ -32,6 +34,27 @@ public class DearApp extends Application {
         );
     }
 
+
+    // SCREENPROPORTION METHODS---------------------------------------------------------------------
+    public void InitializeScreenMeasurement () {
+        SP = new ScreenProportion(getContext());
+    }
+
+    public int getScreenHeight () {
+        return SP.getScreenHeight();
+    }
+
+    public int getScreenWidth () {
+        return SP.getScreenWidth();
+    }
+
+    public int getToolbarHeight () {
+        return SP.getToolbarHeight();
+    }
+
+    public int getStatusBarHeight () {
+        return SP.getStatusBarHeight();
+    }
 
 
 
@@ -57,6 +80,8 @@ public class DearApp extends Application {
     public Boolean isUserLoggedIn () {
         return DB.isUserLoggedIn();
     }
+
+
 
 
 

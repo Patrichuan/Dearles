@@ -2,11 +2,13 @@ package dear.dearles.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,6 +72,7 @@ public class Main extends AppCompatActivity {
             }
         });
         */
+
         new RemoteDataTask().execute();
     }
 
@@ -115,6 +118,7 @@ public class Main extends AppCompatActivity {
                 UserList.add(user);
             }
 
+
             return null;
         }
 
@@ -122,10 +126,13 @@ public class Main extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             // Locate the listview in listview_main.xml
             listview = (ListView) findViewById(R.id.listview);
+
             // Pass the results into an ArrayAdapter
             adapter = new ListViewAdapter (Main.this, UserList);
             // Binds the Adapter to the ListView
             listview.setAdapter(adapter);
+            System.out.println("Las dimensiones del listview son " + listview.getWidth() + "x" + listview.getHeight());
+
             // Close the progressdialog
             mProgressDialog.dismiss();
         }

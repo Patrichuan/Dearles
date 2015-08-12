@@ -9,26 +9,26 @@ import android.graphics.Paint;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
-import dear.dearles.R;
+import dear.dearles.DearApp;
 
 
-// Custom transformation for GLIDE profile picture
-public class FullHeightTransformation extends BitmapTransformation {
+// Custom transformation for GLIDE full profile picture
+public class FullHeightMinusStatusToolbarTransformation extends BitmapTransformation {
 
-    //private int DesiredWidth, DesiredHeight;
+    protected DearApp app;
+    int FullHeightMinusStatusToolbar;
 
-    public FullHeightTransformation(Context context) {
-    //public FullHeightTransformation(Context context, int DesiredWidth, int DesiredHeight) {
+    public FullHeightMinusStatusToolbarTransformation(Context context, DearApp app) {
         super(context);
-        //this.DesiredHeight = DesiredHeight;
-        //this.DesiredWidth = DesiredWidth;
+        this.app = app;
+        FullHeightMinusStatusToolbar = app.getScreenHeight()-app.getStatusBarHeight()-app.getToolbarHeight()-3;
     }
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-        System.out.println("ImgWidth: " + outWidth + " ................. ImgHeight: " + outHeight);
-        return bitmapChanger(toTransform, 1080, 1877);
-        //return bitmapChanger(toTransform, DesiredWidth, DesiredHeight);
+        System.out.println("FROM: ImgWidth: " + outWidth + " ................. ImgHeight: " + outHeight);
+        System.out.println("TO:   DesiredWidth: " + app.getScreenWidth() + " ................. DesiredHeight: " + FullHeightMinusStatusToolbar);
+        return bitmapChanger(toTransform, app.getScreenWidth(), FullHeightMinusStatusToolbar);
     }
 
     @Override
@@ -47,7 +47,6 @@ public class FullHeightTransformation extends BitmapTransformation {
         float scale = Math.max(scaleX, scaleY);
 
         Matrix matrix = new Matrix();
-
         matrix.postScale(scale, scale);
 
         //If the scaleY is greater, we need to center the image
@@ -56,17 +55,12 @@ public class FullHeightTransformation extends BitmapTransformation {
             matrix.postTranslate(-tx, 0f);
         }
 
-
         Bitmap result = Bitmap.createBitmap(desiredWidth, desiredHeight, bitmap.getConfig() != null ? bitmap.getConfig() : Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(bitmap, matrix, new Paint());
 
-
         System.out.println("ResultWidth: " + result.getWidth() + " ................. ResultHeight: " + result.getHeight());
 
         return result;
-
-
-        //return Bitmap.createBitmap(bitmap, 0, 0, (int) originalWidth, (int) originalHeight, matrix, true);
     }
 }

@@ -16,12 +16,12 @@
         android:background="?attr/colorPrimary"/>
 
     <RelativeLayout
+        android:id="@+id/Rlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/ProfilePicture"
-            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ImageView>

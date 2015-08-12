@@ -1,41 +1,32 @@
 package dear.dearles.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.parse.ParseFile;
 
-import java.util.Arrays;
-
+import dear.dearles.DearApp;
 import dear.dearles.R;
-import dear.dearles.customclasses.Imagecompressor;
-import dear.dearles.glide.CropSquareTransformation;
-import dear.dearles.glide.FullHeightTransformation;
+import dear.dearles.glide.FullHeightMinusStatusToolbarTransformation;
 
 public class UserBigProfile extends AppCompatActivity {
 
     String Username, Age, Description, ProfilePicture;
     TextView txtUsername,txtAge, txtDescription;
     ImageView imgProfilePicture;
+
+    protected DearApp app;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,57 +40,32 @@ public class UserBigProfile extends AppCompatActivity {
         ProfilePicture = i.getStringExtra("profilePicture");
         System.out.println("USER.SETPROFILEPICTURE EN BIGPROFILE --------> " + ProfilePicture);
 
+        app = (DearApp) getApplication();
+
         // Setups
         setupToolbar();
+
+        imgProfilePicture = (ImageView)findViewById(R.id.ProfilePicture);
+        Glide.with(UserBigProfile.this)
+                .load(ProfilePicture)
+                .asBitmap()
+                .transform(new FullHeightMinusStatusToolbarTransformation(this, app))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        imgProfilePicture.setImageBitmap(resource);
+                    }
+                });
 
         // Locate the TextViews in userbigprofile_layout_layout.xml
         txtUsername = (TextView) findViewById(R.id.Username);
         txtAge = (TextView) findViewById(R.id.Age);
         txtDescription = (TextView) findViewById(R.id.Description);
-        imgProfilePicture = (ImageView) findViewById(R.id.ProfilePicture);
 
         // Set results to the TextViews
         txtUsername.setText(Username);
         txtAge.setText(Age);
         txtDescription.setText(Description);
-
-
-        Glide.with(UserBigProfile.this)
-            .load(ProfilePicture)
-            .asBitmap()
-            .transform(new FullHeightTransformation(this))
-            .into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    imgProfilePicture.setImageBitmap(resource);
-                }
-            });
-
-
-
-
-        // Añadir programaticamente el ImageView a ver que ocurre
-        /*
-        imgProfilePicture.post(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Height del imgview: " + imgProfilePicture.getHeight()); //height is ready
-                System.out.println("Width del imgview: " + imgProfilePicture.getWidth()); //height is ready
-
-                Glide.with(UserBigProfile.this)
-                    .load(ProfilePicture)
-                    .asBitmap()
-                    .transform(new FullHeightTransformation(UserBigProfile.this, imgProfilePicture.getWidth(), imgProfilePicture.getHeight()))
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            imgProfilePicture.setImageBitmap(resource);
-                        }
-                    });
-            }
-        });
-        */
     }
 
 
