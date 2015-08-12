@@ -111,6 +111,7 @@ public class Main extends AppCompatActivity {
                 user.setDescription(userObject.getString("description"));
                 user.setGeopoint(userObject.getString("geopoint"));
                 user.setProfilePicture(image.getUrl());
+
                 UserList.add(user);
             }
 

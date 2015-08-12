@@ -4,7 +4,7 @@
     tools:ignore="missingPrefix"
     android:background="@color/window_background"
     android:weightSum="1"
-    android:elevation="4dp"
+    android:elevation="2dp"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/Username"
-            customFont="fonts/Roboto-Light.ttf"
+            customFont="fonts/Roboto-Black.ttf"
             android:text="USERNAME"
             android:textColor="@color/primary_text"
             android:layout_width="match_parent"
@@ -61,6 +61,7 @@
 
         <TextView
             android:id="@+id/Description"
+            android:layout_marginTop="6dp"
             customFont="fonts/Roboto-Light.ttf"
             android:text="DESCRIPTION"
             android:textColor="@color/primary_text"

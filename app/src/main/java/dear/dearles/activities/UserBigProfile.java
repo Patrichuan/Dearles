@@ -3,9 +3,12 @@ package dear.dearles.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +21,7 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.parse.ParseFile;
 
 import java.util.Arrays;
 
@@ -32,8 +36,6 @@ public class UserBigProfile extends AppCompatActivity {
     TextView txtUsername,txtAge, txtDescription;
     ImageView imgProfilePicture;
 
-    Imagecompressor ic;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +46,10 @@ public class UserBigProfile extends AppCompatActivity {
         Age = i.getStringExtra("age");
         Description = i.getStringExtra("description");
         ProfilePicture = i.getStringExtra("profilePicture");
+        System.out.println("USER.SETPROFILEPICTURE EN BIGPROFILE --------> " + ProfilePicture);
 
-        ic = new Imagecompressor(this);
+        // Setups
+        setupToolbar();
 
         // Locate the TextViews in userbigprofile_layout_layout.xml
         txtUsername = (TextView) findViewById(R.id.Username);
@@ -60,9 +64,8 @@ public class UserBigProfile extends AppCompatActivity {
         Glide.with(this)
                 .load(ProfilePicture)
                 .asBitmap()
-                //.override(1080, 1920)
-                .transform(new CropSquareTransformation(this))
-                //.transform(new FullHeightTransformation(this))
+                //.transform(new CropSquareTransformation(this))
+                .transform(new FullHeightTransformation(this))
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -70,6 +73,19 @@ public class UserBigProfile extends AppCompatActivity {
                     }
                 });
     }
+
+
+    private void setupToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Arrow menu icon
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

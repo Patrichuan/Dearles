@@ -91,7 +91,7 @@ public class ListViewAdapter extends BaseAdapter {
         holder.Description.setText(UserList.get(position).getDescription());
 
         Glide.with(context)
-                .load(Uri.parse(UserList.get(position).getProfilePicture()))
+                .load(UserList.get(position).getProfilePicture())
                 .asBitmap()
                 .transform(new CropSquareTransformation(context))
                 .into(new SimpleTarget<Bitmap>() {
