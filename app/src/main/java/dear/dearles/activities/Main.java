@@ -105,8 +105,8 @@ public class Main extends AppCompatActivity {
             for (ParseObject userObject : ob) {
                 User user = new User();
 
-                user.setUsername(userObject.getString("username"));
-                user.setAge(userObject.getString("age"));
+                user.setUsername(userObject.getString("username").toUpperCase());
+                user.setAge(userObject.getString("age")+" años");
                 ParseFile image = (ParseFile) userObject.get("profilePicture");
                 user.setDescription(userObject.getString("description"));
                 user.setGeopoint(userObject.getString("geopoint"));
