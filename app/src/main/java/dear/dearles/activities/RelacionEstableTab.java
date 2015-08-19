@@ -26,6 +26,7 @@ import dear.dearles.customclasses.User;
 
 public class RelacionEstableTab extends Fragment {
 
+    // Todo - Particularizar consulta para sacar solo usuari@s que busquen Relación Estable
     // Declare Variables
     ListView listview;
     List<ParseUser> ob;

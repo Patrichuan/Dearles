@@ -49,7 +49,6 @@ public class Main extends AppCompatActivity {
     int Numboftabs =2;
 
     // Todo - Poner un campo mas a user (geopoint) para el color del marcador
-    // Todo - Sumar barra adicional a Toolbar para swipes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
