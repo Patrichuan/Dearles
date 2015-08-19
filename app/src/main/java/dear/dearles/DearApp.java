@@ -3,7 +3,7 @@ package dear.dearles;
 import android.app.Application;
 import android.content.Context;
 
-import dear.dearles.customclasses.ScreenProportion;
+import dear.dearles.customclasses.ScreenMeasurement;
 import dear.dearles.customclasses.User;
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
@@ -13,7 +13,7 @@ public class DearApp extends Application {
 
     private static DearApp instance;
 
-    private ScreenProportion SP;
+    private ScreenMeasurement SP;
     private ParseHelper DB;
     private PreferencesHelper Preferences;
 
@@ -37,7 +37,7 @@ public class DearApp extends Application {
 
     // SCREENPROPORTION METHODS---------------------------------------------------------------------
     public void InitializeScreenMeasurement () {
-        SP = new ScreenProportion(getContext());
+        SP = new ScreenMeasurement(getContext());
     }
 
     public int getScreenHeight () {

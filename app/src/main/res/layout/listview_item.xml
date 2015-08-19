@@ -20,7 +20,6 @@
 
         <ImageView
             android:id="@+id/ProfilePicture"
-            android:scaleType="fitStart"
             android:adjustViewBounds="true"
             android:src="@drawable/bglogin"
             android:layout_width="90dp"

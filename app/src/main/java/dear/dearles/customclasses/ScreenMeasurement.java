@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 
-public class ScreenProportion {
+public class ScreenMeasurement {
 
     DisplayMetrics metrics;
 
@@ -13,7 +13,7 @@ public class ScreenProportion {
     int StatusBarHeight;
     int ToolbarHeight;
 
-    public ScreenProportion (Context context) {
+    public ScreenMeasurement(Context context) {
         // getWindowManager().getDefaultDisplay().getMetrics(metrics);
         metrics = new DisplayMetrics();
         metrics = Resources.getSystem().getDisplayMetrics();

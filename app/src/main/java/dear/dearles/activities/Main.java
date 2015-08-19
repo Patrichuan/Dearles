@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,8 @@ import dear.dearles.DearApp;
 import dear.dearles.R;
 import dear.dearles.customclasses.ListViewAdapter;
 import dear.dearles.customclasses.User;
+import dear.dearles.customclasses.ViewPagerAdapter;
+import dear.dearles.slidingtab.SlidingTabLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -38,15 +42,13 @@ public class Main extends AppCompatActivity {
 
     Button LogOutbtn;
 
-    // Declare Variables
-    ListView listview;
-    List<ParseUser> ob;
-    ProgressDialog mProgressDialog;
-    ListViewAdapter adapter;
-    private List<User> UserList = null;
+    ViewPager pager;
+    ViewPagerAdapter adapter;
+    SlidingTabLayout tabs;
+    CharSequence Titles[]={"Relación Estable","Amistad"};
+    int Numboftabs =2;
 
     // Todo - Poner un campo mas a user (geopoint) para el color del marcador
-    // Todo - Listener ha de llevar a Foto match parent, match parent
     // Todo - Sumar barra adicional a Toolbar para swipes
 
     @Override
@@ -61,6 +63,33 @@ public class Main extends AppCompatActivity {
 
         // Setups
         setupToolbar();
+
+        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+
+        // Assigning ViewPager View and setting the adapter
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+
+        // Assiging the Sliding Tab Layout View
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabs.setViewPager(pager);
+
+
+
+
+
         /*
         LogOutbtn = (Button) findViewById(R.id.LogOut);
         LogOutbtn.setOnClickListener(new View.OnClickListener() {
@@ -73,70 +102,12 @@ public class Main extends AppCompatActivity {
         });
         */
 
-        new RemoteDataTask().execute();
     }
 
 
 
-    // RemoteDataTask AsyncTask
-    private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Create a progressdialog
-            mProgressDialog = new ProgressDialog(Main.this);
-            // Set progressdialog message
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.setIndeterminate(false);
-            // Show progressdialog
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // Create the array
-            UserList = new ArrayList<User>();
-
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            try {
-                ob = query.find();
-            } catch (ParseException e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-
-            for (ParseObject userObject : ob) {
-                User user = new User();
-
-                user.setUsername(userObject.getString("username").toUpperCase());
-                user.setAge(userObject.getString("age")+" años");
-                ParseFile image = (ParseFile) userObject.get("profilePicture");
-                user.setDescription(userObject.getString("description"));
-                user.setGeopoint(userObject.getString("geopoint"));
-                user.setProfilePicture(image.getUrl());
-
-                UserList.add(user);
-            }
 
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // Locate the listview in listview_main.xml
-            listview = (ListView) findViewById(R.id.listview);
-
-            // Pass the results into an ArrayAdapter
-            adapter = new ListViewAdapter (Main.this, UserList);
-            // Binds the Adapter to the ListView
-            listview.setAdapter(adapter);
-            System.out.println("Las dimensiones del listview son " + listview.getWidth() + "x" + listview.getHeight());
-
-            // Close the progressdialog
-            mProgressDialog.dismiss();
-        }
-    }
 
 
 

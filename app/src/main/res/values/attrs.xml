@@ -3,4 +3,8 @@
     <attr
         name="customFont"
         format="string"/>
+
+    <attr
+        name="colorForeground"
+        format="color"/>
 </resources>
