@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    tools:ignore="missingPrefix"
+
+    android:id="@android:id/text1"
+    android:layout_width="wrap_content"
+    android:layout_height="48dp"
+    android:background="?android:selectableItemBackground"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:gravity="center"
+    android:textColor="@color/selector"
+    android:textSize="14sp"
+    android:textAllCaps="true">
+</TextView>
