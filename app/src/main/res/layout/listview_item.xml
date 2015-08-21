@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="6dp"
+        android:paddingEnd="6dp"
         android:orientation="vertical">
 
         <TextView
@@ -55,9 +56,10 @@
                 android:id="@+id/Age"
                 android:layout_weight="1"
                 customFont="fonts/Roboto-Light.ttf"
+                android:gravity="start"
                 android:text="AGE"
                 android:textColor="@color/primary_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp">
             </TextView>
@@ -66,22 +68,21 @@
                 android:id="@+id/Loc"
                 android:layout_weight="1"
                 customFont="fonts/Roboto-Light.ttf"
+                android:gravity="end"
                 android:text="LOC"
                 android:textColor="@color/primary_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp">
             </TextView>
 
-
         </LinearLayout>
-
-
 
         <TextView
             android:id="@+id/Description"
             android:layout_marginTop="6dp"
             customFont="fonts/Roboto-Light.ttf"
+            android:gravity="start"
             android:text="DESCRIPTION"
             android:textColor="@color/primary_text"
             android:layout_width="match_parent"

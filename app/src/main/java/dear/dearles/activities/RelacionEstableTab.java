@@ -1,9 +1,9 @@
 package dear.dearles.activities;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,31 +19,49 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import dear.dearles.DearApp;
 import dear.dearles.R;
 import dear.dearles.customclasses.ListViewAdapter;
 import dear.dearles.customclasses.User;
 
 
-public class RelacionEstableTab extends Fragment {
+public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // Todo - Particularizar consulta para sacar solo usuari@s que busquen Relación Estable
+    protected DearApp app;
     // Declare Variables
     ListView listview;
     List<ParseUser> ob;
     ListViewAdapter adapter;
-    ProgressDialog mProgressDialog;
     private List<User> UserList = null;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.relacionestabletab_fragment, container, false);
+        app = (DearApp) getActivity().getApplication();
 
-        listview = (ListView) rootView.findViewById(R.id.listview);
-        new RemoteDataTask().execute();
+        listview = (ListView) rootView.findViewById(R.id.listview_R);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout_R);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        new RemoteDataTask().execute();
+                                    }
+                                }
+        );
 
         return rootView;
     }
 
+    @Override
+    public void onRefresh() {
+        new RemoteDataTask().execute();
+    }
 
 
     // RemoteDataTask AsyncTask
@@ -51,17 +69,11 @@ public class RelacionEstableTab extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Create a progressdialog
-            mProgressDialog = new ProgressDialog(getActivity());
-            // Set progressdialog message
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.setIndeterminate(false);
-            // Show progressdialog
-            mProgressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
+            app.UpdateUserLoc(app.GetLastKnownLoc());
             // Create the array
             UserList = new ArrayList<User>();
 
@@ -82,10 +94,8 @@ public class RelacionEstableTab extends Fragment {
                 user.setDescription(userObject.getString("description"));
                 user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
                 user.setProfilePicture(image.getUrl());
-
                 UserList.add(user);
             }
-
 
             return null;
         }
@@ -97,10 +107,8 @@ public class RelacionEstableTab extends Fragment {
             adapter = new ListViewAdapter(getActivity(), UserList);
             // Binds the Adapter to the ListView
             listview.setAdapter(adapter);
-            System.out.println("Las dimensiones del listview son " + listview.getWidth() + "x" + listview.getHeight());
-
-            // Close the progressdialog
-            mProgressDialog.dismiss();
+            // stopping swipe refresh
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 

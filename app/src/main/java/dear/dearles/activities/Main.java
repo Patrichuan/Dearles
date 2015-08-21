@@ -20,7 +20,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Main extends AppCompatActivity {
 
-    protected DearApp app;
 
     Button LogOutbtn;
 
@@ -39,9 +38,6 @@ public class Main extends AppCompatActivity {
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-        app = (DearApp) getApplication();
-        app.UpdateUserLoc(app.GetLastKnownLoc());
 
         // Setups
         setupToolbar();

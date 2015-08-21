@@ -34,6 +34,7 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
         if (mLastLocation!=null) {
             System.out.println("NO ES NULL mLastLocation");
         } else {
+            // TODO - Si es null entonces devuelvo la loc 0,0
             System.out.println("SIIIIIIIIIIII ES NULL mLastLocation");
         }
         return mLastLocation;

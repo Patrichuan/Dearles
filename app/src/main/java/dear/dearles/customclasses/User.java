@@ -56,7 +56,7 @@ public class User {
     }
 
     public void setGeopoint(ParseGeoPoint geopoint) {
-        this.Geopoint = "Lat: " + Double.toString(geopoint.getLatitude()) + " , Long: " + geopoint.getLongitude();;
+        this.Geopoint = geopoint.getLatitude() + ", " + geopoint.getLongitude();;
     }
 
 
