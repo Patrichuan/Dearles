@@ -2,7 +2,9 @@ package dear.dearles;
 
 import android.app.Application;
 import android.content.Context;
+import android.location.Location;
 
+import dear.dearles.customclasses.LocationAwareness;
 import dear.dearles.customclasses.ScreenMeasurement;
 import dear.dearles.customclasses.User;
 import dear.dearles.parse.ParseHelper;
@@ -16,6 +18,7 @@ public class DearApp extends Application {
     private ScreenMeasurement SP;
     private ParseHelper DB;
     private PreferencesHelper Preferences;
+    private LocationAwareness Loc;
 
     @Override
     public void onCreate() {
@@ -25,6 +28,7 @@ public class DearApp extends Application {
         InitializeScreenMeasurement();
         InitializeParse();
         InitializePreferences();
+        InitializeLoc();
 
         // Default Font: Roboto-Regular.ttf
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -57,6 +61,14 @@ public class DearApp extends Application {
     }
 
 
+    // GOOGLE LOC METHODS---------------------------------------------------------------------------
+    public void InitializeLoc () {
+        Loc = new LocationAwareness(getContext());
+    }
+
+    public Location GetLastKnownLoc () {
+        return Loc.GetLastKnownLoc();
+    }
 
 
     // PARSE.com METHODS----------------------------------------------------------------------------
@@ -79,6 +91,10 @@ public class DearApp extends Application {
 
     public Boolean isUserLoggedIn () {
         return DB.isUserLoggedIn();
+    }
+
+    public void UpdateUserLoc (Location loc) {
+        DB.UpdateUserLoc (loc.getLatitude(), loc.getLongitude());
     }
 
 
@@ -110,4 +126,14 @@ public class DearApp extends Application {
     public static Context getContext() {
         return instance.getApplicationContext();
     }
+
+    /*
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        checkPlayServices();
+    }
+    */
+
 }

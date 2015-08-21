@@ -31,7 +31,7 @@ public class PreferencesHelper {
         editor.putString("Email", user.getEmail());
         editor.putString("ProfilePicture", user.getProfilePicture());
         editor.putString("Description", user.getDescription());
-        editor.putString("Geopoint", user.getGeopoint());
+        //editor.putString("Geopoint", user.getGeopoint());
 
         // Settings Preferences
         // editor.putBoolean("Notifications", false);
@@ -49,7 +49,7 @@ public class PreferencesHelper {
         editor.putString("Email", user.getEmail());
         editor.putString("ProfilePicture", user.getProfilePicture());
         editor.putString("Description", user.getDescription());
-        editor.putString("Geopoint", user.getGeopoint());
+        //editor.putString("Geopoint", user.getGeopoint());
 
         editor.apply();
     }
@@ -65,9 +65,13 @@ public class PreferencesHelper {
         aux.setEmail(pref.getString("Email", null));
         aux.setProfilePicture(pref.getString("ProfilePicture", null));
         aux.setDescription(pref.getString("Description", null));
-        aux.setGeopoint(pref.getString("Geopoint", null));
+        //aux.setGeopoint(pref.getString("Geopoint", null));
 
         return aux;
+    }
+
+    public void saveUserGeopoint () {
+
     }
 
 }

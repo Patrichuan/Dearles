@@ -1,36 +1,18 @@
 package dear.dearles.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.Resources;
-import android.os.AsyncTask;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
-import dear.dearles.customclasses.ListViewAdapter;
-import dear.dearles.customclasses.User;
 import dear.dearles.customclasses.ViewPagerAdapter;
 import dear.dearles.slidingtab.SlidingTabLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -59,6 +41,7 @@ public class Main extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         app = (DearApp) getApplication();
+        app.UpdateUserLoc(app.GetLastKnownLoc());
 
         // Setups
         setupToolbar();
@@ -81,6 +64,9 @@ public class Main extends AppCompatActivity {
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
+
+        // tab_indicator define esteticamente las pestañas
+        tabs.setCustomTabView(R.layout.tabtv_layout, android.R.id.text1);
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);

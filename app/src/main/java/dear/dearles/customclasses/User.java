@@ -1,10 +1,10 @@
 package dear.dearles.customclasses;
 
+import com.parse.ParseGeoPoint;
 
 public class User {
 
     // Todo - Comprobar al registrarse que el email no esta en uso
-
     String Username, Email, Age, Description, ProfilePicture;
     String Password, Geopoint;
 
@@ -20,14 +20,14 @@ public class User {
     }
 
     // Profile es una URI
-    public User (String Username, String Email, String Age, String Description, String ProfilePicture, String Password, String Geopoint) {
+    public User (String Username, String Email, String Age, String Description, String ProfilePicture, String Password, ParseGeoPoint Geopoint) {
         this.Username = Username;
         this.Email = Email;
         this.Age = Age;
         this.Description = Description;
         this.ProfilePicture = ProfilePicture;
         this.Password = Password;
-        this.Geopoint = Geopoint;
+        setGeopoint(Geopoint);
     }
 
     // SETTERS
@@ -55,8 +55,8 @@ public class User {
         this.ProfilePicture = ProfilePicture;
     }
 
-    public void setGeopoint(String geopoint) {
-        this.Geopoint = Geopoint;
+    public void setGeopoint(ParseGeoPoint geopoint) {
+        this.Geopoint = "Lat: " + Double.toString(geopoint.getLatitude()) + " , Long: " + geopoint.getLongitude();;
     }
 
 
@@ -89,4 +89,5 @@ public class User {
     public String getGeopoint() {
         return Geopoint;
     }
+
 }

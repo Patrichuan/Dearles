@@ -9,6 +9,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -74,9 +75,7 @@ public class ParseHelper {
                             aux.setEmail(user.getEmail());
                             aux.put("profilePicture", pFile);
                             aux.put("description", user.getDescription());
-                            // Todo - Habilitar geopoints
-                            //aux.put("geopoint", user.getGeopoint());
-
+                            aux.put("geopoint", new ParseGeoPoint());
                             aux.signUpInBackground(new SignUpCallback() {
                                 public void done(ParseException e) {
                                     if (e == null) {
@@ -147,4 +146,26 @@ public class ParseHelper {
     }
 
 
+    public void UpdateUserLoc(double latitude, double altitude) {
+        final ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, altitude);
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if (currentUser != null) {
+            currentUser.put("geopoint", geoPoint);
+            currentUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        System.out.println("Se ha grabado bien el geopoint");
+                    } else {
+                        // ParseException
+                        System.out.println("NOOOOOOOOOOOOO: " + e);
+                    }
+                }
+            });
+
+        } else {
+            // show the signup or login screen
+        }
+    }
 }

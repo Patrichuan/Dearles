@@ -45,16 +45,38 @@
             android:textSize="18sp">
         </TextView>
 
-        <TextView
-            android:id="@+id/Age"
-            customFont="fonts/Roboto-Light.ttf"
+        <LinearLayout
             android:layout_marginTop="-3dp"
-            android:text="AGE"
-            android:textColor="@color/primary_text"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12sp">
-        </TextView>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/Age"
+                android:layout_weight="1"
+                customFont="fonts/Roboto-Light.ttf"
+                android:text="AGE"
+                android:textColor="@color/primary_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/Loc"
+                android:layout_weight="1"
+                customFont="fonts/Roboto-Light.ttf"
+                android:text="LOC"
+                android:textColor="@color/primary_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp">
+            </TextView>
+
+
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/Description"

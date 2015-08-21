@@ -80,7 +80,7 @@ public class RelacionEstableTab extends Fragment {
                 user.setAge(userObject.getString("age") + " años");
                 ParseFile image = (ParseFile) userObject.get("profilePicture");
                 user.setDescription(userObject.getString("description"));
-                user.setGeopoint(userObject.getString("geopoint"));
+                user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
                 user.setProfilePicture(image.getUrl());
 
                 UserList.add(user);
