@@ -118,7 +118,6 @@ public class SignUp2 extends AppCompatActivity {
             public void onClick(View v) {
                 // Y aqui es donde he de subir a Parse los datos del usuario
                 user.setDescription(Description.getText().toString());
-                // Todo - Aqui deberia de pillar el geopoint para subirlo
                 app.SignUpUser(user);
 
                 // Y me vuelvo a la pantalla de Login

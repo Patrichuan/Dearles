@@ -69,12 +69,6 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /* Create a progressdialog
-            mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.setIndeterminate(false);
-            mProgressDialog.show();
-            */
         }
 
         @Override

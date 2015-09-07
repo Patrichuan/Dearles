@@ -22,6 +22,7 @@ import dear.dearles.customclasses.User;
 public class ParseHelper {
 
     Context context;
+    double LastLat, LastLong;
 
     public ParseHelper (Context context) {
         this.context = context;
@@ -37,6 +38,9 @@ public class ParseHelper {
         // If you would like all objects to be private by default, remove this line.
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
+
+        LastLat = 0;
+        LastLong = 0;
     }
 
     public void Test () {
@@ -146,26 +150,52 @@ public class ParseHelper {
     }
 
 
-    public void UpdateUserLoc(double latitude, double altitude) {
-        final ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, altitude);
+    // Metodo que actualiza en parse la posicion del usuario (solo en caso de ser diferente a la ultima almacenada)
+    public void UpdateUserLoc(double latitude, double longitude) {
+        final ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
         final ParseUser currentUser = ParseUser.getCurrentUser();
+        boolean UpdateLocNeeded = false;
 
-        if (currentUser != null) {
+        System.out.println("El geopoint recien recogido es: " + latitude + " , " + longitude);
+
+        // Si es la primera vez que voy a actualizar la posicion del usuario
+        if ((LastLat == 0)&&(LastLong == 0)) {
+            System.out.println("El ultimo geopoint conocido era 0,0");
+            LastLat = geoPoint.getLatitude();
+            LastLong = geoPoint.getLongitude();
+            UpdateLocNeeded = true;
+        // En caso de no serlo
+        } else {
+            int y = Double.compare(LastLat, geoPoint.getLatitude());
+            int x = Double.compare(LastLong, geoPoint.getLongitude());
+            // Si la ultima posicion conocida es diferente (0 es que son iguales ambos double)
+            if ((x!=0)||(y!=0)) {
+                System.out.println("El ultimo geopoint conocido era: " + LastLat + " , " + LastLong);
+                System.out.println("Por lo tanto he de subir a parse el nuevo geopoint");
+                LastLat = geoPoint.getLatitude();
+                LastLong = geoPoint.getLongitude();
+                UpdateLocNeeded = true;
+            // Si la ultima posicion conocida es la misma (no hay necesidad de subirla a parse)
+            } else {
+
+            }
+        }
+
+        if (UpdateLocNeeded) {
+            // En caso de
             currentUser.put("geopoint", geoPoint);
             currentUser.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e != null) {
-                        System.out.println("Se ha grabado bien el geopoint");
                     } else {
-                        // ParseException
-                        System.out.println("NOOOOOOOOOOOOO: " + e);
+                        System.out.println("He subido el geopoint a Parse");
                     }
                 }
             });
-
         } else {
-            // show the signup or login screen
+            System.out.println("No hubo necesidad de subir el geopoint a Parse");
         }
     }
+
 }

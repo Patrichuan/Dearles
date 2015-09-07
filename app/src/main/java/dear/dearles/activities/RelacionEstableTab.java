@@ -73,7 +73,11 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
 
         @Override
         protected Void doInBackground(Void... params) {
+
+            // Actualizo la loc subiendola a parse
             app.UpdateUserLoc(app.GetLastKnownLoc());
+
+
             // Create the array
             UserList = new ArrayList<User>();
 
@@ -92,6 +96,7 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                 user.setAge(userObject.getString("age") + " años");
                 ParseFile image = (ParseFile) userObject.get("profilePicture");
                 user.setDescription(userObject.getString("description"));
+                // Bajo la loc bajandola de parse
                 user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
                 user.setProfilePicture(image.getUrl());
                 UserList.add(user);
