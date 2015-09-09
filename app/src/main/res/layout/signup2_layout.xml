@@ -80,7 +80,7 @@
                     android:layout_gravity="right"
                     android:paddingLeft="3dp"
                     android:paddingRight="3dp"
-                    android:text="150"
+                    android:text="140"
                     android:textColor="@color/primary_dark"/>
 
                 <Button

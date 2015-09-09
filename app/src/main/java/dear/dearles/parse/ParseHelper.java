@@ -2,6 +2,7 @@ package dear.dearles.parse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -50,65 +51,55 @@ public class ParseHelper {
         testObject.saveInBackground();
     }
 
-    // Todo - Crear caso en que no haya foto de perfil
     public void SignUpUser(final User user, Context context) {
+        final ParseFile pFile;
+        final ParseUser aux = new ParseUser();
 
         Imagecompressor Ic = new Imagecompressor(context);
         byte[] data;
 
-        if (user.getProfilePicture() != null) {
+        // Aplico los valores al nuevo usuario
+        aux.setUsername(user.getUsername());
+        aux.setPassword(user.getPassword());
+        aux.put("age", user.getAge());
+        aux.setEmail(user.getEmail());
+        aux.put("description", user.getDescription());
+        aux.put("geopoint", new ParseGeoPoint());
+
+        if (user.getProfilePicture()!=null) {
             data = Ic.compressImage(user.getProfilePicture());
-            if (data != null) {
-                final ParseFile pFile = new ParseFile("profile_thumbnail.jpg", data);
-                System.out.println("HOLAAAA, VOY AL SAVEINBG");
-                pFile.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-
-                        // If successful -> add file to user and signUpInBackground
-                        if (null == e) {
-                            System.out.println("HE ENTRADO AL SAVEUSERTOPARSE");
-                            ParseUser aux = new ParseUser();
-
-                            // Para evitar el bug del invalid token
-                            ParseUser.enableRevocableSessionInBackground();
-
-                            aux.setUsername(user.getUsername());
-                            aux.setPassword(user.getPassword());
-                            aux.put("age", user.getAge());
-                            aux.setEmail(user.getEmail());
-                            aux.put("profilePicture", pFile);
-                            aux.put("description", user.getDescription());
-                            aux.put("geopoint", new ParseGeoPoint());
-                            aux.signUpInBackground(new SignUpCallback() {
-                                public void done(ParseException e) {
-                                    if (e == null) {
-                                        // Hooray! Let them use the app now.
-                                        System.out.println("DONE");
-                                    } else {
-                                        // Sign up didn't succeed. Look at the ParseException to figure out what went wrong
-                                        System.out.println("FAIL -> " + e);
-                                    }
-                                }
-                            });
-                        } else {
-                            System.out.println("e VALE: " + e);
-                        }
-                    }
-                });
-            // Lo mismo pero con una foto estandar de profile
-            } else {
-
-
-
-
-            }
+            pFile = new ParseFile("profile_thumbnail.jpg", data);
+            pFile.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    ParseUser.enableRevocableSessionInBackground();
+                    // If successful -> add file to user and signUpInBackground
+                    aux.put("profilePicture", pFile);
+                    SignUp(aux);
+                }
+            });
+        } else {
+            SignUp(aux);
         }
     }
 
+    public void SignUp (ParseUser user) {
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Hooray! Let them use the app now.
+                    System.out.println("DONE");
+                } else {
+                    // Sign up didn't succeed. Look at the ParseException to figure out what went wrong
+                    System.out.println("FAIL -> " + e);
+                }
+            }
+        });
+    }
+
+
 
     public void SignInUser (User user, final Context LoginContext) {
-        // Todo - Cada vez que logees actualizar un campo Geopoint para poder poner las distancias
         System.out.println("ESTOY EN SIGNIN USER !!");
         ParseUser.logInInBackground(user.getUsername(), user.getPassword(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {

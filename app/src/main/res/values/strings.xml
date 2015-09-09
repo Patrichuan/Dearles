@@ -21,7 +21,7 @@
 
     <string name="title_activity_sign_up2">SignUp 2/2</string>
     <string name="TipForDescription">&lt;b>Tip:&lt;/b> Use the hashtag symbol (#) for remark the most important words and be found in the search engine, Example: I am &lt;font color="#2E9AFE">#honest&lt;/font> and i love &lt;font color="#2E9AFE">#tennis&lt;/font></string>
-    <string name="SignUpDescribe">Describe yourself in max 150 characters</string>
+    <string name="SignUpDescribe">Describe yourself in max 140 characters</string>
     <string name="Finish">Finish</string>
     <string name="username_required">username required</string>
     <string name="password_required">password required</string>

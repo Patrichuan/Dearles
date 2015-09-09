@@ -31,9 +31,6 @@ public class Imagecompressor {
         this.context = context;
     }
 
-
-
-
     // Uri to byte[] of image already compressed
     public byte[] compressImage(String imageUri) {
 

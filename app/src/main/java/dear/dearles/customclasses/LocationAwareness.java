@@ -23,7 +23,7 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
 
     // Location updates intervals in sec
     private static int UPDATE_INTERVAL = 10000; // 10 sec
-    private static int FATEST_INTERVAL = 5000; // 5 sec
+    private static int FASTEST_INTERVAL = 5000; // 5 sec
     private static int DISPLACEMENT = 10; // 10 meters
 
     public LocationAwareness (Context context) {
@@ -73,6 +73,7 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation == null) {
                 // Si aun asi sigue siendo null devuelvo (0,0)
+                mLastLocation = new Location("");
                 mLastLocation.setLatitude(0);
                 mLastLocation.setLongitude(0);
             }
@@ -90,7 +91,7 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FATEST_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setSmallestDisplacement(DISPLACEMENT); // 10 meters
     }

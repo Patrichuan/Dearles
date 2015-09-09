@@ -1,5 +1,7 @@
 package dear.dearles.activities;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -74,9 +76,8 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
         @Override
         protected Void doInBackground(Void... params) {
 
-            // Actualizo la loc subiendola a parse
+            // Actualizo la loc subiendola a parse en caso de ser necesario
             app.UpdateUserLoc(app.GetLastKnownLoc());
-
 
             // Create the array
             UserList = new ArrayList<User>();
@@ -89,16 +90,23 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                 e.printStackTrace();
             }
 
+            Uri placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                    + getResources().getResourcePackageName(R.drawable.bglogin)
+                    + '/' + getResources().getResourceTypeName(R.drawable.bglogin)
+                    + '/' + getResources().getResourceEntryName(R.drawable.bglogin));
+
             for (ParseObject userObject : ob) {
                 User user = new User();
-
                 user.setUsername(userObject.getString("username").toUpperCase());
                 user.setAge(userObject.getString("age") + " años");
                 ParseFile image = (ParseFile) userObject.get("profilePicture");
+                if (image==null) {
+                    user.setProfilePicture(placeholderimageUri.toString());
+                } else {
+                    user.setProfilePicture(image.getUrl());
+                }
                 user.setDescription(userObject.getString("description"));
-                // Bajo la loc bajandola de parse
                 user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
-                user.setProfilePicture(image.getUrl());
                 UserList.add(user);
             }
 
