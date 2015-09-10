@@ -29,8 +29,6 @@ public class Main extends AppCompatActivity {
     CharSequence Titles[]={"Relación Estable","Amistad"};
     int Numboftabs =2;
 
-    // Todo - Poner un campo mas a user (geopoint) para el color del marcador
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

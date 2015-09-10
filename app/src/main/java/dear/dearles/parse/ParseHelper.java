@@ -143,6 +143,7 @@ public class ParseHelper {
 
     // Metodo que actualiza en parse la posicion del usuario (solo en caso de ser diferente a la ultima almacenada)
     public void UpdateUserLoc(double latitude, double longitude) {
+        // AL LOGEAR SE INICIALIZA !!
         final ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
         final ParseUser currentUser = ParseUser.getCurrentUser();
         boolean UpdateLocNeeded = false;
@@ -151,7 +152,7 @@ public class ParseHelper {
 
         // Si es la primera vez que voy a actualizar la posicion del usuario
         if ((LastLat == 0)&&(LastLong == 0)) {
-            System.out.println("El ultimo geopoint conocido era 0,0");
+            System.out.println("El ultimo geopoint conocido era 0,0 y por lo tanto he de actualizarlo si o si con el LastKnownLocation del dispositivo");
             LastLat = geoPoint.getLatitude();
             LastLong = geoPoint.getLongitude();
             UpdateLocNeeded = true;
@@ -161,8 +162,8 @@ public class ParseHelper {
             int x = Double.compare(LastLong, geoPoint.getLongitude());
             // Si la ultima posicion conocida es diferente (0 es que son iguales ambos double)
             if ((x!=0)||(y!=0)) {
-                System.out.println("El ultimo geopoint conocido era: " + LastLat + " , " + LastLong);
-                System.out.println("Por lo tanto he de subir a parse el nuevo geopoint");
+                System.out.println("El ultimo geopoint conocido es: " + LastLat + " , " + LastLong);
+                System.out.println("Y como las coordenadas recogidas son " + latitude + " , " + longitude + " he de actualizar el geopoint de parse si o si");
                 LastLat = geoPoint.getLatitude();
                 LastLong = geoPoint.getLongitude();
                 UpdateLocNeeded = true;
@@ -180,7 +181,7 @@ public class ParseHelper {
                 public void done(ParseException e) {
                     if (e != null) {
                     } else {
-                        System.out.println("He subido el geopoint a Parse");
+                        System.out.println("Hay necesidad de actualizar por lo tanto he de subir el geopoint a Parse");
                     }
                 }
             });

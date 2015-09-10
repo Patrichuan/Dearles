@@ -113,7 +113,6 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
             return null;
         }
 
-        // Todo - Vigilar que getActivity no devuelva null cuando el fragment esta detached
         @Override
         protected void onPostExecute(Void result) {
             // Pass the results into an ArrayAdapter

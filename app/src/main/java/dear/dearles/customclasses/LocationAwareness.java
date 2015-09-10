@@ -3,6 +3,7 @@ package dear.dearles.customclasses;
 import android.content.Context;
 import android.content.IntentSender;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -11,6 +12,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import dear.dearles.DearApp;
 
 
 public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -34,6 +37,17 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
             if (mGoogleApiClient != null) {
                 createLocationRequest();
                 mGoogleApiClient.connect();
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                // En caso de no haberse registrado todavia ninguna posición con el listener usamos la
+                // LastKnownLocation del movil
+                if (mLastLocation == null) {
+                    // Mandarle aqui a que active los servicios de localizacion
+                    System.out.println("Y AUN ASI mLastLocation sigue siendo NULL");
+                    // Si aun asi sigue siendo null devuelvo (0,0)
+                    mLastLocation = new Location("");
+                    mLastLocation.setLatitude(0);
+                    mLastLocation.setLongitude(0);
+                }
             }
         }
     }
@@ -65,24 +79,10 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
                 .build();
     }
 
+    // Devuelve la LastKnownLoc en caso de existir
     public Location GetLastKnownLoc () {
-        // En caso de no haberse registrado todavia ninguna posición con el listener usamos la
-        // LastKnownLocation del movil
-        if (mLastLocation == null) {
-            System.out.println("ES NULL mLastLocation asi que me pillo el LastKnownLocation");
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mLastLocation == null) {
-                // Si aun asi sigue siendo null devuelvo (0,0)
-                mLastLocation = new Location("");
-                mLastLocation.setLatitude(0);
-                mLastLocation.setLongitude(0);
-            }
-        }
-        // Y si no, quiere decir que tengo ya una loc devuelta por el listener onLocationChanged
-
         return mLastLocation;
     }
-
 
 
     /**
@@ -98,6 +98,7 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
 
     protected void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        System.out.println("HA ARRANCADO EL STARTLOCATIONUPDATES");
     }
 
     protected void stopLocationUpdates() {
@@ -132,8 +133,7 @@ public class LocationAwareness implements GoogleApiClient.ConnectionCallbacks, G
     public void onConnectionSuspended(int arg0) {
         System.out.println("VOY POR EL onConnectionSuspended");
         stopLocationUpdates();
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
     }
-
 
 }
