@@ -31,7 +31,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login_layout);
 
         app = (DearApp) getApplication();
-        app.InitializeUserFromSharedpref();
 
         user = new User();
         user = app.getUserFromSharedpref();

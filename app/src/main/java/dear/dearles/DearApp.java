@@ -72,17 +72,8 @@ public class DearApp extends Application {
         return Loc.GetLastKnownLoc();
     }
 
-    public void startLocationUpdates () {
-        Loc.startLocationUpdates();
-    }
-
     public Status getLocationStatus () {
         return Loc.getLocationSettingsStatus();
-    }
-
-
-    public void updateLastKnownLocation () {
-        Loc.updateLastKnownLocation();
     }
 
 
