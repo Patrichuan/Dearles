@@ -46,6 +46,7 @@ public class SplashScreen extends AppCompatActivity {
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
                         System.out.println("All location settings are satisfied.");
+                        // TODO - Saltar a Main en caso de estar activa la sesion
                         Intent intent = new Intent(SplashScreen.this, Login.class);
                         startActivity(intent);
                         break;
@@ -75,6 +76,7 @@ public class SplashScreen extends AppCompatActivity {
                 switch (resultCode) {
                     case Activity.RESULT_OK:
                         Log.i("PRUEBA1", "User agreed to make required location settings changes.");
+                        // TODO - Saltar a Main en caso de estar activa la sesion
                         Intent intent = new Intent(SplashScreen.this, Login.class);
                         startActivity(intent);
                         break;
