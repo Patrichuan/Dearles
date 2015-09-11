@@ -1,15 +1,24 @@
 package dear.dearles.activities;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
@@ -20,6 +29,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Main extends AppCompatActivity {
 
+    DearApp app;
 
     Button LogOutbtn;
 
@@ -29,6 +39,12 @@ public class Main extends AppCompatActivity {
     CharSequence Titles[]={"Relación Estable","Amistad"};
     int Numboftabs =2;
 
+    /**
+     * Constant used in the location settings dialog.
+     */
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    Status status;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +53,77 @@ public class Main extends AppCompatActivity {
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
+        app = (DearApp) getApplication();
+
         // Setups
         setupToolbar();
+        //setupTabs();
 
+        status = app.getLocationStatus();
+        switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.SUCCESS:
+                System.out.println("All location settings are satisfied.");
+                app.updateLastKnownLocation();
+                setupTabs();
+                break;
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                try {
+                    status.startResolutionForResult(Main.this, REQUEST_CHECK_SETTINGS);
+                } catch (IntentSender.SendIntentException e) {
+                    System.out.println("PendingIntent unable to execute request.");
+                }
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                System.out.println("Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                break;
+        }
+
+        /*
+        LogOutbtn = (Button) findViewById(R.id.LogOut);
+        LogOutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                app.LogOutUser();
+                Intent intent = new Intent(Main.this, Login.class);
+                startActivity(intent);
+            }
+        });
+        */
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            // Check for the integer request code originally supplied to startResolutionForResult().
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        Log.i("PRUEBA1", "User agreed to make required location settings changes.");
+                        app.updateLastKnownLocation();
+                        setupTabs();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Log.i("PRUEBA1", "User chose not to make required location settings changes.");
+                        break;
+                }
+                break;
+        }
+    }
+
+
+
+    private void setupToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Arrow menu icon
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setupTabs() {
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
 
@@ -64,40 +148,6 @@ public class Main extends AppCompatActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-
-
-
-
-
-        /*
-        LogOutbtn = (Button) findViewById(R.id.LogOut);
-        LogOutbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                app.LogOutUser();
-                Intent intent = new Intent(Main.this, Login.class);
-                startActivity(intent);
-            }
-        });
-        */
-
-    }
-
-
-
-
-
-
-
-
-    private void setupToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Arrow menu icon
-        final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
-        ab.setDisplayHomeAsUpEnabled(true);
     }
 
 

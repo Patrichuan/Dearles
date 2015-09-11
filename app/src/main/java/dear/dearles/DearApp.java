@@ -1,9 +1,11 @@
 package dear.dearles;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.location.Location;
 
+import com.google.android.gms.common.api.Status;
 import dear.dearles.customclasses.LocationAwareness;
 import dear.dearles.customclasses.ScreenMeasurement;
 import dear.dearles.customclasses.User;
@@ -70,6 +72,20 @@ public class DearApp extends Application {
         return Loc.GetLastKnownLoc();
     }
 
+    public void startLocationUpdates () {
+        Loc.startLocationUpdates();
+    }
+
+    public Status getLocationStatus () {
+        return Loc.getLocationSettingsStatus();
+    }
+
+
+    public void updateLastKnownLocation () {
+        Loc.updateLastKnownLocation();
+    }
+
+
 
     // PARSE.com METHODS----------------------------------------------------------------------------
     public void InitializeParse () {
@@ -96,6 +112,8 @@ public class DearApp extends Application {
     public void UpdateUserLoc (Location loc) {
         DB.UpdateUserLoc (loc.getLatitude(), loc.getLongitude());
     }
+
+
 
 
 
