@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -76,8 +77,8 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         @Override
         protected Void doInBackground(Void... params) {
 
-            // Actualizo la loc subiendola a parse en caso de ser necesario
-            app.UpdateUserLoc(app.GetLastKnownLoc());
+            // Actualizo la loc subiendola a parse en caso de ser necesario y la recojo como ParseGeoPoint
+            ParseGeoPoint ActualGeopoint = app.UpdateUserLoc(app.GetLastKnownLoc());
 
             // Create the array
             UserList = new ArrayList<User>();
@@ -97,8 +98,8 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
 
             for (ParseObject userObject : ob) {
                 User user = new User();
-                user.setUsername(userObject.getString("username").toUpperCase());
-                user.setAge(userObject.getString("age") + " años");
+                user.setUsername(userObject.getString("username"));
+                user.setAge(userObject.getString("age"));
                 ParseFile image = (ParseFile) userObject.get("profilePicture");
                 if (image==null) {
                     user.setProfilePicture(placeholderimageUri.toString());
@@ -106,7 +107,8 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                     user.setProfilePicture(image.getUrl());
                 }
                 user.setDescription(userObject.getString("description"));
-                user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
+                // Saco la distancia de mi punto al de todos los usuarios y cada uno almacenara dicha distancia a mi
+                user.setDistance(ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
                 UserList.add(user);
             }
 

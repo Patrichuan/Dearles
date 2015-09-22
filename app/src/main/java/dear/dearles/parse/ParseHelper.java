@@ -142,7 +142,8 @@ public class ParseHelper {
 
 
     // Metodo que actualiza en parse la posicion del usuario (solo en caso de ser diferente a la ultima almacenada)
-    public void UpdateUserLoc(double latitude, double longitude) {
+    // y devuelve latitud y longitud como un ParseGeoPoint
+    public ParseGeoPoint UpdateUserLoc(double latitude, double longitude) {
         // AL LOGEAR SE INICIALIZA !!
         final ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
         final ParseUser currentUser = ParseUser.getCurrentUser();
@@ -188,6 +189,8 @@ public class ParseHelper {
         } else {
             System.out.println("No hubo necesidad de subir el geopoint a Parse");
         }
+
+        return geoPoint;
     }
 
 }

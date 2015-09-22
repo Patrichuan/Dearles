@@ -49,7 +49,7 @@ public class ListViewAdapter extends BaseAdapter {
         TextView Username;
         TextView Age;
         TextView Description;
-        TextView Loc;
+        TextView Distance;
         ImageView ProfilePicture;
     }
 
@@ -78,7 +78,7 @@ public class ListViewAdapter extends BaseAdapter {
             // Locate the TextViews in listview_item.xml
             holder.Username = (TextView) view.findViewById(R.id.Username);
             holder.Age = (TextView) view.findViewById(R.id.Age);
-            holder.Loc = (TextView) view.findViewById(R.id.Loc);
+            holder.Distance = (TextView) view.findViewById(R.id.DistanceTo);
             holder.Description = (TextView) view.findViewById(R.id.Description);
             holder.ProfilePicture = (ImageView) view.findViewById(R.id.ProfilePicture);
 
@@ -88,11 +88,10 @@ public class ListViewAdapter extends BaseAdapter {
         }
 
         // Set the results into TextViews
-        holder.Username.setText(UserList.get(position).getUsername());
-        holder.Age.setText(UserList.get(position).getAge());
-        holder.Loc.setText(UserList.get(position).getGeopoint());
+        holder.Username.setText(UserList.get(position).getUsername().toUpperCase());
+        holder.Age.setText(UserList.get(position).getAge() + " años");
+        holder.Distance.setText(String.valueOf(UserList.get(position).getDistance()) + " Km");
         holder.Description.setText(UserList.get(position).getDescription());
-
         Glide.with(context)
                 .load(UserList.get(position).getProfilePicture())
                 .asBitmap()

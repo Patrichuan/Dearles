@@ -5,8 +5,9 @@ import com.parse.ParseGeoPoint;
 public class User {
 
     // Todo - Comprobar al registrarse que el email no esta en uso
-    String Username, Email, Age, Description, ProfilePicture;
-    String Password, Geopoint;
+    String Username, Email, Age, Description, ProfilePicture, Password;
+    ParseGeoPoint Geopoint;
+    Double Distance;
 
     // CONSTRUCTOR
     public User () {
@@ -17,10 +18,11 @@ public class User {
         ProfilePicture = null;
         Password = null;
         Geopoint = null;
+        Distance = Double.valueOf(0);
     }
 
     // Profile es una URI
-    public User (String Username, String Email, String Age, String Description, String ProfilePicture, String Password, ParseGeoPoint Geopoint) {
+    public User (String Username, String Email, String Age, String Description, String ProfilePicture, String Password, ParseGeoPoint Geopoint, Double Distance) {
         this.Username = Username;
         this.Email = Email;
         this.Age = Age;
@@ -28,6 +30,7 @@ public class User {
         this.ProfilePicture = ProfilePicture;
         this.Password = Password;
         setGeopoint(Geopoint);
+        this.Distance = Distance;
     }
 
     // SETTERS
@@ -56,9 +59,12 @@ public class User {
     }
 
     public void setGeopoint(ParseGeoPoint geopoint) {
-        this.Geopoint = geopoint.getLatitude() + ", " + geopoint.getLongitude();;
+        this.Geopoint = geopoint;
     }
 
+    public void setDistance (Double distance) {
+        this.Distance = distance;
+    }
 
 
     // GETTERS
@@ -86,8 +92,12 @@ public class User {
         return ProfilePicture;
     }
 
-    public String getGeopoint() {
+    public ParseGeoPoint getGeopoint() {
         return Geopoint;
+    }
+
+    public Double getDistance() {
+        return Distance;
     }
 
 }

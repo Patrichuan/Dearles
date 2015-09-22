@@ -6,6 +6,8 @@ import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.common.api.Status;
+import com.parse.ParseGeoPoint;
+
 import dear.dearles.customclasses.LocationAwareness;
 import dear.dearles.customclasses.ScreenMeasurement;
 import dear.dearles.customclasses.User;
@@ -100,8 +102,8 @@ public class DearApp extends Application {
         return DB.isUserLoggedIn();
     }
 
-    public void UpdateUserLoc (Location loc) {
-        DB.UpdateUserLoc (loc.getLatitude(), loc.getLongitude());
+    public ParseGeoPoint UpdateUserLoc (Location loc) {
+        return DB.UpdateUserLoc (loc.getLatitude(), loc.getLongitude());
     }
 
 
