@@ -1,6 +1,8 @@
 package dear.dearles.customclasses;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import android.content.Context;
 import android.content.Intent;
@@ -32,18 +34,20 @@ public class ListViewAdapter extends BaseAdapter {
     LayoutInflater inflater;
     private List<User> UserList = null;
     private ArrayList<User> arraylist;
+    DecimalFormat df = new DecimalFormat("####0.000");
 
     public ListViewAdapter(Context context, List<User> UserList) {
         this.context = context;
         this.UserList = UserList;
+        arraylist = new ArrayList<User>();
 
         inflater = LayoutInflater.from(context);
 
-        arraylist = new ArrayList<User>();
+        // Ordeno por la distancia respecto al usuario (compareTo declarado en javabean User) de - a +
+        Collections.sort(UserList);
+        // y añado al arraylist
         arraylist.addAll(UserList);
     }
-
-
 
     public class ViewHolder {
         TextView Username;
@@ -90,7 +94,7 @@ public class ListViewAdapter extends BaseAdapter {
         // Set the results into TextViews
         holder.Username.setText(UserList.get(position).getUsername().toUpperCase());
         holder.Age.setText(UserList.get(position).getAge() + " años");
-        holder.Distance.setText(String.valueOf(UserList.get(position).getDistance()) + " Km");
+        holder.Distance.setText(df.format(UserList.get(position).getDistance()) + " Km");
         holder.Description.setText(UserList.get(position).getDescription());
         Glide.with(context)
                 .load(UserList.get(position).getProfilePicture())

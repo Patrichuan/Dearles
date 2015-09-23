@@ -2,7 +2,7 @@ package dear.dearles.customclasses;
 
 import com.parse.ParseGeoPoint;
 
-public class User {
+public class User implements Comparable<User> {
 
     // Todo - Comprobar al registrarse que el email no esta en uso
     String Username, Email, Age, Description, ProfilePicture, Password;
@@ -100,4 +100,8 @@ public class User {
         return Distance;
     }
 
+    @Override
+    public int compareTo(User other) {
+        return Double.compare(this.Distance, other.Distance);
+    }
 }
