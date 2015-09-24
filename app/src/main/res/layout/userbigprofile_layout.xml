@@ -29,48 +29,59 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
             android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true">
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
             <TextView
-                android:id="@+id/Username"
-                customFont="fonts/Roboto-Light.ttf"
-                android:text="USERNAME"
-                android:textColor="@color/primary_text"
+                android:id="@+id/Hashtag1"
+                customFont="fonts/Roboto-Black.ttf"
+                android:textColor="@color/hashtagColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp">
+                android:textSize="25sp"
+                android:layout_marginBottom="2dp">
             </TextView>
 
             <TextView
-                android:id="@+id/Age"
-                customFont="fonts/Roboto-Light.ttf"
-                android:text="AGE"
-                android:textColor="@color/primary_text"
+                android:id="@+id/Hashtag2"
+                customFont="fonts/Roboto-Black.ttf"
+                android:textColor="@color/hashtagColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp">
+                android:textSize="25sp"
+                android:layout_marginBottom="2dp">
             </TextView>
 
             <TextView
-                android:id="@+id/Description"
-                customFont="fonts/Roboto-Light.ttf"
-                android:text="DESCRIPTION"
-                android:textColor="@color/primary_text"
+                android:id="@+id/Hashtag3"
+                customFont="fonts/Roboto-Black.ttf"
+                android:textColor="@color/hashtagColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp">
+                android:textSize="25sp"
+                android:layout_marginBottom="2dp">
             </TextView>
 
             <TextView
-                android:id="@+id/fsd"
-                customFont="fonts/Roboto-Light.ttf"
-                android:text="VERSION GIGANTE DE PROFILEEEEEEEEEEE"
-                android:textColor="@color/primary_text"
+                android:id="@+id/Hashtag4"
+                customFont="fonts/Roboto-Black.ttf"
+                android:textColor="@color/hashtagColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp">
+                android:textSize="25sp"
+                android:layout_marginBottom="2dp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/Hashtag5"
+                customFont="fonts/Roboto-Black.ttf"
+                android:textColor="@color/hashtagColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp">
             </TextView>
         </LinearLayout>
 

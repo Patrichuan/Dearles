@@ -37,16 +37,6 @@
         android:paddingEnd="6dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/Username"
-            customFont="fonts/Roboto-Black.ttf"
-            android:text="USERNAME"
-            android:textColor="@color/primary_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp">
-        </TextView>
-
         <LinearLayout
             android:layout_marginTop="-3dp"
             android:orientation="horizontal"
@@ -54,15 +44,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/Age"
-                android:layout_weight="1"
-                customFont="fonts/Roboto-Light.ttf"
-                android:gravity="start"
-                android:text="AGE"
+                android:id="@+id/Username"
+                customFont="fonts/Roboto-Black.ttf"
+                android:text="USERNAME"
                 android:textColor="@color/primary_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp">
+                android:textSize="18sp">
             </TextView>
 
             <TextView
@@ -70,14 +58,26 @@
                 android:layout_weight="1"
                 customFont="fonts/Roboto-Light.ttf"
                 android:gravity="end"
-                android:text="DISTANCE"
+                android:text="O"
                 android:textColor="@color/primary_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp">
+                android:textSize="18sp">
             </TextView>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/Age"
+            customFont="fonts/Roboto-Light.ttf"
+            android:gravity="start"
+            android:text="AGE"
+            android:textColor="@color/primary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp">
+        </TextView>
+
 
         <TextView
             android:id="@+id/Description"

@@ -1,5 +1,6 @@
 package dear.dearles.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,32 +16,44 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import dear.dearles.DearApp;
 import dear.dearles.R;
 import dear.dearles.glide.FullHeightMinusStatusToolbarTransformation;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UserBigProfile extends AppCompatActivity {
 
     String Username, Age, Description, ProfilePicture;
-    TextView txtUsername,txtAge, txtDescription;
+    TextView txtHashtag1, txtHashtag2,txtHashtag3,txtHashtag4,txtHashtag5;
     ImageView imgProfilePicture;
+    ArrayList<String> UserHashtags;
 
     protected DearApp app;
+    Pattern MY_PATTERN = Pattern.compile("#(\\w+)");
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userbigprofile_layout);
+        app = (DearApp) getApplication();
 
         Intent i = getIntent();
-        Username = i.getStringExtra("username");
-        Age = i.getStringExtra("age");
-        Description = i.getStringExtra("description");
-        ProfilePicture = i.getStringExtra("profilePicture");
-        System.out.println("USER.SETPROFILEPICTURE EN BIGPROFILE --------> " + ProfilePicture);
+        Bundle bundle = i.getExtras();
 
-        app = (DearApp) getApplication();
+        Username = i.getStringExtra("username");
+        ProfilePicture = i.getStringExtra("profilePicture");
+        Description = i.getStringExtra("description");
+        /*
+        UserHashtags = new ArrayList<String>();
+        if (bundle != null) {
+            UserHashtags = bundle.getStringArrayList("hashtags"); // declare temp as ArrayList
+        }
+        */
 
         // Setups
         setupToolbar();
@@ -57,15 +70,41 @@ public class UserBigProfile extends AppCompatActivity {
                     }
                 });
 
-        // Locate the TextViews in userbigprofile_layout_layout.xml
-        txtUsername = (TextView) findViewById(R.id.Username);
-        txtAge = (TextView) findViewById(R.id.Age);
-        txtDescription = (TextView) findViewById(R.id.Description);
+        txtHashtag1 = (TextView) findViewById(R.id.Hashtag1);
+        txtHashtag2 = (TextView) findViewById(R.id.Hashtag2);
+        txtHashtag3 = (TextView) findViewById(R.id.Hashtag3);
+        txtHashtag4 = (TextView) findViewById(R.id.Hashtag4);
+        txtHashtag5 = (TextView) findViewById(R.id.Hashtag5);
 
-        // Set results to the TextViews
-        txtUsername.setText(Username);
-        txtAge.setText(Age);
-        txtDescription.setText(Description);
+
+        Matcher mat = MY_PATTERN.matcher(Description);
+        int n = 0;
+        // TODO - Hacerlo con un listview y sin limite con scroll
+        while ((mat.find())&&(n<=4)) {
+            if (n==0) txtHashtag1.setText(mat.group());
+            if (n==1) txtHashtag2.setText(mat.group());
+            if (n==2) txtHashtag3.setText(mat.group());
+            if (n==3) txtHashtag4.setText(mat.group());
+            if (n==4) txtHashtag5.setText(mat.group());
+            n++;
+        }
+
+
+        /*
+        // Set hashtags
+        if (UserHashtags!=null) {
+            int pos;
+            for (String hashtag : UserHashtags) {
+                pos = UserHashtags.indexOf(hashtag);
+                System.out.println("Acabo de recoger: " + hashtag + " de la posicion " + pos);
+                if (pos==0) txtHashtag1.setText(UserHashtags.get(0));
+                if (pos==1) txtHashtag2.setText(UserHashtags.get(1));
+                if (pos==2) txtHashtag3.setText(UserHashtags.get(2));
+                if (pos==3) txtHashtag4.setText(UserHashtags.get(3));
+                if (pos==4) txtHashtag5.setText(UserHashtags.get(4));
+            }
+        }
+        */
     }
 
 
@@ -101,5 +140,10 @@ public class UserBigProfile extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 }
