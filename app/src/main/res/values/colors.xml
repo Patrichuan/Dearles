@@ -11,4 +11,9 @@
     <color name="divider">#B6B6B6</color>
     <color name="tabsScrollColor">#ffffffff</color>
     <color name="window_background">#FFFFFF</color>
+
+    <color name="distance_near">#49e1bf</color>
+    <color name="distance_far">#ebb35b</color>
+    <color name="distance_very_far">#ff6363</color>
+
 </resources>

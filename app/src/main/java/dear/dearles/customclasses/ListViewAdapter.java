@@ -32,29 +32,30 @@ public class ListViewAdapter extends BaseAdapter {
     // Declare Variables
     Context context;
     LayoutInflater inflater;
-    private List<User> UserList = null;
-    private ArrayList<User> arraylist;
+    List<User> UserList;
+    ArrayList<User> arraylist;
     DecimalFormat df = new DecimalFormat("####0.000");
+
+    final static double DISTANCE_NEAR_IN_KILOMETERS = 5;
+    final static double DISTANCE_FAR_IN_KILOMETERS = 10;
+    final static double DISTANCE_VERY_FAR_IN_KILOMETERS = 15;
+
 
     public ListViewAdapter(Context context, List<User> UserList) {
         this.context = context;
         this.UserList = UserList;
+
+        // Declaro, ordeno por distancia respecto al usuario de - a + y añado al arraylist
         arraylist = new ArrayList<User>();
+        Collections.sort(UserList);
+        arraylist.addAll(UserList);
 
         inflater = LayoutInflater.from(context);
-
-        // Ordeno por la distancia respecto al usuario (compareTo declarado en javabean User) de - a +
-        Collections.sort(UserList);
-        // y añado al arraylist
-        arraylist.addAll(UserList);
     }
 
     public class ViewHolder {
-        TextView Username;
-        TextView Age;
-        TextView Description;
-        TextView Distance;
-        ImageView ProfilePicture;
+        TextView Username, Age, Description;
+        ImageView DistanceColored, ProfilePicture;
     }
 
     @Override
@@ -75,27 +76,35 @@ public class ListViewAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup parent) {
         final ViewHolder holder;
 
+        // Set holder ------------------------------------------------------------------------------------------------
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.listview_item, null);
-
             // Locate the TextViews in listview_item.xml
             holder.Username = (TextView) view.findViewById(R.id.Username);
             holder.Age = (TextView) view.findViewById(R.id.Age);
-            holder.Distance = (TextView) view.findViewById(R.id.DistanceTo);
+            holder.DistanceColored = (ImageView) view.findViewById(R.id.DistanceColored);
             holder.Description = (TextView) view.findViewById(R.id.Description);
             holder.ProfilePicture = (ImageView) view.findViewById(R.id.ProfilePicture);
-
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        // Set the results into TextViews
+        // Set the results into TextViews ----------------------------------------------------------------------------
         holder.Username.setText(UserList.get(position).getUsername().toUpperCase());
         holder.Age.setText(UserList.get(position).getAge() + " años");
-        holder.Distance.setText(df.format(UserList.get(position).getDistance()) + " Km");
         holder.Description.setText(UserList.get(position).getDescription());
+        // Color the distance indicator
+        Double DistanceFromMe = UserList.get(position).getDistance();
+        if (DistanceFromMe<=DISTANCE_NEAR_IN_KILOMETERS){
+            holder.DistanceColored.setBackgroundColor(context.getResources().getColor(R.color.distance_near));
+        } else if (DistanceFromMe<=DISTANCE_FAR_IN_KILOMETERS) {
+            holder.DistanceColored.setBackgroundColor(context.getResources().getColor(R.color.distance_far));
+        } else {
+            holder.DistanceColored.setBackgroundColor(context.getResources().getColor(R.color.distance_very_far));
+        }
+        // Set the profile image
         Glide.with(context)
                 .load(UserList.get(position).getProfilePicture())
                 .asBitmap()
@@ -107,19 +116,17 @@ public class ListViewAdapter extends BaseAdapter {
                     }
                 });
 
-        // Listen for ListView Item Click
-        view.setOnClickListener(new OnClickListener() {
 
+        // Set listener for ListView Item Click ----------------------------------------------------------------------
+        view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-
                 // Send single item click data to UserBigProfile Class
                 Intent intent = new Intent(context, UserBigProfile.class);
                 intent.putExtra("username", (UserList.get(position).getUsername()));
                 intent.putExtra("age", (UserList.get(position).getAge()));
                 intent.putExtra("description", UserList.get(position).getDescription());
                 intent.putExtra("profilePicture", (UserList.get(position).getProfilePicture()));
-
                 // Start UserBigProfile Class
                 context.startActivity(intent);
             }

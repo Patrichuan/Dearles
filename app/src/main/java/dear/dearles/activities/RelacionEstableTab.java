@@ -20,6 +20,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +79,8 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
         @Override
         protected Void doInBackground(Void... params) {
 
-            // Actualizo la loc subiendola a parse en caso de ser necesario y la recojo como ParseGeoPoint
+            // Actualizo la loc del usuario y la subo a parse si el cambio es significativo
+            // En caso de serlo guardo la posicion para calcular posteriormente todas las distancias respecto a este
             ParseGeoPoint ActualGeopoint = app.UpdateUserLoc(app.GetLastKnownLoc());
 
             // Create the array
@@ -97,6 +99,7 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                     + '/' + getResources().getResourceTypeName(R.drawable.bglogin)
                     + '/' + getResources().getResourceEntryName(R.drawable.bglogin));
 
+            // Todo - Poner un limite de 50 para usuarios normales y de 75 para usuarios VIP
             for (ParseObject userObject : ob) {
                 User user = new User();
                 user.setUsername(userObject.getString("username"));
@@ -108,8 +111,14 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                     user.setProfilePicture(image.getUrl());
                 }
                 user.setDescription(userObject.getString("description"));
-                // Saco la distancia de mi punto al de todos los usuarios y cada uno almacenara dicha distancia a mi
+                user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
+
+                // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
                 user.setDistance(ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
+                System.out.println("RELACION: La distancia de (" + ActualGeopoint.getLatitude() + "," + ActualGeopoint.getLongitude() + ") a (" +
+                        userObject.getParseGeoPoint("geopoint").getLatitude() + "," + userObject.getParseGeoPoint("geopoint").getLongitude() +
+                        ") es de " + ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
+
                 UserList.add(user);
             }
 
