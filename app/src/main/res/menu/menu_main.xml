@@ -1,6 +1,35 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="dear.dearles.activities.Main">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="dear.dearles.activities.Main">
+
+    <item
+        android:id="@+id/judge"
+        android:title="judge"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_gavel_white_24dp"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/chat"
+        android:title="chat"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_chat_white_24dp"
+        
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:orderInCategory="3"
+        android:icon="@drawable/ic_search_white_24dp"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/settings"
+        android:title="Settings"
+        android:orderInCategory="4"
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        app:showAsAction="never"/>
 </menu>

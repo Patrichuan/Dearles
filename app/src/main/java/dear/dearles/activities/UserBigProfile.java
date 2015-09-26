@@ -114,7 +114,7 @@ public class UserBigProfile extends AppCompatActivity {
 
         // Arrow menu icon
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
     }
 

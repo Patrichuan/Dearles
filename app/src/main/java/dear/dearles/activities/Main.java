@@ -67,9 +67,10 @@ public class Main extends AppCompatActivity {
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // Arrow menu icon
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -118,7 +119,7 @@ public class Main extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.settings) {
             return true;
         }
 
