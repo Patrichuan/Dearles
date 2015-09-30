@@ -5,25 +5,24 @@
     tools:context="dear.dearles.activities.Main">
 
     <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_search_white_24dp"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/judge"
         android:title="judge"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:icon="@drawable/ic_gavel_white_24dp"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/chat"
         android:title="chat"
-        android:orderInCategory="2"
-        android:icon="@drawable/ic_chat_white_24dp"
-        
-        app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/search"
-        android:title="Search"
         android:orderInCategory="3"
-        android:icon="@drawable/ic_search_white_24dp"
+        android:icon="@drawable/ic_chat_white_24dp"
         app:showAsAction="always"/>
 
     <item

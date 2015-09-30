@@ -74,7 +74,7 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-        TextView Username, Age, Description;
+        TextView Username, Age, Description, TestName;
         ImageView DistanceColored, ProfilePicture;
     }
 
@@ -102,6 +102,7 @@ public class ListViewAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.listview_item, null);
             // Locate the TextViews in listview_item.xml
             holder.Username = (TextView) view.findViewById(R.id.Username);
+            holder.TestName = (TextView) view.findViewById(R.id.testUsername);
             holder.Age = (TextView) view.findViewById(R.id.Age);
             holder.DistanceColored = (ImageView) view.findViewById(R.id.DistanceColored);
             holder.Description = (TextView) view.findViewById(R.id.Description);
@@ -113,7 +114,9 @@ public class ListViewAdapter extends BaseAdapter {
 
         // Set the results into TextViews ----------------------------------------------------------------------------
         holder.Username.setText(UserList.get(position).getUsername().toUpperCase());
-        holder.Age.setText(UserList.get(position).getAge() + " años");
+        holder.TestName.setText("< 5km");
+
+        holder.Age.setText(", " + UserList.get(position).getAge());
 
         // Change color of Description Hashtags and make them bold. Then add them to a list
         Description = UserList.get(position).getDescription();

@@ -3,8 +3,14 @@ package dear.dearles.parse;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -12,10 +18,23 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRole;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import dear.dearles.R;
 import dear.dearles.activities.Main;
 import dear.dearles.customclasses.Imagecompressor;
 import dear.dearles.customclasses.User;
@@ -39,6 +58,12 @@ public class ParseHelper {
         // If you would like all objects to be private by default, remove this line.
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
+
+        ParseACL roleACL = new ParseACL();
+        roleACL.setPublicWriteAccess(true);
+        roleACL.setPublicReadAccess(true);
+        ParseRole role = new ParseRole("UpdateableByAnyone", roleACL);
+        role.saveInBackground();
 
         LastLat = 0;
         LastLong = 0;
@@ -75,28 +100,132 @@ public class ParseHelper {
                     ParseUser.enableRevocableSessionInBackground();
                     // If successful -> add file to user and signUpInBackground
                     aux.put("profilePicture", pFile);
-                    SignUp(aux);
+                    aux.signUpInBackground(new SignUpCallback() {
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                // Hooray! Let them use the app now.
+                                System.out.println("DONE");
+                                SaveUserHashtags(user);
+                            } else {
+                                // Sign up didn't succeed. Look at the ParseException to figure out what went wrong
+                                System.out.println("FAIL -> " + e);
+                            }
+                        }
+                    });
+
                 }
             });
         } else {
-            SignUp(aux);
+            aux.signUpInBackground(new SignUpCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // Hooray! Let them use the app now.
+                        System.out.println("DONE");
+                        SaveUserHashtags(user);
+                    } else {
+                        // Sign up didn't succeed. Look at the ParseException to figure out what went wrong
+                        System.out.println("FAIL -> " + e);
+                    }
+                }
+            });
         }
     }
 
-    public void SignUp (ParseUser user) {
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    // Hooray! Let them use the app now.
-                    System.out.println("DONE");
-                } else {
-                    // Sign up didn't succeed. Look at the ParseException to figure out what went wrong
-                    System.out.println("FAIL -> " + e);
-                }
-            }
-        });
+    // TODO - Optimizar !!
+
+    int pos;
+    ArrayList<String> UserHashtags;
+    String HashTag, Username;
+
+    public void SaveUserHashtags (User user) {
+        Pattern MY_PATTERN = Pattern.compile("#(\\w+)");
+        UserHashtags = new ArrayList<String>();
+        Username = user.getUsername();
+        pos = 0;
+        Matcher mat = MY_PATTERN.matcher(user.getDescription());
+        while (mat.find()) {
+            UserHashtags.add(mat.group(1));
+        }
+        CreateorUpdateHashtag();
     }
 
+    // Metodo recursivo que da de alta todos los hashtags de la descripcion de un usuario recien dado de alta
+    public void CreateorUpdateHashtag () {
+        // En cada iteración leo uno de los Hashtags de la descripcion
+        HashTag = UserHashtags.get(pos);
+        System.out.println("EL HASHTAG DE LA POSICION " + pos + " ES: " + HashTag);
+        // Query que devuelve la row perteneciente al Hashtag recien leido
+        ParseQuery<ParseObject> query = new ParseQuery<>("Hashtag");
+        query.whereEqualTo("Tag", HashTag);
+        // En esta lista guardare el resultado de la query
+        List<ParseObject> queryList;
+        ParseObject object;
+
+        // Creo un postACL para que el hashtag pueda ser readeable/writable por cualquier usuario y no solo
+        // por el creador de dicho hashtag
+        ParseACL postACL = new ParseACL();
+        postACL.setPublicReadAccess(true);
+        postACL.setPublicWriteAccess(true);
+
+        try {
+            queryList = query.find();
+            // En caso de NO haber devuelto ningun elemento he de crear un hashtag nuevo
+            if (queryList.size()==0) {
+                object = new ParseObject("Hashtag");
+                object.setACL(postACL);
+                object.put("Tag", HashTag);
+                object.addUnique("Users", Arrays.asList(Username));
+                object.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        System.out.println("No existia ya el hashtag: " + HashTag + " (CREADO para usuario " + Username + ")");
+                        if (++pos < UserHashtags.size()) {
+                            CreateorUpdateHashtag();
+                        }
+                    }
+                });
+            // En caso de haber devuelto algun elemento entonces he de actualizar el hashtag para añadir el nombre del nuevo usuario
+            // que ahora hace uso tambien de el
+            } else {
+                object = queryList.get(0);
+
+                /*
+                // JSON HASHTAG READING
+                System.out.print("Actualmente el hashtag '" + HashTag + "' lo esta usando: ");
+                JSONArray users = object.getJSONArray("Users");
+                String JsonStringed;
+                for (int i = 0; i < users.length(); i++) {
+                    try {
+                        JsonStringed = users.getString(i);
+                        JsonStringed = JsonStringed.substring(2, JsonStringed.length()-2);
+                        System.out.print(JsonStringed + ", ");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("");
+                */
+
+                object.addUnique("Users", Arrays.asList(Username));
+                object.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e==null){
+                            System.out.println("Existia el hashtag: " + HashTag + " (ACTUALIZADO para usuario " + Username + ")");
+                            if (++pos < UserHashtags.size()) {
+                                CreateorUpdateHashtag();
+                            }
+                        } else {
+                            System.out.println("EXCEPTION: " + e.getMessage());
+                        }
+                    }
+                });
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void SignInUser (User user, final Context LoginContext) {

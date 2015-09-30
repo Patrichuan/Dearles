@@ -30,6 +30,7 @@ public class SignUp2 extends AppCompatActivity {
 
     protected DearApp app;
 
+    int HASHTAG_LENGTH = 120;
     TextView TipDescription, TextCount;
     EditText Description;
     ScrollView ScrollLayout;
@@ -63,6 +64,8 @@ public class SignUp2 extends AppCompatActivity {
         Finishbtn = (Button) findViewById(R.id.Finishbtn);
 
 
+        TextCount.setText(String.valueOf(HASHTAG_LENGTH));
+
         // Declaro el EditText para la descripción
         Description = new EditText(this);
         Description.setId(R.id.Description);
@@ -70,7 +73,7 @@ public class SignUp2 extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         Description.setLayoutParams(params);
         Description.setSingleLine(false);
-        Description.setFilters(new InputFilter[]{new InputFilter.LengthFilter(150)});
+        Description.setFilters(new InputFilter[]{new InputFilter.LengthFilter(HASHTAG_LENGTH)});
         Description.setHintTextColor(getResources().getColor(R.color.primary_dark));
         Description.setHint(R.string.description);
         // Y establezco el contenido de esta si ya existia previamente
@@ -100,7 +103,7 @@ public class SignUp2 extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                TextCount.setText(Integer.toString(150 - Description.length()));
+                TextCount.setText(Integer.toString(HASHTAG_LENGTH - Description.length()));
                 if (NumLineas == Description.getLineCount()) {
                     // do nothing because we are in the first line
                 } else {
