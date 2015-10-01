@@ -41,8 +41,24 @@ import dear.dearles.customclasses.User;
 
 public class ParseHelper {
 
-    Context context;
-    double LastLat, LastLong;
+    private Context context;
+
+    // UpdateUserLoc
+    private double LastLat, LastLong;
+
+    // SaveUserHashtags and CreateorUpdateHashtag variables
+    int pos;
+    ArrayList<String> UserHashtags;
+    String HashTag, Username;
+
+    // UpdateTopTenHashtags
+    private int skip = 0;
+    private static ArrayList<ParseObject> MostUsedHashtags;
+
+
+
+
+
 
     public ParseHelper (Context context) {
         this.context = context;
@@ -64,6 +80,8 @@ public class ParseHelper {
         roleACL.setPublicReadAccess(true);
         ParseRole role = new ParseRole("UpdateableByAnyone", roleACL);
         role.saveInBackground();
+
+        MostUsedHashtags = new ArrayList<ParseObject>();
 
         LastLat = 0;
         LastLong = 0;
@@ -131,11 +149,7 @@ public class ParseHelper {
         }
     }
 
-    // TODO - Optimizar !!
 
-    int pos;
-    ArrayList<String> UserHashtags;
-    String HashTag, Username;
 
     public void SaveUserHashtags (User user) {
         Pattern MY_PATTERN = Pattern.compile("#(\\w+)");
@@ -175,6 +189,7 @@ public class ParseHelper {
                 object.setACL(postACL);
                 object.put("Tag", HashTag);
                 object.addUnique("Users", Arrays.asList(Username));
+                object.put("Ocurrencies", 1);
                 object.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -188,25 +203,8 @@ public class ParseHelper {
             // que ahora hace uso tambien de el
             } else {
                 object = queryList.get(0);
-
-                /*
-                // JSON HASHTAG READING
-                System.out.print("Actualmente el hashtag '" + HashTag + "' lo esta usando: ");
-                JSONArray users = object.getJSONArray("Users");
-                String JsonStringed;
-                for (int i = 0; i < users.length(); i++) {
-                    try {
-                        JsonStringed = users.getString(i);
-                        JsonStringed = JsonStringed.substring(2, JsonStringed.length()-2);
-                        System.out.print(JsonStringed + ", ");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println("");
-                */
-
                 object.addUnique("Users", Arrays.asList(Username));
+                object.put("Ocurrencies", ((int)object.get("Ocurrencies"))+1);
                 object.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -225,7 +223,62 @@ public class ParseHelper {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        UpdateTopTenHashtags();
     }
+
+    // Hace consultas de 1000 en 1000 a Parse (es el limite de rows que tiene Parse por defecto)
+    public void UpdateTopTenHashtags () {
+        // Reseteo la lista de todos los hashtags descargados
+        MostUsedHashtags = new ArrayList<ParseObject>();
+        // Reseteo el numero de rows a saltar en cada consulta
+        skip = 0;
+        // Creo mi query recursiva que trae rows de 1000 en 1000
+        ParseQuery<ParseObject> queryMostUsedHashtags = ParseQuery.getQuery("Hashtag");
+        queryMostUsedHashtags.orderByDescending("Ocurrencies");
+        queryMostUsedHashtags.setLimit(1000);
+        queryMostUsedHashtags.findInBackground(getAllObjects());
+    }
+
+    private FindCallback<ParseObject> getAllObjects(){
+        return new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    MostUsedHashtags.addAll(objects);
+                    int limit = 1000;
+                    if (objects.size() == limit) {
+                        skip = skip + limit;
+                        ParseQuery query = new ParseQuery("Objects");
+                        query.setSkip(skip);
+                        query.setLimit(limit);
+                        query.findInBackground(getAllObjects());
+                    }
+                    // Si no he alcanzado 1000 rows es porque ya no hay mas y por lo tanto puedo ya actualizar
+                    // el Top10 de Hashtags
+                    else {
+                        // Reduzco mi lista a 10 elementos (los 10 hashtags con mas ocurrencias)
+                        if (MostUsedHashtags.size()>10) MostUsedHashtags.subList(10,MostUsedHashtags.size()).clear();
+
+                        System.out.println("EL TOP10 DE HASHTAGS LO CONFORMAN: ");
+                        for (int i = 0; i<MostUsedHashtags.size(); i++) {
+                            System.out.println(i + ". " + MostUsedHashtags.get(i));
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    public ArrayList<ParseObject> getTopTenHashtag () {
+        return MostUsedHashtags;
+    }
+
+
+
+
+
+
+
 
 
     public void SignInUser (User user, final Context LoginContext) {
