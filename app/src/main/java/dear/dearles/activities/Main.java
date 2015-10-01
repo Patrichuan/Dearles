@@ -1,26 +1,17 @@
 package dear.dearles.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-
-import dear.dearles.DearApp;
 import dear.dearles.R;
 import dear.dearles.customclasses.ViewPagerAdapter;
 import dear.dearles.slidingtab.SlidingTabLayout;
@@ -116,13 +107,22 @@ public class Main extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.settings:
+                break;
+            case R.id.search:
+                Intent intent = new Intent(this, Search.class);
+                startActivity(intent);
+                break;
+            case R.id.judge:
+                break;
+            case R.id.chat:
+                break;
+            default:
+                break;
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
+
 }

@@ -93,7 +93,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
-
             Uri placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
                     + getResources().getResourcePackageName(R.drawable.bglogin)
                     + '/' + getResources().getResourceTypeName(R.drawable.bglogin)

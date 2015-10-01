@@ -7,6 +7,9 @@ import android.location.Location;
 
 import com.google.android.gms.common.api.Status;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+
+import java.util.ArrayList;
 
 import dear.dearles.customclasses.LocationAwareness;
 import dear.dearles.customclasses.ScreenMeasurement;
@@ -103,10 +106,20 @@ public class DearApp extends Application {
     }
 
     public ParseGeoPoint UpdateUserLoc (Location loc) {
-        return DB.UpdateUserLoc (loc.getLatitude(), loc.getLongitude());
+        return DB.UpdateUserLoc(loc.getLatitude(), loc.getLongitude());
     }
 
+    public void UpdateTopTenHashtags () {
+        DB.UpdateTopTenHashtags();
+    }
 
+    public ArrayList<ParseObject> getTopTenHashtags () {
+        return DB.getTopTenHashtag();
+    }
+
+    public Boolean isRdyTopTenHashtag () {
+        return DB.isRdyTopTenHashtag();
+    }
 
 
 
