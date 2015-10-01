@@ -1,6 +1,5 @@
 package dear.dearles.customclasses;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,9 +9,6 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -26,8 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
@@ -36,7 +30,7 @@ import dear.dearles.activities.UserBigProfile;
 import dear.dearles.glide.CropSquareTransformation;
 
 
-public class ListViewAdapter extends BaseAdapter {
+public class User_ListViewAdapter extends BaseAdapter {
 
     /* Regex Explained:
          #      - A literal #
@@ -60,7 +54,7 @@ public class ListViewAdapter extends BaseAdapter {
     String Description;
 
 
-    public ListViewAdapter(Context context, List<User> UserList) {
+    public User_ListViewAdapter(Context context, List<User> UserList) {
         this.context = context;
         this.UserList = UserList;
 
@@ -99,8 +93,8 @@ public class ListViewAdapter extends BaseAdapter {
         // Set holder ------------------------------------------------------------------------------------------------
         if (view == null) {
             holder = new ViewHolder();
-            view = inflater.inflate(R.layout.listview_item, null);
-            // Locate the TextViews in listview_item.xml
+            view = inflater.inflate(R.layout.listview_user_item, null);
+            // Locate the TextViews in listview_user_itemm.xml.xml
             holder.Username = (TextView) view.findViewById(R.id.Username);
             holder.TestName = (TextView) view.findViewById(R.id.testUsername);
             holder.Age = (TextView) view.findViewById(R.id.Age);

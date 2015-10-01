@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.parse.ParseObject;
@@ -18,13 +17,14 @@ import java.util.ArrayList;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import dear.dearles.customclasses.Hashtag_ListViewAdapter;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Search extends AppCompatActivity {
 
     ListView mListview;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    String[] HashtagTopTenList;
+    ArrayList<ParseObject> Hashtags;
 
     protected DearApp app;
 
@@ -53,9 +53,6 @@ public class Search extends AppCompatActivity {
                                  }
         );
 
-
-
-
         // Setups
         setupToolbar();
     }
@@ -63,7 +60,6 @@ public class Search extends AppCompatActivity {
 
     // RemoteDataTask AsyncTask
     private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -71,7 +67,6 @@ public class Search extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-
             app.UpdateTopTenHashtags();
             while (!app.isRdyTopTenHashtag()) {
                 try {
@@ -80,21 +75,14 @@ public class Search extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
-            ArrayList<ParseObject> Hashtags = app.getTopTenHashtags();
-            HashtagTopTenList = new String[Hashtags.size()];
-
-            for (int i = 0; i < Hashtags.size(); i++) {
-                HashtagTopTenList[i] = Hashtags.get(i).getString("Tag");
-            }
-
+            Hashtags = app.getTopTenHashtags();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             // Pass the results into an ArrayAdapter
-            ArrayAdapter adapter = new ArrayAdapter<String>(Search.this, android.R.layout.simple_list_item_1, HashtagTopTenList);
+            Hashtag_ListViewAdapter adapter = new Hashtag_ListViewAdapter(Search.this, Hashtags);
             // Binds the Adapter to the ListView
             mListview.setAdapter(adapter);
             // stopping swipe refresh
@@ -103,15 +91,9 @@ public class Search extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         // Arrow menu icon
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);

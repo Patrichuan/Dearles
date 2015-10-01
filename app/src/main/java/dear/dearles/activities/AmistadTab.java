@@ -24,7 +24,7 @@ import java.util.List;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
-import dear.dearles.customclasses.ListViewAdapter;
+import dear.dearles.customclasses.User_ListViewAdapter;
 import dear.dearles.customclasses.User;
 
 
@@ -35,7 +35,7 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     // Declare Variables
     ListView listview;
     List<ParseUser> ob;
-    ListViewAdapter adapter;
+    User_ListViewAdapter adapter;
     private List<User> UserList = null;
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -125,7 +125,7 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         @Override
         protected void onPostExecute(Void result) {
             // Pass the results into an ArrayAdapter
-            adapter = new ListViewAdapter(getActivity(), UserList);
+            adapter = new User_ListViewAdapter(getActivity(), UserList);
             // Binds the Adapter to the ListView
             listview.setAdapter(adapter);
             // stopping swipe refresh

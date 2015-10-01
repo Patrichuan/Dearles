@@ -8,16 +8,16 @@ import dear.dearles.activities.AmistadTab;
 import dear.dearles.activities.RelacionEstableTab;
 
 
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class Main_ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
+    // This will Store the Titles of the Tabs which are Going to be passed when Main_ViewPagerAdapter is created
     CharSequence Titles[];
 
-    // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+    // Store the number of tabs, this will also be passed when the Main_ViewPagerAdapter is created
     int NumbOfTabs;
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
+    public Main_ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
         super(fm);
 
         this.Titles = mTitles;

@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 import dear.dearles.R;
-import dear.dearles.customclasses.ViewPagerAdapter;
+import dear.dearles.customclasses.Main_ViewPagerAdapter;
 import dear.dearles.slidingtab.SlidingTabLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -23,7 +23,7 @@ public class Main extends AppCompatActivity {
     Button LogOutbtn;
 
     ViewPager pager;
-    ViewPagerAdapter adapter;
+    Main_ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Relación Estable","Amistad"};
     int Numboftabs =2;
@@ -67,8 +67,8 @@ public class Main extends AppCompatActivity {
 
 
     private void setupTabs() {
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+        // Creating The Main_ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        adapter =  new Main_ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
