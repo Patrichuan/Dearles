@@ -68,7 +68,7 @@ public class User_ListViewAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-        TextView Username, Age, Description, TestName;
+        TextView Username, Age, Description, DistanceTo;
         ImageView DistanceColored, ProfilePicture;
     }
 
@@ -94,9 +94,8 @@ public class User_ListViewAdapter extends BaseAdapter {
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.listview_user_item, null);
-            // Locate the TextViews in listview_user_itemm.xml.xml
             holder.Username = (TextView) view.findViewById(R.id.Username);
-            holder.TestName = (TextView) view.findViewById(R.id.testUsername);
+            holder.DistanceTo = (TextView) view.findViewById(R.id.DistanceTo);
             holder.Age = (TextView) view.findViewById(R.id.Age);
             holder.DistanceColored = (ImageView) view.findViewById(R.id.DistanceColored);
             holder.Description = (TextView) view.findViewById(R.id.Description);
@@ -108,7 +107,6 @@ public class User_ListViewAdapter extends BaseAdapter {
 
         // Set the results into TextViews ----------------------------------------------------------------------------
         holder.Username.setText(UserList.get(position).getUsername().toUpperCase());
-        holder.TestName.setText("< 5km");
         holder.Age.setText(", " + UserList.get(position).getAge());
 
         // Change color of Description Hashtags and make them bold. Then add them to a list
@@ -131,6 +129,16 @@ public class User_ListViewAdapter extends BaseAdapter {
         } else {
             holder.DistanceColored.setBackgroundColor(context.getResources().getColor(R.color.distance_very_far));
         }
+        DistanceFromMe = DistanceFromMe*10;
+        DistanceFromMe = (double)(DistanceFromMe.intValue());
+        DistanceFromMe = DistanceFromMe /10;
+        if (DistanceFromMe == 0.0) {
+            holder.DistanceTo.setText("");
+        } else {
+            holder.DistanceTo.setText(DistanceFromMe.toString() + " km");
+        }
+
+
 
         // Set the profile image
         Glide.with(context)
@@ -155,11 +163,6 @@ public class User_ListViewAdapter extends BaseAdapter {
                 intent.putExtra("username", (UserList.get(position).getUsername()));
                 intent.putExtra("profilePicture", (UserList.get(position).getProfilePicture()));
                 intent.putExtra("description", (UserList.get(position).getDescription()));
-                /*
-                intent.putStringArrayListExtra("hashtags", UserHashtags);
-                UserHashtags = new ArrayList<String>();
-                */
-                // Start UserBigProfile Class
                 context.startActivity(intent);
             }
         });

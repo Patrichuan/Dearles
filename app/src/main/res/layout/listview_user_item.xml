@@ -32,10 +32,15 @@
             </ImageView>
 
             <TextView
-                android:id="@+id/testUsername"
-                android:layout_width="match_parent"
+                android:id="@+id/DistanceTo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:textColor="@color/icons"
+                android:layout_gravity="end|bottom"
+                android:shadowColor="@color/primary_text"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="4"
                 android:textSize="18sp"
                 android:gravity="center_horizontal"/>
 
@@ -79,7 +84,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/DistanceTo"
+                android:id="@+id/Status"
                 android:layout_weight="1"
                 customFont="fonts/Roboto-Light.ttf"
                 android:gravity="end"

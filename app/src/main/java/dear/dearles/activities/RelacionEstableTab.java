@@ -114,6 +114,9 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                 }
 
                 for (ParseObject userObject : ob) {
+                    if (UserList.size() > 50) {
+                        break;
+                    }
                     User user = new User();
                     user.setUsername(userObject.getString("username"));
                     user.setAge(userObject.getString("age"));
@@ -128,10 +131,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
 
                     // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
                     user.setDistance(ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
-                    System.out.println("RELACION: La distancia de (" + ActualGeopoint.getLatitude() + "," + ActualGeopoint.getLongitude() + ") a (" +
-                            userObject.getParseGeoPoint("geopoint").getLatitude() + "," + userObject.getParseGeoPoint("geopoint").getLongitude() +
-                            ") es de " + ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
-
                     UserList.add(user);
                 }
                 return null;
@@ -140,6 +139,11 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
             else {
 
                 for (String UserName : UsersUsingHashtag) {
+                    // TODO - Si pagas tener acceso a 75
+                    // Solo muestro 50 resultados para usuarios normales
+                    if (UserList.size() > 50) {
+                        break;
+                    }
                     try {
                         // Query para devolver los usuarios
                         ParseQuery<ParseUser> query;
@@ -167,10 +171,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
 
                     // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
                     user.setDistance(ActualGeopoint.distanceInKilometersTo(ob.get(0).getParseGeoPoint("geopoint")));
-                    System.out.println("RELACION: La distancia de (" + ActualGeopoint.getLatitude() + "," + ActualGeopoint.getLongitude() + ") a (" +
-                            ob.get(0).getParseGeoPoint("geopoint").getLatitude() + "," + ob.get(0).getParseGeoPoint("geopoint").getLongitude() +
-                            ") es de " + ActualGeopoint.distanceInKilometersTo(ob.get(0).getParseGeoPoint("geopoint")));
-
                     UserList.add(user);
                 }
                 return null;
