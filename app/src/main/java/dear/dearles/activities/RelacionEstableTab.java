@@ -38,12 +38,26 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
     User_ListViewAdapter adapter;
     private List<User> UserList = null;
 
+    String Hashtag;
+    ArrayList<String> UsersUsingHashtag;
+
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.relacionestabletab_fragment, container, false);
         app = (DearApp) getActivity().getApplication();
+
+        try {
+            Bundle bundle = getArguments();
+            // Lo usare para dar el title a la pantalla
+            Hashtag = bundle.getString("Hashtag");
+            // Lista de usuarios que he de listar en caso de provenir de una busqueda
+            UsersUsingHashtag = bundle.getStringArrayList("UsersUsingHashtag");
+
+        } catch (Exception e) {
+            System.out.println("Excepcion: " + e.getMessage());
+        }
 
         listview = (ListView) rootView.findViewById(R.id.listview_R);
 
@@ -66,7 +80,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
         new RemoteDataTask().execute();
     }
 
-
     // RemoteDataTask AsyncTask
     private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
         @Override
@@ -80,46 +93,88 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
             // Actualizo la loc del usuario y la subo a parse si el cambio es significativo
             // En caso de serlo guardo la posicion para calcular posteriormente todas las distancias respecto a este
             ParseGeoPoint ActualGeopoint = app.UpdateUserLoc(app.GetLastKnownLoc());
-
             // Create the array
             UserList = new ArrayList<User>();
 
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            try {
-                ob = query.find();
-            } catch (ParseException e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
             Uri placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
                     + getResources().getResourcePackageName(R.drawable.bglogin)
                     + '/' + getResources().getResourceTypeName(R.drawable.bglogin)
                     + '/' + getResources().getResourceEntryName(R.drawable.bglogin));
 
-            // Todo - Poner un limite de 50 para usuarios normales y de 75 para usuarios VIP
-            for (ParseObject userObject : ob) {
-                User user = new User();
-                user.setUsername(userObject.getString("username"));
-                user.setAge(userObject.getString("age"));
-                ParseFile image = (ParseFile) userObject.get("profilePicture");
-                if (image==null) {
-                    user.setProfilePicture(placeholderimageUri.toString());
-                } else {
-                    user.setProfilePicture(image.getUrl());
+            // No tienen un valor almacenado y por lo tanto estoy en Main
+            if ((Hashtag==null)||(UsersUsingHashtag==null)) {
+                try {
+                    // Query para devolver los usuarios
+                    ParseQuery<ParseUser> query;
+                    query = ParseUser.getQuery();
+                    ob = query.find();
+                } catch (ParseException e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
                 }
-                user.setDescription(userObject.getString("description"));
-                user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
 
-                // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
-                user.setDistance(ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
-                System.out.println("RELACION: La distancia de (" + ActualGeopoint.getLatitude() + "," + ActualGeopoint.getLongitude() + ") a (" +
-                        userObject.getParseGeoPoint("geopoint").getLatitude() + "," + userObject.getParseGeoPoint("geopoint").getLongitude() +
-                        ") es de " + ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
+                for (ParseObject userObject : ob) {
+                    User user = new User();
+                    user.setUsername(userObject.getString("username"));
+                    user.setAge(userObject.getString("age"));
+                    ParseFile image = (ParseFile) userObject.get("profilePicture");
+                    if (image==null) {
+                        user.setProfilePicture(placeholderimageUri.toString());
+                    } else {
+                        user.setProfilePicture(image.getUrl());
+                    }
+                    user.setDescription(userObject.getString("description"));
+                    user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
 
-                UserList.add(user);
+                    // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
+                    user.setDistance(ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
+                    System.out.println("RELACION: La distancia de (" + ActualGeopoint.getLatitude() + "," + ActualGeopoint.getLongitude() + ") a (" +
+                            userObject.getParseGeoPoint("geopoint").getLatitude() + "," + userObject.getParseGeoPoint("geopoint").getLongitude() +
+                            ") es de " + ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
+
+                    UserList.add(user);
+                }
+                return null;
             }
+            // Tienen un valor almacenado y por lo tanto vengo de Search
+            else {
 
-            return null;
+                for (String UserName : UsersUsingHashtag) {
+                    try {
+                        // Query para devolver los usuarios
+                        ParseQuery<ParseUser> query;
+                        query = ParseUser.getQuery();
+                        query.whereEqualTo("username", UserName);
+                        ob = query.find();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    User user = new User();
+
+                    user.setUsername(ob.get(0).getString("username"));
+                    System.out.println("USUARIO LEIDO DE LA BUSQUEDA EN PARSE: " + ob.get(0).getString("username"));
+
+                    user.setAge(ob.get(0).getString("age"));
+                    ParseFile image = (ParseFile) ob.get(0).get("profilePicture");
+                    if (image==null) {
+                        user.setProfilePicture(placeholderimageUri.toString());
+                    } else {
+                        user.setProfilePicture(image.getUrl());
+                    }
+                    user.setDescription(ob.get(0).getString("description"));
+                    user.setGeopoint(ob.get(0).getParseGeoPoint("geopoint"));
+
+                    // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
+                    user.setDistance(ActualGeopoint.distanceInKilometersTo(ob.get(0).getParseGeoPoint("geopoint")));
+                    System.out.println("RELACION: La distancia de (" + ActualGeopoint.getLatitude() + "," + ActualGeopoint.getLongitude() + ") a (" +
+                            ob.get(0).getParseGeoPoint("geopoint").getLatitude() + "," + ob.get(0).getParseGeoPoint("geopoint").getLongitude() +
+                            ") es de " + ActualGeopoint.distanceInKilometersTo(ob.get(0).getParseGeoPoint("geopoint")));
+
+                    UserList.add(user);
+                }
+                return null;
+            }
         }
 
         @Override

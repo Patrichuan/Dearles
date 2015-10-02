@@ -64,6 +64,12 @@
             android:name=".activities.Search"
             android:label="@string/title_activity_search"
             android:parentActivityName=".activities.Main"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activities.SearchResults"
+            android:label="@string/title_activity_search_results"
+            android:parentActivityName=".activities.Search"
             android:screenOrientation="portrait">
         </activity>
     </application>

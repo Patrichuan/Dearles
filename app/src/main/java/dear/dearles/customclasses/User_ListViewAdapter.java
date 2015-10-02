@@ -109,7 +109,6 @@ public class User_ListViewAdapter extends BaseAdapter {
         // Set the results into TextViews ----------------------------------------------------------------------------
         holder.Username.setText(UserList.get(position).getUsername().toUpperCase());
         holder.TestName.setText("< 5km");
-
         holder.Age.setText(", " + UserList.get(position).getAge());
 
         // Change color of Description Hashtags and make them bold. Then add them to a list

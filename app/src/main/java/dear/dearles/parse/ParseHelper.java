@@ -54,7 +54,7 @@ public class ParseHelper {
     // UpdateTopTenHashtags
     private int skip = 0;
     private static ArrayList<ParseObject> MostUsedHashtags;
-    private Boolean HashtagFeched;
+    private Boolean HashtagFetched;
 
 
 
@@ -237,7 +237,7 @@ public class ParseHelper {
         // Reseteo el numero de rows a saltar en cada consulta
         skip = 0;
         // Reseteo la variable que indica si se han leido ya los 10 hashtag con mas ocurrencias
-        HashtagFeched = false;
+        HashtagFetched = false;
         // Creo mi query recursiva que trae rows de 1000 en 1000
         ParseQuery<ParseObject> queryMostUsedHashtags = ParseQuery.getQuery("Hashtag");
         queryMostUsedHashtags.orderByDescending("Ocurrencies");
@@ -263,13 +263,7 @@ public class ParseHelper {
                     else {
                         // Reduzco mi lista a 10 elementos (los 10 hashtags con mas ocurrencias)
                         if (MostUsedHashtags.size()>10) MostUsedHashtags.subList(10,MostUsedHashtags.size()).clear();
-                        HashtagFeched = true;
-
-                        // Comprobacion rutinaria
-                        System.out.println("EL TOP10 DE HASHTAGS LO CONFORMAN: ");
-                        for (int i = 0; i<MostUsedHashtags.size(); i++) {
-                            System.out.println(i + ". " + MostUsedHashtags.get(i));
-                        }
+                        HashtagFetched = true;
                     }
                 }
             }
@@ -281,7 +275,7 @@ public class ParseHelper {
     }
 
     public Boolean isRdyTopTenHashtag () {
-        return HashtagFeched;
+        return HashtagFetched;
     }
 
 

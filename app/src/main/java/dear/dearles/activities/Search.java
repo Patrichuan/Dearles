@@ -24,7 +24,7 @@ public class Search extends AppCompatActivity {
 
     ListView mListview;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<ParseObject> Hashtags;
+    ArrayList<ParseObject> HashtagRows;
 
     protected DearApp app;
 
@@ -75,14 +75,14 @@ public class Search extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            Hashtags = app.getTopTenHashtags();
+            HashtagRows = app.getTopTenHashtags();
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             // Pass the results into an ArrayAdapter
-            Hashtag_ListViewAdapter adapter = new Hashtag_ListViewAdapter(Search.this, Hashtags);
+            Hashtag_ListViewAdapter adapter = new Hashtag_ListViewAdapter(Search.this, HashtagRows);
             // Binds the Adapter to the ListView
             mListview.setAdapter(adapter);
             // stopping swipe refresh

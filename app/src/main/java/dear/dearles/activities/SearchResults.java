@@ -12,13 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
+import dear.dearles.DearApp;
 import dear.dearles.R;
 import dear.dearles.customclasses.ViewPagerAdapter;
 import dear.dearles.slidingtab.SlidingTabLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-
-public class Main extends AppCompatActivity {
+public class SearchResults extends AppCompatActivity {
 
     ViewPager pager;
     ViewPagerAdapter adapter;
@@ -26,28 +28,26 @@ public class Main extends AppCompatActivity {
     CharSequence Titles[]={"Relación Estable","Amistad"};
     int Numboftabs =2;
 
+    ArrayList<String> UsersUsingHashtag;
+    String Hashtag;
+
+    protected DearApp app;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.search_results_layout);
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
+        Intent intent = getIntent();
+        Hashtag = intent.getStringExtra("Hashtag");
+        UsersUsingHashtag = intent.getStringArrayListExtra("UsersUsingHashtag");
+
         // Setups
         setupToolbar();
         setupTabs();
-        /*
-        Button LogOutbtn = (Button) findViewById(R.id.LogOut);
-        LogOutbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                app.LogOutUser();
-                Intent intent = new Intent(Main.this, Login.class);
-                startActivity(intent);
-            }
-        });
-        */
     }
 
     private void setupToolbar(){
@@ -61,7 +61,7 @@ public class Main extends AppCompatActivity {
 
     private void setupTabs() {
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs, Hashtag, UsersUsingHashtag);
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
@@ -81,7 +81,6 @@ public class Main extends AppCompatActivity {
         tabs.setViewPager(pager);
     }
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
@@ -90,28 +89,22 @@ public class Main extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_search_results, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.settings:
-                return true;
-            case R.id.search:
-                Intent intent = new Intent(this, Search.class);
-                startActivity(intent);
-                return true;
-            case R.id.judge:
-                return true;
-            case R.id.chat:
-                return true;
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
