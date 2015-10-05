@@ -54,9 +54,11 @@ public class ParseHelper {
     // UpdateTopTenHashtags
     private int skip = 0;
     private static ArrayList<ParseObject> MostUsedHashtags;
-    private Boolean HashtagFetched;
+    private Boolean Top10HashtagFetched;
 
-
+    // SingleSearchHashtag
+    private static ArrayList<ParseObject> SingleSearchHashtagRow;
+    private Boolean SingleSearchHashtagFetched;
 
 
 
@@ -83,6 +85,7 @@ public class ParseHelper {
         role.saveInBackground();
 
         MostUsedHashtags = new ArrayList<ParseObject>();
+        SingleSearchHashtagRow = new ArrayList<ParseObject>();
 
         LastLat = 0;
         LastLong = 0;
@@ -152,6 +155,43 @@ public class ParseHelper {
 
 
 
+
+
+
+
+
+    // Query que devuelve la row perteneciente al Hashtag recien leido
+    public void LaunchSingleSearchHashtag (String Tag) {
+        SingleSearchHashtagRow = new ArrayList<ParseObject>();
+        SingleSearchHashtagFetched = false;
+        ParseQuery<ParseObject> query = new ParseQuery<>("Hashtag");
+        query.whereEqualTo("Tag", Tag);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (list.size() == 0) {
+                    // No hay resultados
+                } else {
+                    SingleSearchHashtagRow.add(list.get(0));
+                }
+                SingleSearchHashtagFetched = true;
+            }
+        });
+    }
+
+    public ArrayList<ParseObject> getSingleSearchHashtag () {
+        return SingleSearchHashtagRow;
+    }
+
+    public Boolean isReadySingleSearchHashtag () {
+        return SingleSearchHashtagFetched;
+    }
+
+
+
+
+
+
     public void SaveUserHashtags (User user) {
         Pattern MY_PATTERN = Pattern.compile("#(\\w+)");
         UserHashtags = new ArrayList<String>();
@@ -194,7 +234,7 @@ public class ParseHelper {
                 object.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        System.out.println("No existia ya el hashtag: " + HashTag + " (CREADO para usuario " + Username + ")");
+                        System.out.println("No existia todavia el hashtag: " + HashTag + " (CREADO para usuario " + Username + ")");
                         if (++pos < UserHashtags.size()) {
                             CreateorUpdateHashtag();
                         }
@@ -229,7 +269,6 @@ public class ParseHelper {
     }
 
 
-    // TODO - SEGUIR AQUI
     // Hace consultas de 1000 en 1000 a Parse (es el limite de rows que tiene Parse por defecto)
     public void UpdateTopTenHashtags () {
         // Reseteo la lista de todos los hashtags descargados
@@ -237,7 +276,7 @@ public class ParseHelper {
         // Reseteo el numero de rows a saltar en cada consulta
         skip = 0;
         // Reseteo la variable que indica si se han leido ya los 10 hashtag con mas ocurrencias
-        HashtagFetched = false;
+        Top10HashtagFetched = false;
         // Creo mi query recursiva que trae rows de 1000 en 1000
         ParseQuery<ParseObject> queryMostUsedHashtags = ParseQuery.getQuery("Hashtag");
         queryMostUsedHashtags.orderByDescending("Ocurrencies");
@@ -263,7 +302,7 @@ public class ParseHelper {
                     else {
                         // Reduzco mi lista a 10 elementos (los 10 hashtags con mas ocurrencias)
                         if (MostUsedHashtags.size()>10) MostUsedHashtags.subList(10,MostUsedHashtags.size()).clear();
-                        HashtagFetched = true;
+                        Top10HashtagFetched = true;
                     }
                 }
             }
@@ -275,7 +314,7 @@ public class ParseHelper {
     }
 
     public Boolean isRdyTopTenHashtag () {
-        return HashtagFetched;
+        return Top10HashtagFetched;
     }
 
 
@@ -309,7 +348,7 @@ public class ParseHelper {
     public void LogOutUser () {
         ParseUser currentuser = ParseUser.getCurrentUser();
         if ((currentuser!=null)&&(currentuser.getUsername()!=null)) {
-            System.out.println("Successfully Logged out");
+            System.out.println("DESLOGEADO CON EXITO !!");
             ParseUser.logOut();
         }
     }

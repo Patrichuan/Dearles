@@ -125,6 +125,23 @@ public class DearApp extends Application {
 
 
 
+
+    public void LaunchSingleSearchHashtag (String Tag) {
+        DB.LaunchSingleSearchHashtag(Tag);
+    }
+
+    public ArrayList<ParseObject> getSingleSearchHashtag () {
+        return DB.getSingleSearchHashtag();
+    }
+
+    public Boolean isRdySingleSearchHashtag () {
+        return DB.isReadySingleSearchHashtag();
+    }
+
+
+
+
+
     // SHAREDPREFERENCES METHODS--------------------------------------------------------------------
     public void InitializePreferences () {
         Preferences = new PreferencesHelper(getContext());

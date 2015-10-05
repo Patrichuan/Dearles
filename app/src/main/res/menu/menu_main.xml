@@ -26,9 +26,18 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/logout"
+        android:title="Log out"
+        android:orderInCategory="5"
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/settings"
         android:title="Settings"
         android:orderInCategory="4"
         android:icon="@drawable/ic_more_vert_white_24dp"
         app:showAsAction="never"/>
+
+
 </menu>

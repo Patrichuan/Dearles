@@ -14,23 +14,64 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:background="?attr/colorPrimary">
-    </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_below="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
-
-        <ListView
-            android:id="@+id/listview"
-            android:divider="@drawable/custom_divider"
-            android:dividerHeight="2dp"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </ListView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:inputType="text"
+                android:drawablePadding = "10dp"
+                android:drawableLeft="@drawable/ic_search_white_24dp"
+
+                android:hint="Buscar Hashtag"
+                android:paddingBottom="0dp"
+                android:paddingTop="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionSearch"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <FrameLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ListView
+                android:id="@+id/listview"
+                android:divider="@drawable/custom_divider"
+                android:dividerHeight="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/TextNotFound"
+            android:layout_gravity="top|center_horizontal"
+            android:textColor="@color/secondary_text"
+            android:text="Results not found"
+            android:visibility="invisible"
+            android:layout_margin="30dp"
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
 
 </RelativeLayout>

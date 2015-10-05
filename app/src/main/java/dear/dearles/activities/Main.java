@@ -13,7 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import dear.dearles.DearApp;
 import dear.dearles.R;
 import dear.dearles.customclasses.ViewPagerAdapter;
 import dear.dearles.slidingtab.SlidingTabLayout;
@@ -28,10 +30,17 @@ public class Main extends AppCompatActivity {
     CharSequence Titles[]={"Relación Estable","Amistad"};
     int Numboftabs =2;
 
+    protected DearApp app;
+
+    int backButtonCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        backButtonCount = 0;
+
+        app = (DearApp) getApplication();
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -89,6 +98,29 @@ public class Main extends AppCompatActivity {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 
+
+    /**
+     * Back button listener.
+     * Will close the application if the back button pressed twice.
+     */
+    @Override
+    public void onBackPressed()
+    {
+        if(backButtonCount >= 1)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -102,16 +134,24 @@ public class Main extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.settings:
                 return true;
             case R.id.search:
-                Intent intent = new Intent(this, Search.class);
+                intent = new Intent(this, Search.class);
                 startActivity(intent);
                 return true;
             case R.id.judge:
                 return true;
             case R.id.chat:
+                return true;
+            case R.id.logout:
+                if (app.isUserLoggedIn()) {
+                    app.LogOutUser();
+                    intent = new Intent(this, Login.class);
+                    startActivity(intent);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -5,12 +5,18 @@
     tools:context="dear.dearles.activities.Search">
 
     <item
-        android:id="@+id/search"
-        android:title="Search"
+        android:id="@+id/clear"
+        android:title="close"
         android:orderInCategory="1"
-        android:actionViewClass="android.widget.SearchView"
-        android:icon="@drawable/ic_search_white_24dp"
+        android:icon="@drawable/ic_clear_white_24dp"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/logout"
+        android:title="Log out"
+        android:orderInCategory="3"
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_settings"

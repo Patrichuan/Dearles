@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dear.dearles.R;
 import dear.dearles.DearApp;
@@ -25,10 +26,14 @@ public class Login extends AppCompatActivity {
     Button Loginbtn;
     User user;
 
+    int backButtonCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+
+        backButtonCount = 0;
 
         app = (DearApp) getApplication();
 
@@ -99,6 +104,27 @@ public class Login extends AppCompatActivity {
         return Correct;
     }
 
+
+    /**
+     * Back button listener.
+     * Will close the application if the back button pressed twice.
+     */
+    @Override
+    public void onBackPressed()
+    {
+        if(backButtonCount >= 1)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
+    }
 
 
     @Override
