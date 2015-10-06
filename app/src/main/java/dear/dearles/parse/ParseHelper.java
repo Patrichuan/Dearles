@@ -172,7 +172,7 @@ public class ParseHelper {
         SingleSearchHashtagRow = new ArrayList<ParseObject>();
         SingleSearchHashtagFetched = false;
         ParseQuery<ParseObject> query = new ParseQuery<>("Hashtag");
-        query.whereEqualTo("Tag", Tag);
+        query.whereEqualTo("Tag", Tag.toUpperCase());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -214,7 +214,7 @@ public class ParseHelper {
     // Metodo recursivo que da de alta todos los hashtags de la descripcion de un usuario recien dado de alta
     public void CreateorUpdateHashtag () {
         // En cada iteración leo uno de los Hashtags de la descripcion
-        HashTag = UserHashtags.get(pos);
+        HashTag = UserHashtags.get(pos).toUpperCase();
         System.out.println("EL HASHTAG DE LA POSICION " + pos + " ES: " + HashTag);
         // Query que devuelve la row perteneciente al Hashtag recien leido
         ParseQuery<ParseObject> query = new ParseQuery<>("Hashtag");

@@ -64,7 +64,7 @@ public class Hashtag_ListViewAdapter extends BaseAdapter {
 
         // Set the results into TextViews ----------------------------------------------------------------------------
         String Hashtag = HashtagRows.get(position).get("Tag").toString();
-        String FormattedHashtag = "#"+Hashtag.substring(0, 1).toUpperCase() + Hashtag.substring(1).toLowerCase();
+        String FormattedHashtag = Hashtag.substring(0, 1).toUpperCase() + Hashtag.substring(1).toLowerCase();
 
         int Ocurrencies = (int) HashtagRows.get(position).get("Ocurrencies");
         String FormattedOcurrencies = String.valueOf(Ocurrencies) + " usuarias han usado este hashtag";

@@ -21,6 +21,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
@@ -50,7 +51,9 @@ public class Search extends AppCompatActivity {
     private boolean isCloseiconVisible = false;
     private EditText searchEditText;
 
+    RelativeLayout RLParent;
     TextView TextnotFound;
+    String StringFromEdittext;
 
     protected DearApp app;
 
@@ -64,6 +67,7 @@ public class Search extends AppCompatActivity {
         setupToolbar();
 
         TextnotFound = (TextView) findViewById(R.id.TextNotFound);
+        RLParent = (RelativeLayout) findViewById(R.id.RlParent);
         mListview = (ListView) findViewById(R.id.listview);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
@@ -117,6 +121,7 @@ public class Search extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (searchEditText.length() >= 1) {
                         mSwipeRefreshLayout.setRefreshing(true);
+                        StringFromEdittext = searchEditText.getText().toString();
                         new RemoteSingleSearchDataTask().execute();
                     }
                 }
@@ -176,7 +181,7 @@ public class Search extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            app.LaunchSingleSearchHashtag(searchEditText.getText().toString());
+            app.LaunchSingleSearchHashtag(StringFromEdittext);
             while (!app.isRdySingleSearchHashtag()) {
                 try {
                     Thread.sleep(100);
@@ -224,6 +229,7 @@ public class Search extends AppCompatActivity {
     private void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        RLParent.requestFocus();
     }
 
     // Override al onPrepare para poder instanciar el icono
