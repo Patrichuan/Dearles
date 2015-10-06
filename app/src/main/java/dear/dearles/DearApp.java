@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.location.Location;
+import android.support.design.widget.CoordinatorLayout;
 
 import com.google.android.gms.common.api.Status;
 import com.parse.ParseGeoPoint;
@@ -93,8 +94,8 @@ public class DearApp extends Application {
         DB.SignUpUser(user, this);
     }
 
-    public void SignInUser(User user, Context LoginContext) {
-        DB.SignInUser(user, LoginContext);
+    public void SignInUser(User user, CoordinatorLayout Coordinator) {
+        DB.SignInUser(user, Coordinator);
     }
 
     public void LogOutUser() {

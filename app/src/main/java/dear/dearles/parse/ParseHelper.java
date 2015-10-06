@@ -2,11 +2,18 @@ package dear.dearles.parse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -325,20 +332,25 @@ public class ParseHelper {
 
 
 
-    public void SignInUser (User user, final Context LoginContext) {
+    public void SignInUser (User user, final CoordinatorLayout Coordinator) {
         System.out.println("ESTOY EN SIGNIN USER !!");
         ParseUser.logInInBackground(user.getUsername(), user.getPassword(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     System.out.println("CREDENCIALES CORRECTAS");
                     //Toast.makeText(context, "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginContext, Main.class);
+                    Intent intent = new Intent(context, Main.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 } else {
                     // Signup failed. Look at the ParseException to see what happened.
-                    System.out.println("FUCKING IMPOSTOR, NOOOO PASARAAS!!");
-                    Toast.makeText(context, "FUCKING IMPOSTOR, NOOOO PASARAAS!!", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(Coordinator, "Credenciales incorrectas. Comprueba que tu username y/o password son correctos !!", Snackbar.LENGTH_LONG);
+                    View snackbarView = snackbar.getView();
+                    snackbarView.setBackgroundColor(ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark));
+                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(ContextCompat.getColor(Coordinator.getContext(), R.color.icons));
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
+                    snackbar.show();
                 }
             }
         });

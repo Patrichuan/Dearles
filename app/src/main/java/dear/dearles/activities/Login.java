@@ -2,9 +2,14 @@ package dear.dearles.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +33,9 @@ public class Login extends AppCompatActivity {
 
     int backButtonCount;
 
+    CoordinatorLayout Coordinator;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +44,7 @@ public class Login extends AppCompatActivity {
         backButtonCount = 0;
 
         app = (DearApp) getApplication();
+        Coordinator = (CoordinatorLayout) findViewById(R.id.Coordinator);
 
         user = new User();
         user = app.getUserFromSharedpref();
@@ -64,7 +73,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isAllCorrect()) {
-                    app.SignInUser(user, Login.this);
+                    app.SignInUser(user, Coordinator);
                 }
             }
         });
@@ -121,7 +130,14 @@ public class Login extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(Coordinator, "Pulsa de nuevo 'back' para salir de la aplicación", Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor((ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark)));
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(ContextCompat.getColor(this, R.color.icons));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
+            snackbar.show();
+            //Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
             backButtonCount++;
         }
     }

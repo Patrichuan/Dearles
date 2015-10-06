@@ -3,16 +3,22 @@ package dear.dearles.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import dear.dearles.DearApp;
@@ -32,6 +38,7 @@ public class Main extends AppCompatActivity {
 
     protected DearApp app;
 
+    CoordinatorLayout Coordinator;
     int backButtonCount;
 
     @Override
@@ -41,6 +48,8 @@ public class Main extends AppCompatActivity {
         backButtonCount = 0;
 
         app = (DearApp) getApplication();
+
+        Coordinator = (CoordinatorLayout) findViewById(R.id.Coordinator);
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -83,7 +92,7 @@ public class Main extends AppCompatActivity {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
+                return ContextCompat.getColor(Main.this, R.color.tabsScrollColor);
             }
         });
         // tab_indicator define esteticamente las pestañas
@@ -115,7 +124,14 @@ public class Main extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(Coordinator, "Pulsa de nuevo 'back' para salir de la aplicación", Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark));
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(ContextCompat.getColor(this, R.color.icons));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
+            snackbar.show();
+            //Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
             backButtonCount++;
         }
     }
