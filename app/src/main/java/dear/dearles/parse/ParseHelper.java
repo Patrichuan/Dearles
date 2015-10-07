@@ -71,7 +71,7 @@ public class ParseHelper {
 
 
 
-
+    // CONSTRUCTOR AND INITIALIZE RELATED METHODS------------------------------------------------------------------------------------
     public ParseHelper (Context context) {
         this.context = context;
     }
@@ -83,7 +83,6 @@ public class ParseHelper {
 
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
-        // If you would like all objects to be private by default, remove this line.
         defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 
@@ -100,11 +99,32 @@ public class ParseHelper {
         LastLong = 0;
     }
 
-    public void Test () {
-        // Parse Test
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+
+
+
+    // SIGN IN AND SING UP RELATED METHODS-------------------------------------------------------------------------------------------
+    public void SignInUser (User user, final CoordinatorLayout Coordinator) {
+        System.out.println("ESTOY EN SIGNIN USER !!");
+        ParseUser.logInInBackground(user.getUsername(), user.getPassword(), new LogInCallback() {
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+                    System.out.println("CREDENCIALES CORRECTAS");
+                    //Toast.makeText(context, "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, Main.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                } else {
+                    // Signup failed. Look at the ParseException to see what happened.
+                    Snackbar snackbar = Snackbar.make(Coordinator, "Credenciales incorrectas. Comprueba que tu username y/o password son correctos !!", Snackbar.LENGTH_LONG);
+                    View snackbarView = snackbar.getView();
+                    snackbarView.setBackgroundColor(ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark));
+                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(ContextCompat.getColor(Coordinator.getContext(), R.color.icons));
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
+                    snackbar.show();
+                }
+            }
+        });
     }
 
     public void SignUpUser(final User user, Context context) {
@@ -162,14 +182,33 @@ public class ParseHelper {
         }
     }
 
+    public void LogOutUser () {
+        ParseUser currentuser = ParseUser.getCurrentUser();
+        if ((currentuser!=null)&&(currentuser.getUsername()!=null)) {
+            System.out.println("DESLOGEADO CON EXITO !!");
+            ParseUser.logOut();
+        }
+    }
+
+
+    public Boolean isUserLoggedIn () {
+        Boolean UserInside = false;
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // do stuff with the user
+            UserInside = true;
+        } else {
+            // show the signup or login screen
+        }
+        return UserInside;
+    }
 
 
 
 
 
-
-
-    // Query que devuelve la row perteneciente al Hashtag recien leido
+    // HASHTAG RELATED METHODS------------------------------------------------------------------------------------------------------
+    // Query que lanza una consulta para que conseguir la row perteneciente al Hashtag pasado como parametro
     public void LaunchSingleSearchHashtag (String Tag) {
         SingleSearchHashtagRow = new ArrayList<ParseObject>();
         SingleSearchHashtagFetched = false;
@@ -198,9 +237,7 @@ public class ParseHelper {
 
 
 
-
-
-
+    // Metodo que pasado un usuario como parametro toma su descripcion y crea/actualiza en parse los hashtags presentes en esta
     public void SaveUserHashtags (User user) {
         Pattern MY_PATTERN = Pattern.compile("#(\\w+)");
         UserHashtags = new ArrayList<String>();
@@ -213,7 +250,7 @@ public class ParseHelper {
         CreateorUpdateHashtag();
     }
 
-    // Metodo recursivo que da de alta todos los hashtags de la descripcion de un usuario recien dado de alta
+    // Metodo recursivo que da de alta/actualiza y al final de esta operacion actualiza el Top10
     public void CreateorUpdateHashtag () {
         // En cada iteración leo uno de los Hashtags de la descripcion
         HashTag = UserHashtags.get(pos).toUpperCase();
@@ -277,8 +314,8 @@ public class ParseHelper {
         UpdateTopTenHashtags();
     }
 
-
-    // Hace consultas de 1000 en 1000 a Parse (es el limite de rows que tiene Parse por defecto)
+    // Metodo que actualiza el Top10 de Hashtags mas usados
+    // Importante: Hace consultas de 1000 en 1000 a Parse (es el limite de rows que tiene Parse por defecto)
     public void UpdateTopTenHashtags () {
         // Reseteo la lista de todos los hashtags descargados
         MostUsedHashtags = new ArrayList<ParseObject>();
@@ -331,91 +368,42 @@ public class ParseHelper {
 
 
 
-
-
-
-    public void SignInUser (User user, final CoordinatorLayout Coordinator) {
-        System.out.println("ESTOY EN SIGNIN USER !!");
-        ParseUser.logInInBackground(user.getUsername(), user.getPassword(), new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    System.out.println("CREDENCIALES CORRECTAS");
-                    //Toast.makeText(context, "ESTAS DENTRO !!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, Main.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                } else {
-                    // Signup failed. Look at the ParseException to see what happened.
-                    Snackbar snackbar = Snackbar.make(Coordinator, "Credenciales incorrectas. Comprueba que tu username y/o password son correctos !!", Snackbar.LENGTH_LONG);
-                    View snackbarView = snackbar.getView();
-                    snackbarView.setBackgroundColor(ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark));
-                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setTextColor(ContextCompat.getColor(Coordinator.getContext(), R.color.icons));
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
-                    snackbar.show();
-                }
-            }
-        });
+    // GEOPOINTS RELATED METHODS----------------------------------------------------------------------------------------------------
+    // Metodo que actualiza la ultima posicion conocida
+    public void UpdateLastKnownLoc (double latitude, double longitude) {
+        LastLat = latitude;
+        LastLong = longitude;
     }
 
-
-    public void LogOutUser () {
-        ParseUser currentuser = ParseUser.getCurrentUser();
-        if ((currentuser!=null)&&(currentuser.getUsername()!=null)) {
-            System.out.println("DESLOGEADO CON EXITO !!");
-            ParseUser.logOut();
-        }
-    }
-
-
-    public Boolean isUserLoggedIn () {
-        Boolean UserInside = false;
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
-            // do stuff with the user
-            UserInside = true;
-        } else {
-            // show the signup or login screen
-        }
-        return UserInside;
-    }
-
-
-    // Metodo que actualiza en parse la posicion del usuario (solo en caso de ser diferente a la ultima almacenada)
-    // y devuelve latitud y longitud como un ParseGeoPoint
-    public ParseGeoPoint UpdateUserLatLong (double latitude, double longitude) {
-        // AL LOGEAR SE INICIALIZA !!
-        final ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
-        final ParseUser currentUser = ParseUser.getCurrentUser();
+    // Funcion que indica si ha sido necesario actualizar la ultima posicion conocida por la pasada como parametro
+    public Boolean LastKnownLocUpdateHasBeenNeeded (double latitude, double longitude) {
         boolean UpdateLocNeeded = false;
-
-        System.out.println("El geopoint recien recogido es: " + latitude + " , " + longitude);
-
         // Si es la primera vez que voy a actualizar la posicion del usuario
         if ((LastLat == 0)&&(LastLong == 0)) {
             System.out.println("El ultimo geopoint conocido era 0,0 y por lo tanto he de actualizarlo si o si con el LastKnownLocation del dispositivo");
-            LastLat = geoPoint.getLatitude();
-            LastLong = geoPoint.getLongitude();
+            UpdateLastKnownLoc (latitude, longitude);
             UpdateLocNeeded = true;
-        // En caso de no serlo
+            // En caso de no serlo
         } else {
-            int y = Double.compare(LastLat, geoPoint.getLatitude());
-            int x = Double.compare(LastLong, geoPoint.getLongitude());
+            int y = Double.compare(LastLat, latitude);
+            int x = Double.compare(LastLong, longitude);
             // Si la ultima posicion conocida es diferente (0 es que son iguales ambos double)
             if ((x!=0)||(y!=0)) {
                 System.out.println("El ultimo geopoint conocido es: " + LastLat + " , " + LastLong);
                 System.out.println("Y como las coordenadas recogidas son " + latitude + " , " + longitude + " he de actualizar el geopoint de parse si o si");
-                LastLat = geoPoint.getLatitude();
-                LastLong = geoPoint.getLongitude();
+                UpdateLastKnownLoc (latitude, longitude);
                 UpdateLocNeeded = true;
-            // Si la ultima posicion conocida es la misma (no hay necesidad de subirla a parse)
-            } else {
-
+                // Si la ultima posicion conocida es la misma (no hay necesidad de subirla a parse)
             }
         }
+        return UpdateLocNeeded;
+    }
 
-        if (UpdateLocNeeded) {
-            // En caso de
+    // Metodo que actualiza en parse la posicion del usuario y devuelve latitud y longitud como un ParseGeoPoint
+    public void UpdateUserLastKnownLocIfNeeded (double latitude, double longitude) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
+        if (LastKnownLocUpdateHasBeenNeeded(latitude, longitude)) {
             currentUser.put("geopoint", geoPoint);
             currentUser.saveInBackground(new SaveCallback() {
                 @Override
@@ -429,20 +417,25 @@ public class ParseHelper {
         } else {
             System.out.println("No hubo necesidad de subir el geopoint a Parse");
         }
-
-        return geoPoint;
     }
 
-    // Convert ParseUser to User and add it the current location
-    public User ParseUserToUser (ParseUser pUser, Location LastKnownLoc) {
+
+
+
+
+
+    // OTHER RELATED METHODS--------------------------------------------------------------------------------------------------------------
+    // Funcion que convierte un ParseUser en User y almacena la distancia en Kilometros de este con respecto a la posicion actual
+    public User ParseUserToUser (ParseUser pUser, Location ActualLoc) {
         Uri placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
                 + context.getResources().getResourcePackageName(R.drawable.bglogin)
                 + '/' + context.getResources().getResourceTypeName(R.drawable.bglogin)
                 + '/' + context.getResources().getResourceEntryName(R.drawable.bglogin));
 
-        // Actualizo la loc del usuario y la subo a parse si el cambio es significativo
-        // En caso de serlo guardo la posicion para calcular posteriormente todas las distancias respecto a este
-        ParseGeoPoint ActualGeopoint = UpdateUserLatLong(LastKnownLoc.getLatitude(), LastKnownLoc.getLongitude());
+        // Actualizo la loc del usuario en caso de haber cambiado esta significativamente
+        UpdateUserLastKnownLocIfNeeded(ActualLoc.getLatitude(), ActualLoc.getLongitude());
+        // y la paso a ParseGeoPoint para poder calcular distancias al resto de usuarios
+        ParseGeoPoint ActualgeoPoint = new ParseGeoPoint(ActualLoc.getLatitude(), ActualLoc.getLongitude());
 
         User user = new User();
         user.setUsername(pUser.getString("username"));
@@ -456,8 +449,8 @@ public class ParseHelper {
         user.setDescription(pUser.getString("description"));
         user.setGeopoint(pUser.getParseGeoPoint("geopoint"));
 
-        // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
-        user.setDistance(ActualGeopoint.distanceInKilometersTo(pUser.getParseGeoPoint("geopoint")));
+        // OJO !!. APROVECHO PARA CALCULAR LA DISTANCIA EN Km ENTRE LA POSICION DEL USUARIO TRANSFORMADO Y LA ACTUAL
+        user.setDistance(ActualgeoPoint.distanceInKilometersTo(pUser.getParseGeoPoint("geopoint")));
         return user;
     }
 

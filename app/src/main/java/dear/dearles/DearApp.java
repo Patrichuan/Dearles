@@ -57,6 +57,9 @@ public class DearApp extends Application {
     }
 
 
+
+
+
     // SCREENPROPORTION METHODS---------------------------------------------------------------------
     public void InitializeScreenMeasurement () {
         SP = new ScreenMeasurement(getContext());
@@ -79,6 +82,9 @@ public class DearApp extends Application {
     }
 
 
+
+
+
     // GOOGLE LOC METHODS---------------------------------------------------------------------------
     public void InitializeLoc () {
         Loc = new LocationAwareness(getContext());
@@ -91,6 +97,9 @@ public class DearApp extends Application {
     public Status getLocationStatus () {
         return Loc.getLocationSettingsStatus();
     }
+
+
+
 
 
 
@@ -120,6 +129,8 @@ public class DearApp extends Application {
         return DB.ParseUserToUser(pUser, GetLastKnownLoc());
     }
 
+
+
     public void UpdateTopTenHashtags () {
         DB.UpdateTopTenHashtags();
     }
@@ -134,9 +145,6 @@ public class DearApp extends Application {
 
 
 
-
-
-
     public void LaunchSingleSearchHashtag (String Tag) {
         DB.LaunchSingleSearchHashtag(Tag);
     }
@@ -148,6 +156,7 @@ public class DearApp extends Application {
     public Boolean isRdySingleSearchHashtag () {
         return DB.isReadySingleSearchHashtag();
     }
+
 
 
 
@@ -174,7 +183,7 @@ public class DearApp extends Application {
 
 
 
-    // ---------------------------------------------------------------------------------------------
+    // OTHER METHODS--------------------------------------------------------------------------------
 
     // Exit App if use back button twice
     public void ExitIfTwiceBack (CoordinatorLayout Coordinator) {
@@ -199,18 +208,8 @@ public class DearApp extends Application {
         }
     }
 
-
     public static Context getContext() {
         return instance.getApplicationContext();
     }
-
-    /*
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        checkPlayServices();
-    }
-    */
 
 }
