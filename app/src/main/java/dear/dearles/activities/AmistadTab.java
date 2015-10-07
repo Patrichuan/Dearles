@@ -1,7 +1,5 @@
 package dear.dearles.activities;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,9 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -31,10 +26,11 @@ import dear.dearles.customclasses.User;
 public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // Todo - Particularizar consulta para sacar solo usuari@s que busquen Amistad
+    int NORMAL_USER_RESULT_LIMIT = 50;
     DearApp app;
     // Declare Variables
     ListView listview;
-    List<ParseUser> ob;
+    List<ParseUser> ParseUserList;
     User_ListViewAdapter adapter;
     List<User> UserList = null;
     ParseQuery<ParseUser> query;
@@ -90,83 +86,40 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
 
         @Override
         protected Void doInBackground(Void... params) {
-
-            // Actualizo la loc del usuario y la subo a parse si el cambio es significativo
-            // En caso de serlo guardo la posicion para calcular posteriormente todas las distancias respecto a este
-            ParseGeoPoint ActualGeopoint = app.UpdateUserLoc(app.GetLastKnownLoc());
             // Create the array
             UserList = new ArrayList<User>();
-
-            Uri placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                    + getResources().getResourcePackageName(R.drawable.bglogin)
-                    + '/' + getResources().getResourceTypeName(R.drawable.bglogin)
-                    + '/' + getResources().getResourceEntryName(R.drawable.bglogin));
-
             // No tienen un valor almacenado y por lo tanto estoy en Main
             if ((Hashtag==null)||(UsersUsingHashtag==null)) {
                 try {
                     query = ParseUser.getQuery();
-                    ob = query.find();
+                    ParseUserList = query.find();
                 } catch (ParseException e) {
                     Log.e("Error", e.getMessage());
                     e.printStackTrace();
                 }
 
-                for (ParseObject userObject : ob) {
-                    if (UserList.size() > 50) {
+                for (ParseUser pUser : ParseUserList) {
+                    if (UserList.size() > NORMAL_USER_RESULT_LIMIT) {
                         break;
                     }
-                    User user = new User();
-                    user.setUsername(userObject.getString("username"));
-                    user.setAge(userObject.getString("age"));
-                    ParseFile image = (ParseFile) userObject.get("profilePicture");
-                    if (image==null) {
-                        user.setProfilePicture(placeholderimageUri.toString());
-                    } else {
-                        user.setProfilePicture(image.getUrl());
-                    }
-                    user.setDescription(userObject.getString("description"));
-                    user.setGeopoint(userObject.getParseGeoPoint("geopoint"));
-
-                    // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
-                    user.setDistance(ActualGeopoint.distanceInKilometersTo(userObject.getParseGeoPoint("geopoint")));
-                    UserList.add(user);
+                    UserList.add(app.ParseUsertoUser(pUser));
                 }
                 return null;
             }
             // Tienen un valor almacenado y por lo tanto vengo de Search
             else {
-
                 for (String UserName : UsersUsingHashtag) {
-                    // TODO - Si pagas tener acceso a 75
-                    // Solo muestro 50 resultados para usuarios normales
-                    if (UserList.size() > 50) {
+                    if (UserList.size() > NORMAL_USER_RESULT_LIMIT) {
                         break;
                     }
                     try {
                         query = ParseUser.getQuery();
                         query.whereEqualTo("username", UserName);
-                        ob = query.find();
+                        ParseUserList = query.find();
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-                    User user = new User();
-
-                    user.setUsername(ob.get(0).getString("username"));
-                    user.setAge(ob.get(0).getString("age"));
-                    ParseFile image = (ParseFile) ob.get(0).get("profilePicture");
-                    if (image==null) {
-                        user.setProfilePicture(placeholderimageUri.toString());
-                    } else {
-                        user.setProfilePicture(image.getUrl());
-                    }
-                    user.setDescription(ob.get(0).getString("description"));
-                    user.setGeopoint(ob.get(0).getParseGeoPoint("geopoint"));
-
-                    // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
-                    user.setDistance(ActualGeopoint.distanceInKilometersTo(ob.get(0).getParseGeoPoint("geopoint")));
-                    UserList.add(user);
+                    UserList.add(app.ParseUsertoUser(ParseUserList.get(0)));
                 }
                 return null;
             }

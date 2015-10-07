@@ -1,8 +1,10 @@
 package dear.dearles.parse;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -381,7 +383,7 @@ public class ParseHelper {
 
     // Metodo que actualiza en parse la posicion del usuario (solo en caso de ser diferente a la ultima almacenada)
     // y devuelve latitud y longitud como un ParseGeoPoint
-    public ParseGeoPoint UpdateUserLoc(double latitude, double longitude) {
+    public ParseGeoPoint UpdateUserLatLong (double latitude, double longitude) {
         // AL LOGEAR SE INICIALIZA !!
         final ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
         final ParseUser currentUser = ParseUser.getCurrentUser();
@@ -429,6 +431,34 @@ public class ParseHelper {
         }
 
         return geoPoint;
+    }
+
+    // Convert ParseUser to User and add it the current location
+    public User ParseUserToUser (ParseUser pUser, Location LastKnownLoc) {
+        Uri placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + context.getResources().getResourcePackageName(R.drawable.bglogin)
+                + '/' + context.getResources().getResourceTypeName(R.drawable.bglogin)
+                + '/' + context.getResources().getResourceEntryName(R.drawable.bglogin));
+
+        // Actualizo la loc del usuario y la subo a parse si el cambio es significativo
+        // En caso de serlo guardo la posicion para calcular posteriormente todas las distancias respecto a este
+        ParseGeoPoint ActualGeopoint = UpdateUserLatLong(LastKnownLoc.getLatitude(), LastKnownLoc.getLongitude());
+
+        User user = new User();
+        user.setUsername(pUser.getString("username"));
+        user.setAge(pUser.getString("age"));
+        ParseFile image = (ParseFile) pUser.get("profilePicture");
+        if (image==null) {
+            user.setProfilePicture(placeholderimageUri.toString());
+        } else {
+            user.setProfilePicture(image.getUrl());
+        }
+        user.setDescription(pUser.getString("description"));
+        user.setGeopoint(pUser.getParseGeoPoint("geopoint"));
+
+        // Saco la distancia de mi punto al de todos los usuarios y almaceno en cada uno dicha distancia a mi
+        user.setDistance(ActualGeopoint.distanceInKilometersTo(pUser.getParseGeoPoint("geopoint")));
+        return user;
     }
 
 }

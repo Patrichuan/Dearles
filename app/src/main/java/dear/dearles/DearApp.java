@@ -1,6 +1,5 @@
 package dear.dearles;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.Status;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -24,7 +24,6 @@ import dear.dearles.customclasses.User;
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class DearApp extends Application {
 
@@ -117,8 +116,8 @@ public class DearApp extends Application {
         return DB.isUserLoggedIn();
     }
 
-    public ParseGeoPoint UpdateUserLoc (Location loc) {
-        return DB.UpdateUserLoc(loc.getLatitude(), loc.getLongitude());
+    public User ParseUsertoUser (ParseUser pUser) {
+        return DB.ParseUserToUser(pUser, GetLastKnownLoc());
     }
 
     public void UpdateTopTenHashtags () {
