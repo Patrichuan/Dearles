@@ -32,7 +32,7 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
     ListView listview;
     List<ParseUser> ParseUserList;
     User_ListViewAdapter adapter;
-    List<User> UserList = null;
+    List<User> UserList;
     ParseQuery<ParseUser> query;
 
     String Hashtag;
@@ -86,9 +86,10 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
 
         @Override
         protected Void doInBackground(Void... params) {
-            // Create the array
+            // Inicializo el ArrayList de Users
             UserList = new ArrayList<User>();
-            // No tienen un valor almacenado y por lo tanto estoy en Main
+
+            // Si el bundle devolvio Null en cada uno es porque estoy en Main (no vengo de Search)
             if ((Hashtag==null)||(UsersUsingHashtag==null)) {
                 try {
                     query = ParseUser.getQuery();
@@ -106,7 +107,8 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                 }
                 return null;
             }
-            // Tienen un valor almacenado y por lo tanto vengo de Search
+
+            // Si el bundle devolvio valores distintos de null es porque estoy en SearchResult (vengo de Search)
             else {
                 for (String UserName : UsersUsingHashtag) {
                     if (UserList.size() > NORMAL_USER_RESULT_LIMIT) {
