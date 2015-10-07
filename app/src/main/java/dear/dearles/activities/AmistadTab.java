@@ -31,12 +31,13 @@ import dear.dearles.customclasses.User;
 public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // Todo - Particularizar consulta para sacar solo usuari@s que busquen Amistad
-    protected DearApp app;
+    DearApp app;
     // Declare Variables
     ListView listview;
     List<ParseUser> ob;
     User_ListViewAdapter adapter;
-    private List<User> UserList = null;
+    List<User> UserList = null;
+    ParseQuery<ParseUser> query;
 
     String Hashtag;
     ArrayList<String> UsersUsingHashtag;
@@ -93,8 +94,6 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
             // Actualizo la loc del usuario y la subo a parse si el cambio es significativo
             // En caso de serlo guardo la posicion para calcular posteriormente todas las distancias respecto a este
             ParseGeoPoint ActualGeopoint = app.UpdateUserLoc(app.GetLastKnownLoc());
-            // Query para devolver los usuarios
-            ParseQuery<ParseUser> query;
             // Create the array
             UserList = new ArrayList<User>();
 
@@ -137,7 +136,10 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
             }
             // Tienen un valor almacenado y por lo tanto vengo de Search
             else {
+
                 for (String UserName : UsersUsingHashtag) {
+                    // TODO - Si pagas tener acceso a 75
+                    // Solo muestro 50 resultados para usuarios normales
                     if (UserList.size() > 50) {
                         break;
                     }
@@ -150,6 +152,7 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                     }
 
                     User user = new User();
+
                     user.setUsername(ob.get(0).getString("username"));
                     user.setAge(ob.get(0).getString("age"));
                     ParseFile image = (ParseFile) ob.get(0).get("profilePicture");

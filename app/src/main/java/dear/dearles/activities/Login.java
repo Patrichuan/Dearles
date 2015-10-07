@@ -22,28 +22,24 @@ import dear.dearles.DearApp;
 import dear.dearles.customclasses.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-// ActionBarActivity esta deprecated a partir del API22 (Se sustituyó por AppCompatActivity)
 public class Login extends AppCompatActivity {
 
     DearApp app;
+
     TextInputLayout usernameTil, passwordTil;
     TextView SignUptv;
     Button Loginbtn;
-    User user;
-
-    int backButtonCount;
-
     CoordinatorLayout Coordinator;
 
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
 
-        backButtonCount = 0;
-
         app = (DearApp) getApplication();
+
         Coordinator = (CoordinatorLayout) findViewById(R.id.Coordinator);
 
         user = new User();
@@ -67,7 +63,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-
         Loginbtn = (Button) findViewById(R.id.Loginbtn);
         Loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +74,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-
-    // No deja validar hasta rellenar los 2 campos (usuario y password)
+    // TODO - Comprobar que el email no este ya en uso
     private Boolean isAllCorrect () {
 
         String Username = usernameTil.getEditText().getText().toString();
@@ -113,35 +107,11 @@ public class Login extends AppCompatActivity {
         return Correct;
     }
 
-
-    /**
-     * Back button listener.
-     * Will close the application if the back button pressed twice.
-     */
     @Override
     public void onBackPressed()
     {
-        if(backButtonCount >= 1)
-        {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-        else
-        {
-            Snackbar snackbar = Snackbar.make(Coordinator, "Pulsa de nuevo 'back' para salir de la aplicación", Snackbar.LENGTH_LONG);
-            View snackbarView = snackbar.getView();
-            snackbarView.setBackgroundColor((ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark)));
-            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setTextColor(ContextCompat.getColor(this, R.color.icons));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
-            snackbar.show();
-            //Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
-            backButtonCount++;
-        }
+        app.ExitIfTwiceBack(Coordinator);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,20 +120,12 @@ public class Login extends AppCompatActivity {
         return true;
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -172,8 +134,4 @@ public class Login extends AppCompatActivity {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 
-    /*@Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }*/
 }

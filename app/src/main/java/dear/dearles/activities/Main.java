@@ -1,25 +1,16 @@
 package dear.dearles.activities;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
@@ -27,56 +18,39 @@ import dear.dearles.customclasses.ViewPagerAdapter;
 import dear.dearles.slidingtab.SlidingTabLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-
 public class Main extends AppCompatActivity {
+
+    DearApp app;
 
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
+    CoordinatorLayout Coordinator;
+
     CharSequence Titles[]={"Relación Estable","Amistad"};
     int Numboftabs =2;
-
-    protected DearApp app;
-
-    CoordinatorLayout Coordinator;
-    int backButtonCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        backButtonCount = 0;
 
         app = (DearApp) getApplication();
-
-        Coordinator = (CoordinatorLayout) findViewById(R.id.Coordinator);
-
-        // For let bg behind status bar
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         // Setups
         setupToolbar();
         setupTabs();
-        /*
-        Button LogOutbtn = (Button) findViewById(R.id.LogOut);
-        LogOutbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                app.LogOutUser();
-                Intent intent = new Intent(Main.this, Login.class);
-                startActivity(intent);
-            }
-        });
-        */
     }
 
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Arrow menu icon
-        final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-        ab.setDisplayHomeAsUpEnabled(true);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setupTabs() {
@@ -87,7 +61,8 @@ public class Main extends AppCompatActivity {
         pager.setAdapter(adapter);
         // Assigning the Sliding Tab Layout View
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        tabs.setDistributeEvenly(true);
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
@@ -95,47 +70,16 @@ public class Main extends AppCompatActivity {
                 return ContextCompat.getColor(Main.this, R.color.tabsScrollColor);
             }
         });
-        // tab_indicator define esteticamente las pestañas
         tabs.setCustomTabView(R.layout.tabtv_layout, android.R.id.text1);
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
     }
 
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
-    }
-
-
-    /**
-     * Back button listener.
-     * Will close the application if the back button pressed twice.
-     */
     @Override
     public void onBackPressed()
     {
-        if(backButtonCount >= 1)
-        {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-        else
-        {
-            Snackbar snackbar = Snackbar.make(Coordinator, "Pulsa de nuevo 'back' para salir de la aplicación", Snackbar.LENGTH_LONG);
-            View snackbarView = snackbar.getView();
-            snackbarView.setBackgroundColor(ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark));
-            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setTextColor(ContextCompat.getColor(this, R.color.icons));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
-            snackbar.show();
-            //Toast.makeText(this, "Pulsa de nuevo 'back' para salir de la aplicación.", Toast.LENGTH_SHORT).show();
-            backButtonCount++;
-        }
+        app.ExitIfTwiceBack(Coordinator);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,12 +88,8 @@ public class Main extends AppCompatActivity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         Intent intent;
         switch (item.getItemId()) {
             case R.id.settings:
@@ -171,6 +111,11 @@ public class Main extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 
 }

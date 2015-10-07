@@ -31,12 +31,13 @@ import dear.dearles.customclasses.User;
 public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // Todo - Particularizar consulta para sacar solo usuari@s que busquen Relación Estable
-    protected DearApp app;
+    DearApp app;
     // Declare Variables
     ListView listview;
     List<ParseUser> ob;
     User_ListViewAdapter adapter;
-    private List<User> UserList = null;
+    List<User> UserList = null;
+    ParseQuery<ParseUser> query;
 
     String Hashtag;
     ArrayList<String> UsersUsingHashtag;
@@ -104,8 +105,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
             // No tienen un valor almacenado y por lo tanto estoy en Main
             if ((Hashtag==null)||(UsersUsingHashtag==null)) {
                 try {
-                    // Query para devolver los usuarios
-                    ParseQuery<ParseUser> query;
                     query = ParseUser.getQuery();
                     ob = query.find();
                 } catch (ParseException e) {
@@ -145,8 +144,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                         break;
                     }
                     try {
-                        // Query para devolver los usuarios
-                        ParseQuery<ParseUser> query;
                         query = ParseUser.getQuery();
                         query.whereEqualTo("username", UserName);
                         ob = query.find();
@@ -157,8 +154,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                     User user = new User();
 
                     user.setUsername(ob.get(0).getString("username"));
-                    System.out.println("USUARIO LEIDO DE LA BUSQUEDA EN PARSE: " + ob.get(0).getString("username"));
-
                     user.setAge(ob.get(0).getString("age"));
                     ParseFile image = (ParseFile) ob.get(0).get("profilePicture");
                     if (image==null) {

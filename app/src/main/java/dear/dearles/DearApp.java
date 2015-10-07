@@ -3,8 +3,14 @@ package dear.dearles;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
 import com.parse.ParseGeoPoint;
@@ -18,6 +24,7 @@ import dear.dearles.customclasses.User;
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class DearApp extends Application {
 
@@ -28,10 +35,14 @@ public class DearApp extends Application {
     private PreferencesHelper Preferences;
     private LocationAwareness Loc;
 
+    int backButtonCount;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        backButtonCount = 0;
 
         InitializeScreenMeasurement();
         InitializeParse();
@@ -165,6 +176,31 @@ public class DearApp extends Application {
 
 
     // ---------------------------------------------------------------------------------------------
+
+    // Exit App if use back button twice
+    public void ExitIfTwiceBack (CoordinatorLayout Coordinator) {
+        if(backButtonCount >= 1)
+        {
+            backButtonCount = 0;
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Snackbar snackbar = Snackbar.make(Coordinator, "Pulsa de nuevo 'back' para salir de la aplicación", Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor((ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark)));
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(ContextCompat.getColor(this, R.color.icons));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
+            snackbar.show();
+            backButtonCount++;
+        }
+    }
+
+
     public static Context getContext() {
         return instance.getApplicationContext();
     }

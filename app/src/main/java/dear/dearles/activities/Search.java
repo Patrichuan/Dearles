@@ -211,18 +211,15 @@ public class Search extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     private void setupToolbar(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Arrow menu icon
-        ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-        ab.setDisplayHomeAsUpEnabled(true);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
 
