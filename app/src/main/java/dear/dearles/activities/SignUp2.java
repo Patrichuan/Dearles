@@ -137,6 +137,13 @@ public class SignUp2 extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item= menu.findItem(R.id.action_settings);
+        item.setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

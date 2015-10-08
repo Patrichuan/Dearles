@@ -15,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +32,7 @@ public class Login extends AppCompatActivity {
     DearApp app;
 
     TextInputLayout usernameTil, passwordTil;
-    EditText passwordEt;
+    EditText usernameEt, passwordEt;
     Button Loginbtn, SignUpbtn;
     CoordinatorLayout Coordinator;
 
@@ -48,6 +50,7 @@ public class Login extends AppCompatActivity {
         user = new User();
         user = app.getUserFromSharedpref();
 
+        usernameEt = (EditText) findViewById(R.id.usernameEt);
         passwordEt = (EditText) findViewById((R.id.passwordEt));
         //Listener para el boton 'end' del teclado
         passwordEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -57,6 +60,8 @@ public class Login extends AppCompatActivity {
                     if (isAllCorrect()) {
                         app.SignInUser(user, Coordinator);
                     }
+                    hideKeyboard(usernameEt);
+                    hideKeyboard(passwordEt);
                 }
                 return false;
             }
@@ -70,8 +75,6 @@ public class Login extends AppCompatActivity {
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-
 
         SignUpbtn = (Button) findViewById(R.id.SignUpbtn);
         SignUpbtn.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +92,8 @@ public class Login extends AppCompatActivity {
                 if (isAllCorrect()) {
                     app.SignInUser(user, Coordinator);
                 }
+                hideKeyboard(usernameEt);
+                hideKeyboard(passwordEt);
             }
         });
     }
@@ -96,8 +101,8 @@ public class Login extends AppCompatActivity {
     // TODO - Comprobar que el email no este ya en uso
     private Boolean isAllCorrect () {
 
-        String Username = usernameTil.getEditText().getText().toString();
-        String Password = passwordTil.getEditText().getText().toString();
+        String Username = usernameEt.getText().toString();
+        String Password = passwordEt.getText().toString();
 
         Boolean Correct = false;
         Boolean UsernameCorrect = false;
@@ -118,17 +123,25 @@ public class Login extends AppCompatActivity {
         }
 
         if (UsernameCorrect && PasswordCorrect) {
-            user.setUsername(usernameTil.getEditText().getText().toString());
-            user.setPassword(passwordTil.getEditText().getText().toString());
+            user.setUsername(Username);
+            user.setPassword(Password);
             Correct = true;
         }
 
         return Correct;
     }
 
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        Coordinator.requestFocus();
+    }
+
     @Override
     public void onBackPressed()
     {
+        hideKeyboard(usernameEt);
+        hideKeyboard(passwordEt);
         app.ExitIfTwiceBack(Coordinator);
     }
 

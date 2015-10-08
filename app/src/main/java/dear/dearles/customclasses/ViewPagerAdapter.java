@@ -47,8 +47,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         bundle.putString("Hashtag", Hashtag);
         bundle.putStringArrayList("UsersUsingHashtag", UsersUsingHashtag);
 
-
-
         if(position == 0)
         // if the position is 0 we are returning the First tab
         {
@@ -57,7 +55,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             return tab1;
         }
         else
-        // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        // As we are having 2 tabs if the position is not 0 it must be 1 so we are returning second tab
         {
             AmistadTab tab2 = new AmistadTab();
             tab2.setArguments(bundle);

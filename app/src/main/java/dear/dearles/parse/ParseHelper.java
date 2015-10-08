@@ -190,7 +190,6 @@ public class ParseHelper {
         }
     }
 
-
     public Boolean isUserLoggedIn () {
         Boolean UserInside = false;
         ParseUser currentUser = ParseUser.getCurrentUser();

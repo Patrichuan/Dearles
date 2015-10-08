@@ -21,10 +21,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SplashScreen extends AppCompatActivity {
 
-    /**
-     * Constant used in the location settings dialog.
-     */
-    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    final int REQUEST_CHECK_SETTINGS = 0x1;
     Status status;
     DearApp app;
 
@@ -37,11 +34,10 @@ public class SplashScreen extends AppCompatActivity {
         app = (DearApp) getApplication();
         app.InitializeUserFromSharedpref();
 
-        // Wait 0.5 sec because if not status will be null (need to be called after onresult)
+        // Wait 1 sec because if not status will be null (need to be called after onresult)
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                // Actions to do after 0.5 second
                 status = app.getLocationStatus();
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:

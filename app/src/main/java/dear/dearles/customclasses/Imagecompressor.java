@@ -25,8 +25,6 @@ public class Imagecompressor {
 
     Context context;
 
-
-
     public Imagecompressor(Context context) {
         this.context = context;
     }
@@ -36,7 +34,7 @@ public class Imagecompressor {
 
         String filePath = getRealPathFromURI(imageUri);
         Bitmap scaledBitmap = null;
-
+        Canvas canvas;
         BitmapFactory.Options options = new BitmapFactory.Options();
 
         //  by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
@@ -71,10 +69,8 @@ public class Imagecompressor {
 
         // setting inSampleSize value allows to load a scaled down version of the original image
         options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
-
         // inJustDecodeBounds set to false to load the actual bitmap
         options.inJustDecodeBounds = false;
-
         // this options allow android to claim the bitmap memory if it runs low on memory
         options.inPurgeable = true;
         options.inInputShareable = true;
@@ -83,13 +79,9 @@ public class Imagecompressor {
         try {
             // load the bitmap from its path
             bmp = BitmapFactory.decodeFile(filePath, options);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-
-        }
-        try {
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight,Bitmap.Config.ARGB_8888);
         } catch (OutOfMemoryError exception) {
+            System.out.println("ImageCompressor error: " + exception.getMessage());
             exception.printStackTrace();
         }
 
@@ -98,12 +90,13 @@ public class Imagecompressor {
         float middleX = actualWidth / 2.0f;
         float middleY = actualHeight / 2.0f;
 
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        if (scaledBitmap != null) {
+            canvas = new Canvas(scaledBitmap);
+            Matrix scaleMatrix = new Matrix();
+            scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+            canvas.setMatrix(scaleMatrix);
+            canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        }
 
         // check the rotation of the image and display it properly
         ExifInterface exif;
@@ -122,12 +115,13 @@ public class Imagecompressor {
                 matrix.postRotate(270);
                 Log.d("EXIF", "Exif: " + orientation);
             }
-            if (scaledBitmap != null) {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                return stream.toByteArray();
-            }
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+
+            return stream.toByteArray();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,14 +135,21 @@ public class Imagecompressor {
     // The method gives the actual filepath of the image from its contentUri
     private String getRealPathFromURI(String contentURI) {
         Uri contentUri = Uri.parse(contentURI);
+        String filepath;
         Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
         if (cursor == null) {
-            return contentUri.getPath();
+            filepath = contentUri.getPath();
         } else {
             cursor.moveToFirst();
             int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(index);
+            filepath = cursor.getString(index);
         }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return filepath;
     }
 
 

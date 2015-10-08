@@ -322,7 +322,13 @@ public class SignUp1 extends AppCompatActivity {
         return Correct;
     }
 
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item= menu.findItem(R.id.action_settings);
+        item.setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -337,7 +343,7 @@ public class SignUp1 extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        // TODO - Quitar Overflow Settings en esta y signUp2
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

@@ -120,8 +120,9 @@ public class User_ListViewAdapter extends BaseAdapter {
         }
         holder.Description.setText(sb);
 
-        // Color the distance indicator
         Double DistanceFromMe = UserList.get(position).getDistance();
+        // TODO - Quitar el indicador de distancia?
+        // Color the distance indicator
         if (DistanceFromMe<=DISTANCE_NEAR_IN_KILOMETERS){
             holder.DistanceColored.setBackgroundColor(context.getResources().getColor(R.color.distance_near));
         } else if (DistanceFromMe<=DISTANCE_FAR_IN_KILOMETERS) {
@@ -129,16 +130,17 @@ public class User_ListViewAdapter extends BaseAdapter {
         } else {
             holder.DistanceColored.setBackgroundColor(context.getResources().getColor(R.color.distance_very_far));
         }
+
+        // Double to float with 2 decimals
         DistanceFromMe = DistanceFromMe*10;
         DistanceFromMe = (double)(DistanceFromMe.intValue());
         DistanceFromMe = DistanceFromMe /10;
+
         if (DistanceFromMe == 0.0) {
             holder.DistanceTo.setText("");
         } else {
             holder.DistanceTo.setText(DistanceFromMe.toString() + " km");
         }
-
-
 
         // Set the profile image
         Glide.with(context)
