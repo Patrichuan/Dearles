@@ -12,7 +12,7 @@
     <color name="tabsScrollColor">#ffffffff</color>
     <color name="window_background">#FFFFFF</color>
 
-    <color name="test">#50212121</color>
+    <color name="test">#ae212121</color>
 
     <color name="distance_near">#49e1bf</color>
     <color name="distance_far">#ebb35b</color>

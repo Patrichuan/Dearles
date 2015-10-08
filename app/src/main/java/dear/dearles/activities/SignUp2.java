@@ -3,6 +3,7 @@ package dear.dearles.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,9 +29,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignUp2 extends AppCompatActivity {
 
+    int DESCRIPTION_LENGTH = 120;
     protected DearApp app;
 
-    int HASHTAG_LENGTH = 120;
     TextView TipDescription, TextCount;
     EditText Description;
     ScrollView ScrollLayout;
@@ -47,12 +48,9 @@ public class SignUp2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup2_layout);
-
-        // For let bg behind status bar
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        setupToolbar();
-
         app = (DearApp) getApplication();
+
+        setupToolbar();
 
         user = new User();
         user = app.getUserFromSharedpref();
@@ -63,8 +61,7 @@ public class SignUp2 extends AppCompatActivity {
         ScrollLayout = (ScrollView) findViewById(R.id.ScrollLayout);
         Finishbtn = (Button) findViewById(R.id.Finishbtn);
 
-
-        TextCount.setText(String.valueOf(HASHTAG_LENGTH));
+        TextCount.setText(String.valueOf(DESCRIPTION_LENGTH));
 
         // Declaro el EditText para la descripción
         Description = new EditText(this);
@@ -73,8 +70,8 @@ public class SignUp2 extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         Description.setLayoutParams(params);
         Description.setSingleLine(false);
-        Description.setFilters(new InputFilter[]{new InputFilter.LengthFilter(HASHTAG_LENGTH)});
-        Description.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        Description.setFilters(new InputFilter[]{new InputFilter.LengthFilter(DESCRIPTION_LENGTH)});
+        Description.setHintTextColor(ContextCompat.getColor(SignUp2.this, R.color.primary_dark));
         Description.setHint(R.string.description);
         // Y establezco el contenido de esta si ya existia previamente
         if (user.getDescription()!=null) {
@@ -82,7 +79,6 @@ public class SignUp2 extends AppCompatActivity {
         }
         // Y lo añado
         DescriptionTil.addView(Description);
-
 
         // I transform a normal string to html string (for blue hashtags)
         String str = getString(R.string.TipForDescription);
@@ -94,6 +90,7 @@ public class SignUp2 extends AppCompatActivity {
         Description.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Scroll up the screen for get all elements aligned perfectly
                 ScrollLayout.scrollTo(0, TextCount.getHeight() * (int) (NumLineas*0.9));
             }
 
@@ -103,7 +100,7 @@ public class SignUp2 extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                TextCount.setText(Integer.toString(HASHTAG_LENGTH - Description.length()));
+                TextCount.setText(Integer.toString(DESCRIPTION_LENGTH - Description.length()));
                 if (NumLineas == Description.getLineCount()) {
                     // do nothing because we are in the first line
                 } else {
@@ -119,10 +116,8 @@ public class SignUp2 extends AppCompatActivity {
         Finishbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Y aqui es donde he de subir a Parse los datos del usuario
                 user.setDescription(Description.getText().toString());
                 app.SignUpUser(user);
-
                 // Y me vuelvo a la pantalla de Login
                 Intent intent = new Intent(SignUp2.this, Login.class);
                 startActivity(intent);

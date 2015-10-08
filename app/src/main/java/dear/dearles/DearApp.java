@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -60,7 +59,7 @@ public class DearApp extends Application {
 
 
 
-    // SCREENPROPORTION METHODS---------------------------------------------------------------------
+    // SCREENPROPORTION RELATED METHODS---------------------------------------------------------------------
     public void InitializeScreenMeasurement () {
         SP = new ScreenMeasurement(getContext());
     }
@@ -85,7 +84,7 @@ public class DearApp extends Application {
 
 
 
-    // GOOGLE LOC METHODS---------------------------------------------------------------------------
+    // GOOGLE LOC RELATED METHODS---------------------------------------------------------------------------
     public void InitializeLoc () {
         Loc = new LocationAwareness(getContext());
     }
@@ -103,7 +102,7 @@ public class DearApp extends Application {
 
 
 
-    // PARSE.com METHODS----------------------------------------------------------------------------
+    // PARSE.com RELATED METHODS----------------------------------------------------------------------------
     public void InitializeParse () {
         DB = new ParseHelper(getContext());
         DB.Initialize();
@@ -113,6 +112,8 @@ public class DearApp extends Application {
         DB.SignUpUser(user, this);
     }
 
+    // Trata de logear un usuario, en caso de fallar lanza un snackbar en el CoordinatorLayout pasado como parametro
+    // informando de que el logeo ha fallado
     public void SignInUser(User user, CoordinatorLayout Coordinator) {
         DB.SignInUser(user, Coordinator);
     }
@@ -125,6 +126,9 @@ public class DearApp extends Application {
         return DB.isUserLoggedIn();
     }
 
+    // Convierte un ParseUser en User y añade a este
+    // - Posicion actual
+    // - Distancia en Km entre Posicion actual y la ultima conocida de dicho usuario
     public User ParseUsertoUser (ParseUser pUser) {
         return DB.ParseUserToUser(pUser, GetLastKnownLoc());
     }
@@ -162,7 +166,7 @@ public class DearApp extends Application {
 
 
 
-    // SHAREDPREFERENCES METHODS--------------------------------------------------------------------
+    // SHAREDPREFERENCES RELATED METHODS--------------------------------------------------------------------
     public void InitializePreferences () {
         Preferences = new PreferencesHelper(getContext());
     }
@@ -183,7 +187,7 @@ public class DearApp extends Application {
 
 
 
-    // OTHER METHODS--------------------------------------------------------------------------------
+    // OTHER RELATED METHODS--------------------------------------------------------------------------------
 
     // Exit App if use back button twice
     public void ExitIfTwiceBack (CoordinatorLayout Coordinator) {

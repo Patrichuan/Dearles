@@ -2,13 +2,13 @@ package dear.dearles.activities;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,8 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
@@ -44,29 +42,24 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignUp1 extends AppCompatActivity {
 
+    //keep track of camera capture intent
+    final int CAMERA_CAPTURE = 1;
+    final int IMAGE_PICKER_SELECT = 2;
     DearApp app;
 
     Button Nextbtn;
     TextView usernametv, passwordtv, emailtv, agetv;
     TextInputLayout usernameTil, passwordTil, emailTil, ageTil;
-    ImageView ProfilePictureView;
+    ImageView ProfilePictureView, ProgressCircle;
 
-    ImageView ProgressCircle;
     Animation a;
     Uri picUri;
     User user;
-
-    //keep track of camera capture intent
-    final int CAMERA_CAPTURE = 1;
-    final int IMAGE_PICKER_SELECT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup1_layout);
-
-        // For let bg behind status bar
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
         emailTil = (TextInputLayout) findViewById(R.id.emailTil);
@@ -108,14 +101,16 @@ public class SignUp1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                // Muestra ventana de dialogo con el layout "take_or_choose_photo_layout"
                 final Dialog d = new Dialog(SignUp1.this);
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.camera_gallery_or_see);
+                d.setContentView(R.layout.take_or_choose_photo_layout);
                 WindowManager.LayoutParams p = d.getWindow().getAttributes();
                 p.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 d.getWindow().setAttributes(p);
                 d.show();
 
+                // Listener para el boton "Hacer una foto con la camara" de la ventana de dialogo
                 Button Camerabtn = (Button) d.findViewById(R.id.Camerabtn);
                 Camerabtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -133,7 +128,7 @@ public class SignUp1 extends AppCompatActivity {
                     }
                 });
 
-
+                // Listener para el boton "Escoger una foto de la galeria" de la ventana de dialogo
                 Button Gallerybtn = (Button) d.findViewById(R.id.Gallerytn);
                 Gallerybtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -156,15 +151,14 @@ public class SignUp1 extends AppCompatActivity {
 
 
 
-
+    // Al volver a traves del startActivityForResult gracias al resultcode se de donde vengo, si de un boton o de otro
+    // CAMERA_CAPTURE = 1
+    // IMAGE_PICKER_SELECT = 2;
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (resultCode == RESULT_OK) {
-
             ProgressCircle.startAnimation(a);
             picUri = data.getData();
-
-            // Loads given image (LO LEO EN EL IMAGEVIEW)
+            // Loads given image into the ImageView
             Glide.with(this)
                     .load(picUri)
                     .asBitmap()
@@ -208,7 +202,7 @@ public class SignUp1 extends AppCompatActivity {
         usernametv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
         usernametv.setSingleLine(true);
         usernametv.setMaxLines(1);
-        usernametv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        usernametv.setHintTextColor(ContextCompat.getColor(SignUp1.this, R.color.primary_dark));
         usernametv.setHint(R.string.username);
         usernameTil.setErrorEnabled(true);
         if (user.getUsername()!=null) {
@@ -222,7 +216,7 @@ public class SignUp1 extends AppCompatActivity {
         passwordtv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
         passwordtv.setSingleLine(true);
         passwordtv.setMaxLines(1);
-        passwordtv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        passwordtv.setHintTextColor(ContextCompat.getColor(SignUp1.this, R.color.primary_dark));
         passwordtv.setHint(R.string.password);
         passwordTil.setErrorEnabled(true);
         if (user.getPassword()!= null) {
@@ -236,7 +230,7 @@ public class SignUp1 extends AppCompatActivity {
         agetv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
         agetv.setSingleLine(true);
         agetv.setMaxLines(1);
-        agetv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        agetv.setHintTextColor(ContextCompat.getColor(SignUp1.this, R.color.primary_dark));
         agetv.setHint(R.string.age);
         agetv.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_CLASS_NUMBER);
         ageTil.setErrorEnabled(true);
@@ -251,7 +245,7 @@ public class SignUp1 extends AppCompatActivity {
         emailtv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
         emailtv.setSingleLine(true);
         emailtv.setMaxLines(1);
-        emailtv.setHintTextColor(getResources().getColor(R.color.primary_dark));
+        emailtv.setHintTextColor(ContextCompat.getColor(SignUp1.this, R.color.primary_dark));
         emailtv.setHint(R.string.email);
         emailtv.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         emailTil.setErrorEnabled(true);
@@ -336,8 +330,6 @@ public class SignUp1 extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_signup1, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

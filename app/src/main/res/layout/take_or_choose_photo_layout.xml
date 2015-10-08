@@ -1,13 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="missingPrefix"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <RelativeLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <Button
             android:layout_width="match_parent"
@@ -32,7 +27,5 @@
             android:id="@+id/Gallerytn"
             android:text="@string/ChooseExistingPhoto"
             android:layout_height="wrap_content" />
-
-    </RelativeLayout>
 
 </RelativeLayout>

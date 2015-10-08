@@ -37,25 +37,22 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Search extends AppCompatActivity {
 
+    int HASHTAG_MAXCHARS = 20;
+    DearApp app;
+
     ListView mListview;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<ParseObject> HashtagTop10Rows;
-    ArrayList<ParseObject> HashtagSingleSearchRow;
+    ArrayList<ParseObject> HashtagTop10Rows, HashtagSingleSearchRow;
+    Hashtag_ListViewAdapter adapter, adapter_backup;
 
-    Hashtag_ListViewAdapter adapter;
-    Hashtag_ListViewAdapter adapter_backup;
-
-    private Toolbar toolbar;
-    private ActionBar ab;
-    private MenuItem mSearchItem;
-    private boolean isCloseiconVisible = false;
-    private EditText searchEditText;
+    // Search field and clear icon logic
+    MenuItem mSearchItem;
+    boolean isCleariconVisible = false;
+    EditText searchEditText;
 
     RelativeLayout RLParent;
     TextView TextnotFound;
     String StringFromEdittext;
-
-    protected DearApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,33 +85,35 @@ public class Search extends AppCompatActivity {
         );
 
         searchEditText = (EditText) findViewById(R.id.edtSearch);
-        searchEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(22)});
+        searchEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(HASHTAG_MAXCHARS)});
+
+        // Listener para el edittext donde se haran las busquedas
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
+            // En caso de haber algun caracter aparece la X, y si no hay entonces desaparece
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (count >= 1) {
                     mSearchItem.setVisible(true);
                     mSearchItem.setEnabled(true);
                     mSearchItem.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_close_white_24dp, null));
-                    isCloseiconVisible = true;
+                    isCleariconVisible = true;
                 } else {
                     mSearchItem.setVisible(false);
                     mSearchItem.setEnabled(false);
+                    isCleariconVisible = false;
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
-        //Listener to do a search when the user clicks on search button
+        //Listener para el boton 'find' del teclado
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -137,7 +136,7 @@ public class Search extends AppCompatActivity {
 
 
 
-    // RemoteTop10DataTask AsyncTask
+    // AyncTask que devuelve el top10 Hashtags y actualiza el listview con ellos
     private class RemoteTop10DataTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -162,8 +161,7 @@ public class Search extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             // Pass the results into an ArrayAdapter
             adapter = new Hashtag_ListViewAdapter(Search.this, HashtagTop10Rows);
-            // Lo guardo para que cuando se borre el edittext no tenga que consultar a Parse el Top10 de nuevo
-            // a menos que el usuario haga un refresh
+            // Lo guardo para que cuando se borre el edittext no tenga que consultar a Parse el Top10 de nuevo a menos que el usuario haga un refresh
             adapter_backup = adapter;
             // Binds the Adapter to the ListView
             mListview.setAdapter(adapter);
@@ -172,7 +170,13 @@ public class Search extends AppCompatActivity {
         }
     }
 
-    // RemoteSingleSearchDataTask AsyncTask
+
+
+
+
+
+
+    // AyncTask que devuelve el row del Hashtag del edittext y actualiza el listview con el
     private class RemoteSingleSearchDataTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -211,6 +215,12 @@ public class Search extends AppCompatActivity {
     }
 
 
+
+
+
+
+
+
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -221,7 +231,6 @@ public class Search extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
     }
-
 
     private void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -247,21 +256,16 @@ public class Search extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        // Associate searchable configuration with the SearchView
         Intent intent;
         switch (item.getItemId()) {
             case R.id.settings:
                 return true;
             case R.id.clear:
-                if (isCloseiconVisible) {
+                if (isCleariconVisible) {
                     searchEditText.setText("");
                     if (TextnotFound.isShown()) TextnotFound.setVisibility(View.INVISIBLE);
                     hideKeyboard(searchEditText);
                     mListview.setAdapter(adapter_backup);
-                    //showKeyboard(searchEditText);
                 }
                 return true;
             case R.id.logout:

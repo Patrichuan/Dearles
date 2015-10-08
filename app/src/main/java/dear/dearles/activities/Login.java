@@ -10,10 +10,13 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +30,8 @@ public class Login extends AppCompatActivity {
     DearApp app;
 
     TextInputLayout usernameTil, passwordTil;
-    TextView SignUptv;
-    Button Loginbtn;
+    EditText passwordEt;
+    Button Loginbtn, SignUpbtn;
     CoordinatorLayout Coordinator;
 
     User user;
@@ -45,6 +48,20 @@ public class Login extends AppCompatActivity {
         user = new User();
         user = app.getUserFromSharedpref();
 
+        passwordEt = (EditText) findViewById((R.id.passwordEt));
+        //Listener para el boton 'end' del teclado
+        passwordEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (isAllCorrect()) {
+                        app.SignInUser(user, Coordinator);
+                    }
+                }
+                return false;
+            }
+        });
+
         usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
         usernameTil.setErrorEnabled(true);
 
@@ -54,8 +71,10 @@ public class Login extends AppCompatActivity {
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-        SignUptv = (TextView) findViewById(R.id.SignUptv);
-        SignUptv.setOnClickListener(new View.OnClickListener() {
+
+
+        SignUpbtn = (Button) findViewById(R.id.SignUpbtn);
+        SignUpbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this, SignUp1.class);

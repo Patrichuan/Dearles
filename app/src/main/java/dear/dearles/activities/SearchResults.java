@@ -2,6 +2,7 @@ package dear.dearles.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -9,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -38,9 +37,6 @@ public class SearchResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_results_layout);
         app = (DearApp) getApplication();
-
-        // For let bg behind status bar
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         Intent intent = getIntent();
         Hashtag = intent.getStringExtra("Hashtag");
@@ -75,18 +71,12 @@ public class SearchResults extends AppCompatActivity {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
+                return ContextCompat.getColor(SearchResults.this,R.color.tabsScrollColor);
             }
         });
-        // tab_indicator define esteticamente las pestañas
-        tabs.setCustomTabView(R.layout.tabtv_layout, android.R.id.text1);
+        tabs.setCustomTabView(R.layout.tab_textview_layout, android.R.id.text1);
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 
     @Override
@@ -111,6 +101,11 @@ public class SearchResults extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 
 }

@@ -70,7 +70,7 @@ public class Main extends AppCompatActivity {
                 return ContextCompat.getColor(Main.this, R.color.tabsScrollColor);
             }
         });
-        tabs.setCustomTabView(R.layout.tabtv_layout, android.R.id.text1);
+        tabs.setCustomTabView(R.layout.tab_textview_layout, android.R.id.text1);
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
     }
