@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
-import dear.dearles.activities.AmistadTab;
-import dear.dearles.activities.RelacionEstableTab;
+import dear.dearles.fragments.AmistadTab;
+import dear.dearles.fragments.RelacionEstableTab;
 
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {

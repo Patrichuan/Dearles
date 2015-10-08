@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.common.api.Status;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import dear.dearles.customclasses.LocationAwareness;
 import dear.dearles.customclasses.ScreenMeasurement;
 import dear.dearles.customclasses.User;
+import dear.dearles.firebase.FirebaseHelper;
 import dear.dearles.parse.ParseHelper;
 import dear.dearles.preferences.PreferencesHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -32,6 +34,7 @@ public class DearApp extends Application {
     private ParseHelper DB;
     private PreferencesHelper Preferences;
     private LocationAwareness Loc;
+    private FirebaseHelper FireB;
 
     int backButtonCount;
 
@@ -46,6 +49,7 @@ public class DearApp extends Application {
         InitializeParse();
         InitializePreferences();
         InitializeLoc();
+        InitializeFirebase();
 
         // Default Font: Roboto-Regular.ttf
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -56,6 +60,20 @@ public class DearApp extends Application {
     }
 
 
+
+    public void SignUpUser (User user) {
+        // TODO - Comprobar que el email no esta en uso, y si no lo esta entonces doy de alta en FireBase
+        DB.SignUpUser(user, this);
+        FireB.SignUpUser(user);
+    }
+
+    // Trata de logear un usuario, en caso de fallar lanza un snackbar en el CoordinatorLayout pasado como parametro
+    // informando de que el logeo ha fallado
+    public void SignInUser(User user, CoordinatorLayout Coordinator) {
+        // TODO - Si se consigue logear en Parse entonces tratar de logear en FireBase. Si no entonces logout de Parse
+        DB.SignInUser(user, Coordinator);
+        FireB.SignInUser(user);
+    }
 
 
 
@@ -108,16 +126,6 @@ public class DearApp extends Application {
         DB.Initialize();
     }
 
-    public void SignUpUser (User user) {
-        DB.SignUpUser(user, this);
-    }
-
-    // Trata de logear un usuario, en caso de fallar lanza un snackbar en el CoordinatorLayout pasado como parametro
-    // informando de que el logeo ha fallado
-    public void SignInUser(User user, CoordinatorLayout Coordinator) {
-        DB.SignInUser(user, Coordinator);
-    }
-
     public void LogOutUser() {
         DB.LogOutUser();
     }
@@ -126,14 +134,16 @@ public class DearApp extends Application {
         return DB.isUserLoggedIn();
     }
 
+    public String getCurrentUserName () {
+        return DB.getCurrentUserName();
+    }
+
     // Convierte un ParseUser en User y añade a este
     // - Posicion actual
     // - Distancia en Km entre Posicion actual y la ultima conocida de dicho usuario
     public User ParseUsertoUser (ParseUser pUser) {
         return DB.ParseUserToUser(pUser, GetLastKnownLoc());
     }
-
-
 
     public void UpdateTopTenHashtags () {
         DB.UpdateTopTenHashtags();
@@ -146,8 +156,6 @@ public class DearApp extends Application {
     public Boolean isRdyTopTenHashtag () {
         return DB.isRdyTopTenHashtag();
     }
-
-
 
     public void LaunchSingleSearchHashtag (String Tag) {
         DB.LaunchSingleSearchHashtag(Tag);
@@ -183,6 +191,32 @@ public class DearApp extends Application {
         return Preferences.getUserFromSharedpref();
     }
 
+
+
+
+
+
+    // FIREBASE RELATED METHODS-----------------------------------------------------------------------------
+    public void InitializeFirebase () {
+        FireB = new FirebaseHelper(getContext());
+        FireB.setFireBase();
+    }
+
+    public void SignUpFireUser (User user) {
+        FireB.SignUpUser(user);
+    }
+
+    public void SignInFireUser (User user) {
+        FireB.SignInUser(user);
+    }
+
+    public Firebase getFireChild (String str) {
+        return FireB.getFireChild(str);
+    }
+
+    public Firebase getFireBaseRef () {
+        return FireB.getFireBaseRef();
+    }
 
 
 

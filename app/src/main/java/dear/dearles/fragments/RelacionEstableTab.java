@@ -1,4 +1,4 @@
-package dear.dearles.activities;
+package dear.dearles.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

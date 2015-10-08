@@ -5,6 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "dear.dearles"
         minSdkVersion 19
         targetSdkVersion 21

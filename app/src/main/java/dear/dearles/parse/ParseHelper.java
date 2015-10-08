@@ -202,6 +202,14 @@ public class ParseHelper {
         return UserInside;
     }
 
+    public String getCurrentUserName () {
+        String username ="";
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            username = currentUser.getUsername();
+        }
+        return username;
+    }
 
 
 
