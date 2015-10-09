@@ -14,6 +14,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.parse.ParseUser;
 
 import dear.dearles.R;
 import dear.dearles.activities.Main;
@@ -67,29 +68,18 @@ public class FirebaseHelper {
         });
     }
 
-    public void SignInUser (final String email, final String password, final CoordinatorLayout Coordinator) {
-        System.out.println("Estoy en FireBaseHelper SignInUser y el email vale: " + email);
-        myFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+    public void SignInUser (User user) {
+        System.out.println("Estoy en FireBaseHelper SignInUser y el email vale: " + user.getEmail());
+        myFirebaseRef.authWithPassword(user.getEmail(), user.getPassword(), new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 System.out.println("User ID: " + authData.getUid() + " logeado con exito en FireBase");
                 System.out.println("CREDENCIALES CORRECTAS en PARSE y en FIREBASE");
-                Intent intent = new Intent(context, Main.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 // there was an error
-                // Signup failed. Look at the ParseException to see what happened.
-                Snackbar snackbar = Snackbar.make(Coordinator, "Credenciales incorrectas. Comprueba que tu username y/o password son correctos !!", Snackbar.LENGTH_LONG);
-                View snackbarView = snackbar.getView();
-                snackbarView.setBackgroundColor(ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark));
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(ContextCompat.getColor(Coordinator.getContext(), R.color.icons));
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
-                snackbar.show();
             }
         });
     }

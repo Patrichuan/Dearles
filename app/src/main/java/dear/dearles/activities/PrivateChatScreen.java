@@ -1,12 +1,20 @@
 package dear.dearles.activities;
 
-import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,8 +28,9 @@ import dear.dearles.DearApp;
 import dear.dearles.R;
 import dear.dearles.customclasses.ChatListAdapter;
 import dear.dearles.customclasses.ChatMessage;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class PrivateChatScreen extends ListActivity {
+public class PrivateChatScreen extends AppCompatActivity {
 
     DearApp app;
 
@@ -29,52 +38,52 @@ public class PrivateChatScreen extends ListActivity {
 
     EditText textEdit;
 
-    private String mUsername;
-    private Firebase mFirebaseRef;
-    private ValueEventListener mConnectedListener;
-    private ChatListAdapter mChatListAdapter;
+    String mUsername;
+    Firebase mFirebaseRef;
+    ListView listView;
+    ImageView SendButton;
+    ValueEventListener mConnectedListener;
+    ChatListAdapter mChatListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.privatechatscreen_layout);
-
         app = (DearApp) getApplication();
 
-        setTitle("Chatting as " + app.getCurrentUserName());
+
 
         // Setup our Firebase mFirebaseRef
         mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
 
         mUsername = app.getCurrentUserName();
 
+        listView = (ListView) findViewById(R.id.list);
+
         textEdit = (EditText) this.findViewById(R.id.text_edit);
+        //Listener para el boton 'find' del teclado
         textEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_NULL && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                    sendMessage();
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (textEdit.length() >= 1) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        sendMessage();
+                    }
                 }
-                return true;
+                return false;
             }
         });
 
-
-        findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
+        SendButton = (ImageView) findViewById(R.id.send_button);
+        SendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
             }
         });
 
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
         // Setup our view and list adapter. Ensure it scrolls to the bottom as data changes
-        final ListView listView = getListView();
+        // final ListView listView = getListView();
         // Tell our list adapter that we only want 50 messages at a time
         mChatListAdapter = new ChatListAdapter(mFirebaseRef.limit(50), this, R.layout.chat_message, mUsername);
         listView.setAdapter(mChatListAdapter);
@@ -103,7 +112,12 @@ public class PrivateChatScreen extends ListActivity {
                 // No-op
             }
         });
+
+        // Setups
+        setupToolbar();
+
     }
+
 
     @Override
     public void onStop() {
@@ -122,6 +136,47 @@ public class PrivateChatScreen extends ListActivity {
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
         }
+    }
+
+    private void setupToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(app.getCurrentUserName());
+        setSupportActionBar(toolbar);
+        // Arrow menu icon
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_privatechat_screen, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.settings:
+                return true;
+            case R.id.logout:
+                if (app.isUserLoggedIn()) {
+                    app.LogOutUser();
+                    intent = new Intent(this, Login.class);
+                    startActivity(intent);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.customFont));
     }
 
 }

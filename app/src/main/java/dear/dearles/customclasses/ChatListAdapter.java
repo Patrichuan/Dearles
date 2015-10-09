@@ -3,6 +3,10 @@ package dear.dearles.customclasses;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.client.Query;
@@ -22,18 +26,30 @@ public class ChatListAdapter extends Custom_FireBaseListAdapter<ChatMessage> {
     @Override
     protected void populateView(View view, ChatMessage chat) {
 
-        String author = chat.getName();
+        LinearLayout messageLayout = (LinearLayout) view.findViewById(R.id.Llmessage);
+
+        String username = chat.getName();
         String message = chat.getText();
 
-        TextView name_tv = (TextView) view.findViewById(R.id.author);
-        name_tv.setText(author + ": ");
+        TextView username_tv = (TextView) view.findViewById(R.id.username_tv);
+        username_tv.setText(username + ": ");
 
-        if (author != null && author.equals(mUsername)) {
+        LayoutParams username_tv_params = (LayoutParams) username_tv.getLayoutParams();
+        LayoutParams messageLayout_params = (LayoutParams) messageLayout.getLayoutParams();
+
+        if (username != null && username.equals(mUsername)) {
+            username_tv_params.addRule(RelativeLayout.ALIGN_PARENT_START);
+            username_tv.setLayoutParams(username_tv_params);
+            messageLayout_params.addRule(RelativeLayout.END_OF, username_tv.getId());
+
             // Si el usuario actual es el que envia el mensaje entonces el texto aparece en Rojo
-            name_tv.setTextColor(Color.RED);
+            username_tv.setTextColor(Color.RED);
         } else {
+            username_tv_params.addRule(RelativeLayout.ALIGN_PARENT_END);
+            username_tv.setLayoutParams(username_tv_params);
+            messageLayout_params.addRule(RelativeLayout.START_OF, username_tv.getId());
             // Y si no entonces aparece en azul
-            name_tv.setTextColor(Color.BLUE);
+            username_tv.setTextColor(Color.BLUE);
         }
 
         TextView message_tv = (TextView) view.findViewById(R.id.message);

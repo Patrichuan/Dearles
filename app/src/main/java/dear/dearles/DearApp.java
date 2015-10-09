@@ -17,6 +17,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 import dear.dearles.customclasses.LocationAwareness;
 import dear.dearles.customclasses.ScreenMeasurement;
@@ -68,7 +69,7 @@ public class DearApp extends Application {
 
     // Trata de logear un usuario, en caso de fallar lanza un snackbar en el CoordinatorLayout pasado como parametro informando de que el logeo ha fallado
     public void SignInUser(User user, CoordinatorLayout Coordinator) {
-        DB.SignInUser(user, FireB, Coordinator);
+        DB.SignInUser(user, Preferences, Coordinator);
     }
 
     public void LogOutUser() {
@@ -135,9 +136,7 @@ public class DearApp extends Application {
         return DB.isUserLoggedIn();
     }
 
-    public String getCurrentUserName () {
-        return DB.getCurrentUserName();
-    }
+
 
     // Convierte un ParseUser en User y añade a este
     // - Posicion actual
@@ -192,6 +191,9 @@ public class DearApp extends Application {
         return Preferences.getUserFromSharedpref();
     }
 
+    public String getCurrentUserName () {
+        return Preferences.getUserFromSharedpref().getUsername();
+    }
 
 
 
@@ -207,8 +209,8 @@ public class DearApp extends Application {
         FireB.SignUpUser(user);
     }
 
-    public void SignInFireUser (String email, String password, CoordinatorLayout Coordinator) {
-        FireB.SignInUser(email, password, Coordinator);
+    public void SignInFireUser (User user) {
+        FireB.SignInUser(user);
     }
 
     public void SignOut () {

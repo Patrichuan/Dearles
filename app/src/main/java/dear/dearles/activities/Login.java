@@ -42,12 +42,13 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+
         app = (DearApp) getApplication();
+        app.InitializeUserFromSharedpref();
+        user = app.getUserFromSharedpref();
 
         // For let bg behind status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-        user = new User();
 
         Coordinator = (CoordinatorLayout) findViewById(R.id.Coordinator);
 

@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,7 @@ import dear.dearles.activities.Main;
 import dear.dearles.customclasses.Imagecompressor;
 import dear.dearles.customclasses.User;
 import dear.dearles.firebase.FirebaseHelper;
+import dear.dearles.preferences.PreferencesHelper;
 
 public class ParseHelper {
 
@@ -103,14 +105,18 @@ public class ParseHelper {
 
 
 
-    // SIGN IN AND SING UP RELATED METHODS-------------------------------------------------------------------------------------------
-    public void SignInUser (final User user, final FirebaseHelper FireB, final CoordinatorLayout Coordinator) {
-        // TODO - Comprobar que el email no esta en uso, y si no lo esta entonces doy de alta en FireBase
-        ParseUser.logInInBackground(user.getUsername(), user.getPassword(), new LogInCallback() {
+    // SIGN IN AND SIGN UP RELATED METHODS-------------------------------------------------------------------------------------------
+    public void SignInUser (final User user, final PreferencesHelper preferences, final CoordinatorLayout Coordinator) {
+        final String username = user.getUsername();
+        final String password = user.getPassword();
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
             public void done(ParseUser pUser, ParseException e) {
                 if (pUser != null) {
-                    // TODO - Lentitud maxima
-                    FireB.SignInUser(pUser.getEmail(), user.getPassword(), Coordinator);
+                    user.setEmail(pUser.getEmail());
+                    preferences.saveUserToSharedpref(user);
+                    Intent intent = new Intent(context, Main.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 } else {
                     // Signup failed. Look at the ParseException to see what happened.
                     Snackbar snackbar = Snackbar.make(Coordinator, "Credenciales incorrectas. Comprueba que tu username y/o password son correctos !!", Snackbar.LENGTH_LONG);
@@ -126,6 +132,7 @@ public class ParseHelper {
     }
 
     public void SignUpUser(final User user, Context context) {
+        // TODO - Comprobar que el email no esta en uso, y si no lo esta entonces doy de alta en FireBase
         System.out.println("Estoy en ParseHelper SignUpUser y el email vale: " + user.getEmail());
         final ParseFile pFile;
         final ParseUser aux = new ParseUser();

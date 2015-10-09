@@ -56,12 +56,10 @@ public class PreferencesHelper {
 
 
 
+
+
     public User getUserFromSharedpref () {
         User aux = new User();
-
-        System.out.println("El username en PreferencesHelper vale " + pref.getString("Username", null));
-        System.out.println("El password en PreferencesHelper vale " + pref.getString("Password", null));
-        System.out.println("El email en PreferencesHelper vale " + pref.getString("Email", null));
 
         aux.setUsername(pref.getString("Username", null));
         aux.setPassword(pref.getString("Password", null));

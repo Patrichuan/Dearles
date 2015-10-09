@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import dear.dearles.DearApp;
 import dear.dearles.R;
+import dear.dearles.customclasses.User;
 import dear.dearles.customclasses.ViewPagerAdapter;
 import dear.dearles.slidingtab.SlidingTabLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -36,6 +37,8 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.main_layout);
 
         app = (DearApp) getApplication();
+        // Una vez dentro logeo en FireBase para el posterior uso del chat
+        app.SignInFireUser(app.getUserFromSharedpref());
 
         // Setups
         setupToolbar();
