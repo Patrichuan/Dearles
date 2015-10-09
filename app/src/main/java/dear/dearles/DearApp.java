@@ -62,18 +62,21 @@ public class DearApp extends Application {
 
 
     public void SignUpUser (User user) {
-        // TODO - Comprobar que el email no esta en uso, y si no lo esta entonces doy de alta en FireBase
         DB.SignUpUser(user, this);
         FireB.SignUpUser(user);
     }
 
-    // Trata de logear un usuario, en caso de fallar lanza un snackbar en el CoordinatorLayout pasado como parametro
-    // informando de que el logeo ha fallado
+    // Trata de logear un usuario, en caso de fallar lanza un snackbar en el CoordinatorLayout pasado como parametro informando de que el logeo ha fallado
     public void SignInUser(User user, CoordinatorLayout Coordinator) {
-        // TODO - Si se consigue logear en Parse entonces tratar de logear en FireBase. Si no entonces logout de Parse
-        DB.SignInUser(user, Coordinator);
-        FireB.SignInUser(user);
+        DB.SignInUser(user, FireB, Coordinator);
     }
+
+    public void LogOutUser() {
+        DB.LogOutUser();
+        FireB.SignOut();
+    }
+
+
 
 
 
@@ -126,9 +129,7 @@ public class DearApp extends Application {
         DB.Initialize();
     }
 
-    public void LogOutUser() {
-        DB.LogOutUser();
-    }
+
 
     public Boolean isUserLoggedIn () {
         return DB.isUserLoggedIn();
@@ -206,8 +207,12 @@ public class DearApp extends Application {
         FireB.SignUpUser(user);
     }
 
-    public void SignInFireUser (User user) {
-        FireB.SignInUser(user);
+    public void SignInFireUser (String email, String password, CoordinatorLayout Coordinator) {
+        FireB.SignInUser(email, password, Coordinator);
+    }
+
+    public void SignOut () {
+        FireB.SignOut();
     }
 
     public Firebase getFireChild (String str) {

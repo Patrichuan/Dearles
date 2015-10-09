@@ -42,16 +42,49 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
-
         app = (DearApp) getApplication();
+
+        // For let bg behind status bar
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+        user = new User();
 
         Coordinator = (CoordinatorLayout) findViewById(R.id.Coordinator);
 
-        user = new User();
-        user = app.getUserFromSharedpref();
+        usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
+        usernameTil.setErrorEnabled(true);
+
+        passwordTil = (TextInputLayout) findViewById(R.id.passwordTil);
+        passwordTil.setErrorEnabled(true);
 
         usernameEt = (EditText) findViewById(R.id.usernameEt);
         passwordEt = (EditText) findViewById((R.id.passwordEt));
+
+
+        SignUpbtn = (Button) findViewById(R.id.SignUpbtn);
+        SignUpbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, SignUp1.class);
+                startActivity(intent);
+            }
+        });
+
+
+        Loginbtn = (Button) findViewById(R.id.Loginbtn);
+        Loginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAllCorrect()) {
+                    // Ojo, que este user unicamente tiene login y password (el resto de campos vale null)
+                    app.SignInUser(user, Coordinator);
+                }
+                hideKeyboard(usernameEt);
+                hideKeyboard(passwordEt);
+            }
+        });
+
+
         //Listener para el boton 'end' del teclado
         passwordEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -66,37 +99,8 @@ public class Login extends AppCompatActivity {
                 return false;
             }
         });
-
-        usernameTil = (TextInputLayout) findViewById(R.id.usernameTil);
-        usernameTil.setErrorEnabled(true);
-
-        passwordTil = (TextInputLayout) findViewById(R.id.passwordTil);
-        passwordTil.setErrorEnabled(true);
-
-        // For let bg behind status bar
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-        SignUpbtn = (Button) findViewById(R.id.SignUpbtn);
-        SignUpbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Login.this, SignUp1.class);
-                startActivity(intent);
-            }
-        });
-
-        Loginbtn = (Button) findViewById(R.id.Loginbtn);
-        Loginbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAllCorrect()) {
-                    app.SignInUser(user, Coordinator);
-                }
-                hideKeyboard(usernameEt);
-                hideKeyboard(passwordEt);
-            }
-        });
     }
+
 
     // TODO - Comprobar que el email no este ya en uso
     private Boolean isAllCorrect () {

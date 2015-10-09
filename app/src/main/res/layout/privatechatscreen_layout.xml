@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    tools:context="dear.dearles.activities.PrivateChatScreen">
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/test"
+    tools:context=".PrivateChatScreen">
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/listFooter"
-        android:layout_alignParentTop="true"
-        android:transcriptMode="alwaysScroll" />
+        android:transcriptMode="alwaysScroll"
+        android:layout_above="@+id/listFooter"/>
 
     <LinearLayout
         android:id="@+id/listFooter"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/messageInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/text_edit"
+            android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:inputType="textShortMessage"
             android:lines="1"
-            android:singleLine="true" />
+            android:singleLine="true"  />
 
-        <ImageButton
-            android:id="@+id/sendButton"
+        <Button
+            android:id="@+id/send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_send" />
+            android:text="Send" />
     </LinearLayout>
-
 </RelativeLayout>

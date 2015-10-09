@@ -13,11 +13,12 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
+ * @author greg
+ * @since 6/21/13
+ *
  * This class is a generic way of backing an Android ListView with a Firebase location.
  * It handles all of the child events at the given Firebase location. It marshals received data into the given
  * class type. Extend this class and provide an implementation of <code>populateView</code>, which will be given an
@@ -26,8 +27,7 @@ import java.util.Map;
  *
  * @param <T> The class type to use as a model for the data contained in the children of the given Firebase location
  */
-public abstract class FireBase_ListAdapter<T> extends BaseAdapter {
-
+public abstract class Custom_FireBaseListAdapter<T> extends BaseAdapter {
 
     private Query mRef;
     private Class<T> mModelClass;
@@ -46,20 +46,19 @@ public abstract class FireBase_ListAdapter<T> extends BaseAdapter {
      *                    instance of the corresponding view with the data from an instance of mModelClass.
      * @param activity    The activity containing the ListView
      */
-    public FireBase_ListAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity) {
+    public Custom_FireBaseListAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity) {
         this.mRef = mRef;
         this.mModelClass = mModelClass;
         this.mLayout = mLayout;
         mInflater = activity.getLayoutInflater();
         mModels = new ArrayList<T>();
         mKeys = new ArrayList<String>();
-
         // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
         mListener = this.mRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
 
-                T model = dataSnapshot.getValue(FireBase_ListAdapter.this.mModelClass);
+                T model = dataSnapshot.getValue(Custom_FireBaseListAdapter.this.mModelClass);
                 String key = dataSnapshot.getKey();
 
                 // Insert into the correct location, based on previousChildName
@@ -85,7 +84,7 @@ public abstract class FireBase_ListAdapter<T> extends BaseAdapter {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 // One of the mModels changed. Replace it in our list and name mapping
                 String key = dataSnapshot.getKey();
-                T newModel = dataSnapshot.getValue(FireBase_ListAdapter.this.mModelClass);
+                T newModel = dataSnapshot.getValue(Custom_FireBaseListAdapter.this.mModelClass);
                 int index = mKeys.indexOf(key);
 
                 mModels.set(index, newModel);
@@ -111,7 +110,7 @@ public abstract class FireBase_ListAdapter<T> extends BaseAdapter {
 
                 // A model changed position in the list. Update our list accordingly
                 String key = dataSnapshot.getKey();
-                T newModel = dataSnapshot.getValue(FireBase_ListAdapter.this.mModelClass);
+                T newModel = dataSnapshot.getValue(Custom_FireBaseListAdapter.this.mModelClass);
                 int index = mKeys.indexOf(key);
                 mModels.remove(index);
                 mKeys.remove(index);

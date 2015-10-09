@@ -1,6 +1,13 @@
 package dear.dearles.firebase;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.TextView;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
@@ -8,8 +15,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.util.Map;
-
+import dear.dearles.R;
+import dear.dearles.activities.Main;
 import dear.dearles.customclasses.User;
 
 public class FirebaseHelper {
@@ -44,32 +51,51 @@ public class FirebaseHelper {
     }
 
     public void SignUpUser (User user) {
-        myFirebaseRef.createUser(user.getEmail(), user.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+        final String email = user.getEmail();
+        final String password = user.getPassword();
+        System.out.println("Estoy en FireBaseHelper SignUpUser y el email vale: " + email);
+        myFirebaseRef.createUser(email, password, new Firebase.ResultHandler() {
             @Override
-            public void onSuccess(Map<String, Object> result) {
-                System.out.println("Successfully created user account with uid: " + result.get("uid") + " en FireBase");
+            public void onSuccess() {
+                myFirebaseRef.authWithPassword(email, password, null);
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                // there was an error
+                myFirebaseRef.authWithPassword(email, password, null);
             }
         });
     }
 
-    public void SignInUser (User user) {
-        System.out.println("Logeado con exito en FireBase con el email "+ user.getEmail());
-        myFirebaseRef.authWithPassword(user.getEmail(), user.getPassword(), new Firebase.AuthResultHandler() {
+    public void SignInUser (final String email, final String password, final CoordinatorLayout Coordinator) {
+        System.out.println("Estoy en FireBaseHelper SignInUser y el email vale: " + email);
+        myFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 System.out.println("User ID: " + authData.getUid() + " logeado con exito en FireBase");
+                System.out.println("CREDENCIALES CORRECTAS en PARSE y en FIREBASE");
+                Intent intent = new Intent(context, Main.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 // there was an error
+                // Signup failed. Look at the ParseException to see what happened.
+                Snackbar snackbar = Snackbar.make(Coordinator, "Credenciales incorrectas. Comprueba que tu username y/o password son correctos !!", Snackbar.LENGTH_LONG);
+                View snackbarView = snackbar.getView();
+                snackbarView.setBackgroundColor(ContextCompat.getColor(Coordinator.getContext(), R.color.primary_dark));
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(ContextCompat.getColor(Coordinator.getContext(), R.color.icons));
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.f);
+                snackbar.show();
             }
         });
+    }
+
+    public void SignOut () {
+        myFirebaseRef.unauth();
     }
 
     public Firebase getFireBaseRef () {
@@ -77,7 +103,8 @@ public class FirebaseHelper {
     }
 
     public Firebase getFireChild(String str) {
-        return myFirebaseRef.getRoot().child(str);
+        return myFirebaseRef.child(str);
+        //return myFirebaseRef.getRoot().child(str);
     }
 
 }
