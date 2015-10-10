@@ -16,7 +16,6 @@ import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -100,9 +99,9 @@ public class ChatBubbleActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean connected = (Boolean) dataSnapshot.getValue();
                 if (connected) {
-                    Toast.makeText(ChatBubbleActivity.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
+                    System.out.println("Connected to Firebase");
                 } else {
-                    Toast.makeText(ChatBubbleActivity.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
+                    System.out.println("Disconnected to Firebase");
                 }
             }
 

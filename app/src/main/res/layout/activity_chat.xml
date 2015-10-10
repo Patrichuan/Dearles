@@ -38,7 +38,9 @@
                 android:layout_width="0dp"
                 android:inputType="text"
                 android:singleLine="true"
-                android:padding="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
                 android:layout_weight="1"
                 android:background="@color/icons"
                 android:layout_height="match_parent"/>
@@ -53,6 +55,8 @@
 
         <ListView
             android:id="@+id/listView1"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             android:layout_above="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
