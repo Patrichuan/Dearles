@@ -75,6 +75,11 @@
         </activity>
         <activity android:name=".activities.PrivateChatScreen" >
         </activity>
+        <activity
+            android:name=".activities.ChatBubbleActivity"
+            android:label="@string/title_activity_chat_bubble"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>

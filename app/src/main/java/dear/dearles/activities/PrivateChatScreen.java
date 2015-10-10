@@ -51,8 +51,6 @@ public class PrivateChatScreen extends AppCompatActivity {
         setContentView(R.layout.privatechatscreen_layout);
         app = (DearApp) getApplication();
 
-
-
         // Setup our Firebase mFirebaseRef
         mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
 
