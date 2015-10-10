@@ -1,43 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listView1"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp">
-    </ListView>
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:elevation="4dp"
+        android:background="?attr/colorPrimary"/>
 
     <RelativeLayout
         android:id="@+id/form"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical" >
+        android:layout_below="@id/toolbar"
+        android:background="@drawable/chatbg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <EditText
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/chatText"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/buttonSend" />
+            android:padding="10dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send"
-            android:id="@+id/buttonSend"
-            android:layout_alignBottom="@+id/chatText"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            <EditText
+                android:id="@+id/chatText"
+                android:layout_width="0dp"
+                android:inputType="text"
+                android:singleLine="true"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:background="@color/icons"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/buttonSend"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/sendchatbutton"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_above="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
     </RelativeLayout>
 
 </RelativeLayout>

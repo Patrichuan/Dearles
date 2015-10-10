@@ -19,12 +19,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".activities.Login"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
+
         <activity
             android:name=".activities.SignUp1"
             android:label="@string/title_activity_sign_up1"
@@ -32,6 +34,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
+
         <activity
             android:name=".activities.SignUp2"
             android:label="@string/title_activity_sign_up2"
@@ -39,18 +42,21 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
+
         <activity
             android:name=".activities.Main"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
+
         <activity
             android:name=".activities.UserBigProfile"
             android:label="@string/title_activity_userbigprofile"
             android:parentActivityName=".activities.Main"
             android:screenOrientation="portrait" >
         </activity>
+
         <activity
             android:name=".activities.SplashScreen"
             android:label="@string/title_activity_splash_screen"
@@ -61,25 +67,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.Search"
             android:label="@string/title_activity_search"
             android:parentActivityName=".activities.Main"
             android:screenOrientation="portrait" >
         </activity>
+
         <activity
             android:name=".activities.SearchResults"
             android:label="@string/title_activity_search_results"
             android:parentActivityName=".activities.Search"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.PrivateChatScreen" >
-        </activity>
+
         <activity
             android:name=".activities.ChatBubbleActivity"
             android:label="@string/title_activity_chat_bubble"
-            android:theme="@style/AppTheme" >
+            android:parentActivityName=".activities.Main"
+            android:screenOrientation="portrait" >
         </activity>
+
     </application>
 
 </manifest>

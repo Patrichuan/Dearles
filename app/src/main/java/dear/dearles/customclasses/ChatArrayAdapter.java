@@ -1,63 +1,45 @@
 package dear.dearles.customclasses;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.app.Activity;
+import android.graphics.Color;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.firebase.client.Query;
 
 import dear.dearles.R;
 
-public class ChatArrayAdapter extends ArrayAdapter {
+public class ChatArrayAdapter extends Custom_FireBaseListAdapter<ChatBubbleMessage> {
 
-    private TextView chatText;
-    private List chatMessageList = new ArrayList();
-    private LinearLayout singleMessageContainer;
+    // El username del usuario actualmente logeado
+    private String mUsername;
+
+    public ChatArrayAdapter(Query ref, Activity activity, int textViewResourceId, String mUsername) {
+        super(ref, ChatBubbleMessage.class, textViewResourceId, activity);
+        this.mUsername = mUsername;
+    }
 
     @Override
-    public void add(ChatBubbleMessage object) {
-        chatMessageList.add(object);
-        super.add(object);
-    }
+    protected void populateView(View view, ChatBubbleMessage chat) {
 
-    public ChatArrayAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-    }
+        LinearLayout singleMessageContainer = (LinearLayout) view.findViewById(R.id.singleMessageContainer);
 
-    public int getCount() {
-        return this.chatMessageList.size();
-    }
+        String username = chat.getName();
+        String message = chat.getText();
 
-    public ChatBubbleMessage getItem(int index) {
-        return this.chatMessageList.get(index);
-    }
+        TextView chatText = (TextView) view.findViewById(R.id.singleMessage);
+        chatText.setText(username + "dice: " + message);
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        if (row == null) {
-            LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.activity_chat_singlemessage, parent, false);
+        if (username != null && username.equals(mUsername)) {
+            chatText.setBackgroundResource(R.drawable.bubble_b);
+            singleMessageContainer.setGravity(Gravity.LEFT);
+        } else {
+            chatText.setBackgroundResource(R.drawable.bubble_a);
+            singleMessageContainer.setGravity(Gravity.RIGHT);
         }
-        singleMessageContainer = (LinearLayout) row.findViewById(R.id.singleMessageContainer);
-        ChatBubbleMessage chatMessageObj = getItem(position);
-        chatText = (TextView) row.findViewById(R.id.singleMessage);
-        chatText.setText(chatMessageObj.message);
-        chatText.setBackgroundResource(chatMessageObj.left ? R.drawable.bubble_a : R.drawable.bubble_b);
-        singleMessageContainer.setGravity(chatMessageObj.left ? Gravity.LEFT : Gravity.RIGHT);
-        return row;
-    }
-
-    public Bitmap decodeToBitmap(byte[] decodedByte) {
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
 }

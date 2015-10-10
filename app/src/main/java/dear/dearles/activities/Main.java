@@ -104,7 +104,7 @@ public class Main extends AppCompatActivity {
             case R.id.judge:
                 return true;
             case R.id.chat:
-                intent = new Intent(this, PrivateChatScreen.class);
+                intent = new Intent(this, ChatBubbleActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.logout:

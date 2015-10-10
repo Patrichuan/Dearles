@@ -19,10 +19,16 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
+    compile 'com.firebase:firebase-client-android:2.4.0+'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.google.android.gms:play-services-location:8.1.0'
     compile 'com.android.support:support-v4:23.0.1'
