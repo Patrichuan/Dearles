@@ -64,7 +64,6 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                                     @Override
                                     public void run() {
                                         swipeRefreshLayout.setRefreshing(true);
-                                        app.UpdateUserLastKnownLocIfNeeded();
                                         new RemoteDataTask().execute();
                                     }
                                 }
@@ -75,7 +74,6 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
 
     @Override
     public void onRefresh() {
-        app.UpdateUserLastKnownLocIfNeeded();
         new RemoteDataTask().execute();
     }
 
@@ -84,6 +82,8 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            //
+            app.UpdateUserLastKnownLocIfNeeded();
         }
 
         @Override
@@ -94,6 +94,7 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
             // Si el bundle devolvio Null en cada uno es porque estoy en Main (no vengo de Search)
             if ((Hashtag==null)||(UsersUsingHashtag==null)) {
                 try {
+                    // TODO - Meterle un whereequal tirando de localidad para reducir el peso de la query
                     query = ParseUser.getQuery();
                     ParseUserList = query.find();
                 } catch (ParseException e) {
@@ -123,6 +124,7 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    // Añadir primero el usuario con username = currentuser
                     UserList.add(app.ParseUsertoUser(ParseUserList.get(0)));
                 }
                 return null;

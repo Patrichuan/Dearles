@@ -64,7 +64,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
                                     @Override
                                     public void run() {
                                         swipeRefreshLayout.setRefreshing(true);
-                                        app.UpdateUserLastKnownLocIfNeeded();
                                         new RemoteDataTask().execute();
                                     }
                                 }
@@ -75,7 +74,6 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
-        app.UpdateUserLastKnownLocIfNeeded();
         new RemoteDataTask().execute();
     }
 
@@ -84,6 +82,7 @@ public class RelacionEstableTab extends Fragment implements SwipeRefreshLayout.O
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            app.UpdateUserLastKnownLocIfNeeded();
         }
 
         @Override

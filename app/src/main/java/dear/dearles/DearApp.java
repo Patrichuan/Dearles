@@ -144,11 +144,13 @@ public class DearApp extends Application {
     // - Posicion actual
     // - Distancia en Km entre Posicion actual y la ultima conocida de dicho usuario
     public User ParseUsertoUser (ParseUser pUser) {
+        //DB.UpdateUserLastKnownLocIfNeeded(GetLastKnownLoc());
         return DB.ParseUserToUser(pUser, GetLastKnownLoc());
     }
 
     public void UpdateUserLastKnownLocIfNeeded () {
         DB.UpdateUserLastKnownLocIfNeeded(GetLastKnownLoc());
+
     }
 
     public void UpdateTopTenHashtags () {

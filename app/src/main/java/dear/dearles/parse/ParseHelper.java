@@ -218,6 +218,8 @@ public class ParseHelper {
 
     public void LogOutUser () {
         ParseUser currentuser = ParseUser.getCurrentUser();
+        LastLat = 0;
+        LastLong = 0;
         if ((currentuser!=null)&&(currentuser.getUsername()!=null)) {
             System.out.println("DESLOGEADO CON EXITO !!");
             ParseUser.logOut();
@@ -452,6 +454,7 @@ public class ParseHelper {
                 @Override
                 public void done(ParseException e) {
                     if (e != null) {
+                        System.out.println("EXCEPTION: " + e.getMessage());
                     } else {
                         System.out.println("Hay necesidad de actualizar por lo tanto he de subir el geopoint a Parse");
                     }
@@ -468,7 +471,6 @@ public class ParseHelper {
 
 
     // OTHER RELATED METHODS--------------------------------------------------------------------------------------------------------------
-    // TODO - Se llama 1 vez por cada usuario?
     // Funcion que convierte un ParseUser en User y almacena la distancia en Kilometros de este con respecto a la posicion actual
     public User ParseUserToUser (ParseUser pUser, Location ActualLoc) {
 
@@ -490,6 +492,7 @@ public class ParseHelper {
         user.setGeopoint(pUser.getParseGeoPoint("geopoint"));
 
         // APROVECHO PARA CALCULAR LA DISTANCIA EN Km ENTRE LA POSICION DEL USUARIO TRANSFORMADO Y LA ACTUAL
+        System.out.println("La distancia al usuario " + pUser.getString("username") + " es de " + ActualgeoPoint.distanceInKilometersTo(pUser.getParseGeoPoint("geopoint")) + " Km.");
         user.setDistance(ActualgeoPoint.distanceInKilometersTo(pUser.getParseGeoPoint("geopoint")));
         return user;
     }
