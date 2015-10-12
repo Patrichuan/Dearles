@@ -69,6 +69,14 @@ public class FirebaseHelper {
     }
 
     public void SignInUser (User user) {
+
+
+
+
+
+
+
+
         System.out.println("Estoy en FireBaseHelper SignInUser y el email vale: " + user.getEmail());
         myFirebaseRef.authWithPassword(user.getEmail(), user.getPassword(), new Firebase.AuthResultHandler() {
             @Override

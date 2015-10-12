@@ -163,7 +163,7 @@ public class User_ListViewAdapter extends BaseAdapter {
                 // Send single item click data to UserBigProfile Class
                 Intent intent = new Intent(context, UserBigProfile.class);
                 intent.putExtra("username", (UserList.get(position).getUsername()));
-                intent.putExtra("profilePicture", (UserList.get(position).getProfilePicture()));
+                intent.putExtra("profilepicture", (UserList.get(position).getProfilePicture()));
                 intent.putExtra("description", (UserList.get(position).getDescription()));
                 context.startActivity(intent);
             }

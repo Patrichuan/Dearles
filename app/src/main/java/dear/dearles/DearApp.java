@@ -17,7 +17,6 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
 import dear.dearles.customclasses.LocationAwareness;
 import dear.dearles.customclasses.ScreenMeasurement;
@@ -47,8 +46,8 @@ public class DearApp extends Application {
         backButtonCount = 0;
 
         InitializeScreenMeasurement();
-        InitializeParse();
         InitializePreferences();
+        InitializeParse();
         InitializeLoc();
         InitializeFirebase();
 
@@ -63,16 +62,19 @@ public class DearApp extends Application {
 
 
     public void SignUpUser (User user) {
+        backButtonCount = 0;
         DB.SignUpUser(user, this);
         FireB.SignUpUser(user);
     }
 
     // Trata de logear un usuario, en caso de fallar lanza un snackbar en el CoordinatorLayout pasado como parametro informando de que el logeo ha fallado
     public void SignInUser(User user, CoordinatorLayout Coordinator) {
-        DB.SignInUser(user, Preferences, Coordinator);
+        backButtonCount = 0;
+        DB.SignInUser(user, Coordinator);
     }
 
     public void LogOutUser() {
+        backButtonCount = 0;
         DB.LogOutUser();
         FireB.SignOut();
     }
@@ -126,7 +128,7 @@ public class DearApp extends Application {
 
     // PARSE.com RELATED METHODS----------------------------------------------------------------------------
     public void InitializeParse () {
-        DB = new ParseHelper(getContext());
+        DB = new ParseHelper(getContext(), Preferences);
         DB.Initialize();
     }
 
@@ -193,6 +195,10 @@ public class DearApp extends Application {
 
     public String getCurrentUserName () {
         return Preferences.getUserFromSharedpref().getUsername();
+    }
+
+    public String getCurrentUserProfilePicture () {
+        return Preferences.getUserFromSharedpref().getProfilePicture();
     }
 
 

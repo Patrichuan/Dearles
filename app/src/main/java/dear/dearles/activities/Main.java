@@ -40,6 +40,8 @@ public class Main extends AppCompatActivity {
         // Una vez dentro logeo en FireBase para el posterior uso del chat
         app.SignInFireUser(app.getUserFromSharedpref());
 
+        Coordinator = (CoordinatorLayout) findViewById(R.id.Coordinator);
+
         // Setups
         setupToolbar();
         setupTabs();
@@ -104,8 +106,8 @@ public class Main extends AppCompatActivity {
             case R.id.judge:
                 return true;
             case R.id.chat:
-                intent = new Intent(this, ChatBubbleActivity.class);
-                startActivity(intent);
+                //intent = new Intent(this, ChatBubbleActivity.class);
+                //startActivity(intent);
                 return true;
             case R.id.logout:
                 if (app.isUserLoggedIn()) {

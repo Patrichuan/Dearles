@@ -11,7 +11,7 @@
         android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/MyProfileImage"
+            android:id="@+id/Myprofilepic_iv"
             android:layout_width="50dp"
             android:layout_height="50dp" />
 
@@ -28,7 +28,7 @@
             android:textColor="@android:color/primary_text_light" />
 
         <ImageView
-            android:id="@+id/HerProfileImage"
+            android:id="@+id/Herprofilepic_iv"
             android:layout_width="50dp"
             android:layout_height="50dp" />
     </LinearLayout>

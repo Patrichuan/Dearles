@@ -27,6 +27,35 @@
             android:layout_height="match_parent">
         </ImageView>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_chat_white_24dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            app:backgroundTint="@color/primary_light"
+            app:rippleColor="@color/distance_very_far"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_heart_white_24dp"
+            android:layout_marginEnd="15dp"
+            app:backgroundTint="@color/primary_light"
+            app:rippleColor="@color/distance_very_far"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            android:layout_alignTop="@+id/floating_fav"
+            android:layout_toStartOf="@+id/floating_fav" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -120,6 +120,7 @@ public class SignUp2 extends AppCompatActivity {
                 app.SignUpUser(user);
                 // Y me vuelvo a la pantalla de Login
                 Intent intent = new Intent(SignUp2.this, Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });

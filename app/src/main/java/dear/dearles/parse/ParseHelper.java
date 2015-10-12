@@ -54,6 +54,8 @@ import dear.dearles.preferences.PreferencesHelper;
 public class ParseHelper {
 
     private Context context;
+    PreferencesHelper Preferences;
+    User aux;
 
     // UpdateUserLoc
     private double LastLat, LastLong;
@@ -72,11 +74,16 @@ public class ParseHelper {
     private static ArrayList<ParseObject> SingleSearchHashtagRow;
     private Boolean SingleSearchHashtagFetched;
 
-
+    Uri placeholderimageUri;
 
     // CONSTRUCTOR AND INITIALIZE RELATED METHODS------------------------------------------------------------------------------------
-    public ParseHelper (Context context) {
+    public ParseHelper (Context context, PreferencesHelper Preferences) {
         this.context = context;
+        this.Preferences = Preferences;
+        placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + context.getResources().getResourcePackageName(R.drawable.bglogin)
+                + '/' + context.getResources().getResourceTypeName(R.drawable.bglogin)
+                + '/' + context.getResources().getResourceEntryName(R.drawable.bglogin));
     }
 
     public void Initialize () {
@@ -106,14 +113,35 @@ public class ParseHelper {
 
 
     // SIGN IN AND SIGN UP RELATED METHODS-------------------------------------------------------------------------------------------
-    public void SignInUser (final User user, final PreferencesHelper preferences, final CoordinatorLayout Coordinator) {
-        final String username = user.getUsername();
-        final String password = user.getPassword();
+    public void SignInUser (User user, final CoordinatorLayout Coordinator) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+
+        aux = new User();
+        aux.setUsername(username);
+        aux.setPassword(password);
+
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             public void done(ParseUser pUser, ParseException e) {
                 if (pUser != null) {
-                    user.setEmail(pUser.getEmail());
-                    preferences.saveUserToSharedpref(user);
+                    aux.setEmail(pUser.getEmail());
+
+                    ParseFile image = (ParseFile) pUser.get("profilePicture");
+                    if (image==null) {
+                        aux.setProfilePicture(placeholderimageUri.toString());
+                    } else {
+                        aux.setProfilePicture(image.getUrl());
+                    }
+
+                    Preferences.saveUserToSharedpref(aux);
+
+                    User aux = Preferences.getUserFromSharedpref();
+                    System.out.println("SE HA GRABADO EN PREFERENCES");
+                    System.out.println("--------------------------");
+                    System.out.println(aux.getUsername());
+                    System.out.println(aux.getEmail());
+                    System.out.println(aux.getProfilePicture());
+
                     Intent intent = new Intent(context, Main.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
@@ -260,7 +288,9 @@ public class ParseHelper {
         while (mat.find()) {
             UserHashtags.add(mat.group(1));
         }
-        CreateorUpdateHashtag();
+        if (UserHashtags.size()>0) {
+            CreateorUpdateHashtag();
+        }
     }
 
     // Metodo recursivo que da de alta/actualiza y al final de esta operacion actualiza el Top10
@@ -440,10 +470,6 @@ public class ParseHelper {
     // OTHER RELATED METHODS--------------------------------------------------------------------------------------------------------------
     // Funcion que convierte un ParseUser en User y almacena la distancia en Kilometros de este con respecto a la posicion actual
     public User ParseUserToUser (ParseUser pUser, Location ActualLoc) {
-        Uri placeholderimageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + context.getResources().getResourcePackageName(R.drawable.bglogin)
-                + '/' + context.getResources().getResourceTypeName(R.drawable.bglogin)
-                + '/' + context.getResources().getResourceEntryName(R.drawable.bglogin));
 
         // Actualizo la loc del usuario en caso de haber cambiado esta significativamente
         UpdateUserLastKnownLocIfNeeded(ActualLoc.getLatitude(), ActualLoc.getLongitude());
@@ -453,12 +479,14 @@ public class ParseHelper {
         User user = new User();
         user.setUsername(pUser.getString("username"));
         user.setAge(pUser.getString("age"));
+
         ParseFile image = (ParseFile) pUser.get("profilePicture");
         if (image==null) {
             user.setProfilePicture(placeholderimageUri.toString());
         } else {
             user.setProfilePicture(image.getUrl());
         }
+
         user.setDescription(pUser.getString("description"));
         user.setGeopoint(pUser.getParseGeoPoint("geopoint"));
 

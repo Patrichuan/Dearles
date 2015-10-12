@@ -37,7 +37,7 @@ public class ChatBubbleActivity extends AppCompatActivity {
 
     EditText chatText;
 
-    String mUsername;
+    String MyUsername, MyProfilePicture, HerUsername, HerProfilePicture;
     Firebase mFirebaseRef;
     ListView listView;
     ImageView buttonSend;
@@ -50,10 +50,19 @@ public class ChatBubbleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         app = (DearApp) getApplication();
 
-        // Setup our Firebase mFirebaseRef
-        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
+        Intent i = getIntent();
 
-        mUsername = app.getCurrentUserName();
+        MyUsername = app.getCurrentUserName();
+
+        MyProfilePicture = app.getCurrentUserProfilePicture();
+
+        HerUsername = i.getStringExtra("herusername");
+        HerProfilePicture = i.getStringExtra("profilePicture");
+
+        // Setup our Firebase mFirebaseRef
+        //String ChatName = MyUsername+"to"+HerUsername;
+        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
+                //.child(ChatName);
 
         listView = (ListView) findViewById(R.id.listView1);
 
@@ -81,7 +90,7 @@ public class ChatBubbleActivity extends AppCompatActivity {
         // Setup our view and list adapter. Ensure it scrolls to the bottom as data changes
         // final ListView listView = getListView();
         // Tell our list adapter that we only want 50 messages at a time
-        chatArrayAdapter = new ChatArrayAdapter(mFirebaseRef.limit(50), this, R.layout.activity_chat_singlemessage, mUsername);
+        chatArrayAdapter = new ChatArrayAdapter(mFirebaseRef.limit(50), this, R.layout.activity_chat_singlemessage, MyUsername, MyProfilePicture, HerUsername, HerProfilePicture);
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         listView.setAdapter(chatArrayAdapter);
         //to scroll the list view to bottom on data change
@@ -128,7 +137,7 @@ public class ChatBubbleActivity extends AppCompatActivity {
         String input = chatText.getText().toString();
         if (!input.equals("")) {
             // Create our 'model', a Chat object
-            ChatBubbleMessage chat = new ChatBubbleMessage(mUsername, input);
+            ChatBubbleMessage chat = new ChatBubbleMessage(MyUsername, input);
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(chat);
             chatText.setText("");
@@ -137,7 +146,7 @@ public class ChatBubbleActivity extends AppCompatActivity {
 
     private void setupToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(app.getCurrentUserName());
+        toolbar.setTitle(HerUsername);
         setSupportActionBar(toolbar);
         // Arrow menu icon
         ActionBar ab = getSupportActionBar();

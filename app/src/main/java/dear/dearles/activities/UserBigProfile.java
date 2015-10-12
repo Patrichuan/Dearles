@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,10 +30,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UserBigProfile extends AppCompatActivity {
 
-    String Username, Age, Description, ProfilePicture;
+    String HerUsername, Age, Description, HerProfilePicture;
     TextView txtHashtag1, txtHashtag2,txtHashtag3,txtHashtag4,txtHashtag5;
     ImageView imgProfilePicture;
     ArrayList<String> UserHashtags;
+
+    FloatingActionButton FloatingFav;
+    FloatingActionButton FloatingChat;
 
     protected DearApp app;
     Pattern MY_PATTERN = Pattern.compile("#(\\w+)");
@@ -44,10 +49,8 @@ public class UserBigProfile extends AppCompatActivity {
         app = (DearApp) getApplication();
 
         Intent i = getIntent();
-        Bundle bundle = i.getExtras();
-
-        Username = i.getStringExtra("username");
-        ProfilePicture = i.getStringExtra("profilePicture");
+        HerUsername = i.getStringExtra("username");
+        HerProfilePicture = i.getStringExtra("profilepicture");
         Description = i.getStringExtra("description");
         /*
         UserHashtags = new ArrayList<String>();
@@ -59,9 +62,27 @@ public class UserBigProfile extends AppCompatActivity {
         // Setups
         setupToolbar();
 
+        FloatingFav = (FloatingActionButton) findViewById(R.id.floating_fav);
+        FloatingFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CLICKED FAV");
+            }
+        });
+
+        FloatingChat = (FloatingActionButton) findViewById(R.id.floating_chat);
+        FloatingChat.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Intent intent = new Intent(UserBigProfile.this, ChatBubbleActivity.class);
+                intent.putExtra("herusername", HerUsername);
+                intent.putExtra("profilePicture", HerProfilePicture);
+                startActivity(intent);
+            }
+        });
+
         imgProfilePicture = (ImageView)findViewById(R.id.ProfilePicture);
         Glide.with(UserBigProfile.this)
-                .load(ProfilePicture)
+                .load(HerProfilePicture)
                 .asBitmap()
                 .transform(new FullHeightMinusStatusToolbarTransformation(this, app))
                 .into(new SimpleTarget<Bitmap>() {
@@ -77,7 +98,6 @@ public class UserBigProfile extends AppCompatActivity {
         txtHashtag4 = (TextView) findViewById(R.id.Hashtag4);
         txtHashtag5 = (TextView) findViewById(R.id.Hashtag5);
 
-
         Matcher mat = MY_PATTERN.matcher(Description);
         int n = 0;
         // TODO - Hacerlo con un listview y sin limite con scroll
@@ -92,19 +112,11 @@ public class UserBigProfile extends AppCompatActivity {
 
 
         /*
-        // Set hashtags
-        if (UserHashtags!=null) {
-            int pos;
-            for (String hashtag : UserHashtags) {
-                pos = UserHashtags.indexOf(hashtag);
-                System.out.println("Acabo de recoger: " + hashtag + " de la posicion " + pos);
-                if (pos==0) txtHashtag1.setText(UserHashtags.get(0));
-                if (pos==1) txtHashtag2.setText(UserHashtags.get(1));
-                if (pos==2) txtHashtag3.setText(UserHashtags.get(2));
-                if (pos==3) txtHashtag4.setText(UserHashtags.get(3));
-                if (pos==4) txtHashtag5.setText(UserHashtags.get(4));
-            }
-        }
+        // Send single item click data to UserBigProfile Class
+        Intent intent = new Intent(context, UserBigProfile.class);
+        intent.putExtra("username", (UserList.get(position).getUsername()));
+        intent.putExtra("profilePicture", (UserList.get(position).getProfilePicture()));
+        intent.putExtra("description", (UserList.get(position).getDescription()));
         */
     }
 

@@ -1,8 +1,10 @@
 package dear.dearles.customclasses;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
@@ -30,102 +32,87 @@ import dear.dearles.glide.CropSquareTransformation;
 public class ChatArrayAdapter extends Custom_FireBaseListAdapter<ChatBubbleMessage> {
 
     // El username del usuario actualmente logeado
-    String mUsername;
-    List<ParseUser> ParseUserList;
-    DearApp app;
-    ArrayList<User> UserList;
+    String MyUsername, MyProfilepic, HerUsername, HerProfilePicture;
+    ImageView Myprofilepic_iv, Herprofilepic_iv;
     Activity activity;
-    ImageView Myprofilepic, Herprofilepic;
 
-    public ChatArrayAdapter(Query ref, Activity activity, int textViewResourceId, String mUsername) {
+    public ChatArrayAdapter(Query ref, Activity activity, int textViewResourceId, String MyUsername, String MyProfilepic, String HerUsername, String HerProfilePicture) {
         super(ref, ChatBubbleMessage.class, textViewResourceId, activity);
-        this.mUsername = mUsername;
+        this.MyUsername = MyUsername;
+        this.HerUsername = HerUsername;
+        this.HerProfilePicture = HerProfilePicture;
+        this.MyProfilepic = MyProfilepic;
         this.activity = activity;
-        app = (DearApp) activity.getApplication();
-        //new RemoteDataTask().execute();
     }
+
 
     @Override
     protected void populateView(View view, ChatBubbleMessage chat) {
 
         LinearLayout singleMessageContainer = (LinearLayout) view.findViewById(R.id.singleMessageContainer);
-        Myprofilepic = (ImageView) view.findViewById(R.id.MyProfileImage);
-        Herprofilepic = (ImageView) view.findViewById(R.id.HerProfileImage);
+
+        Myprofilepic_iv = (ImageView) view.findViewById(R.id.Myprofilepic_iv);
+        Herprofilepic_iv = (ImageView) view.findViewById(R.id.Herprofilepic_iv);
 
         String username = chat.getName();
         String message = chat.getText();
 
         TextView chatText = (TextView) view.findViewById(R.id.singleMessage);
-        chatText.setText(mUsername.toUpperCase() + "\n"+ message);
 
-        if (username != null && username.equals(mUsername)) {
-            Herprofilepic.setVisibility(View.INVISIBLE);
-            if (!Myprofilepic.isShown()) {
-                Myprofilepic.setVisibility(View.VISIBLE);
+        if (MyUsername != null && username.equals(MyUsername)) {
+            // Aqui va nuestro username
+            chatText.setText(MyUsername.toUpperCase() + "\n" + message);
+            Herprofilepic_iv.setVisibility(View.INVISIBLE);
+            if (!Myprofilepic_iv.isShown()) {
+                Myprofilepic_iv.setVisibility(View.VISIBLE);
             }
-            Myprofilepic.setBackgroundResource(R.color.distance_near);
+            setMyProfileImage(MyProfilepic);
             chatText.setBackgroundResource(R.drawable.bubble_left);
             singleMessageContainer.setGravity(Gravity.LEFT);
         } else {
-            Myprofilepic.setVisibility(View.INVISIBLE);
-            if (!Herprofilepic.isShown()) {
-                Herprofilepic.setVisibility(View.VISIBLE);
+            // Aqui va el username del usuario al que hemos abierto el chat
+            chatText.setText(HerUsername + "\n" + message);
+            Myprofilepic_iv.setVisibility(View.INVISIBLE);
+            if (!Herprofilepic_iv.isShown()) {
+                Herprofilepic_iv.setVisibility(View.VISIBLE);
             }
-            Herprofilepic.setBackgroundResource(R.color.distance_far);
+            setHerProfileImage(HerProfilePicture);
             chatText.setBackgroundResource(R.drawable.bubble_right);
             singleMessageContainer.setGravity(Gravity.RIGHT);
         }
     }
 
 
-
-
-    /*
-    // RemoteDataTask AsyncTask
-    private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // Inicializo el ArrayList de Users
-            UserList = new ArrayList<User>();
-            ParseQuery<ParseUser> query;
-            try {
-                    query = ParseUser.getQuery();
-                    query.whereEqualTo("username", mUsername);
-                    ParseUserList = query.find();
-                } catch (ParseException e) {
-                    Log.e("Error", e.getMessage());
-                    e.printStackTrace();
-                }
-
-                for (ParseUser pUser : ParseUserList) {
-                    UserList.add(app.ParseUsertoUser(pUser));
-                }
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // Set the profile image
-            Glide.with(activity)
-                    .load(UserList.get(0).getProfilePicture())
-                    .asBitmap()
-                    .transform(new CropSquareTransformation(activity))
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            userprofilepic.setImageBitmap(resource);
-                        }
-                    });
-
-
-        }
+    public void setMyProfileImage (String ProfilePicture) {
+        // Set the profile image
+        Glide.with(activity)
+                .load(ProfilePicture)
+                .asBitmap()
+                .transform(new CropSquareTransformation(activity))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        System.out.println("READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY !!!!");
+                        Myprofilepic_iv.setImageBitmap(resource);
+                    }
+                });
     }
-    */
+
+    public void setHerProfileImage (String ProfilePicture) {
+        // Set the profile image
+        Glide.with(activity)
+                .load(ProfilePicture)
+                .asBitmap()
+                .transform(new CropSquareTransformation(activity))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        System.out.println("READYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY !!!!");
+                        Herprofilepic_iv.setImageBitmap(resource);
+                    }
+                });
+    }
+
+
 
 }
