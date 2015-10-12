@@ -147,6 +147,10 @@ public class DearApp extends Application {
         return DB.ParseUserToUser(pUser, GetLastKnownLoc());
     }
 
+    public void UpdateUserLastKnownLocIfNeeded () {
+        DB.UpdateUserLastKnownLocIfNeeded(GetLastKnownLoc());
+    }
+
     public void UpdateTopTenHashtags () {
         DB.UpdateTopTenHashtags();
     }

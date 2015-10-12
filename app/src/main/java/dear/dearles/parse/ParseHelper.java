@@ -443,10 +443,10 @@ public class ParseHelper {
     }
 
     // Metodo que actualiza en parse la posicion del usuario y devuelve latitud y longitud como un ParseGeoPoint
-    public void UpdateUserLastKnownLocIfNeeded (double latitude, double longitude) {
+    public void UpdateUserLastKnownLocIfNeeded (Location loc) {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseGeoPoint geoPoint = new ParseGeoPoint(latitude, longitude);
-        if (LastKnownLocUpdateHasBeenNeeded(latitude, longitude)) {
+        ParseGeoPoint geoPoint = new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
+        if (LastKnownLocUpdateHasBeenNeeded(loc.getLatitude(), loc.getLongitude())) {
             currentUser.put("geopoint", geoPoint);
             currentUser.saveInBackground(new SaveCallback() {
                 @Override
@@ -468,12 +468,11 @@ public class ParseHelper {
 
 
     // OTHER RELATED METHODS--------------------------------------------------------------------------------------------------------------
+    // TODO - Se llama 1 vez por cada usuario?
     // Funcion que convierte un ParseUser en User y almacena la distancia en Kilometros de este con respecto a la posicion actual
     public User ParseUserToUser (ParseUser pUser, Location ActualLoc) {
 
-        // Actualizo la loc del usuario en caso de haber cambiado esta significativamente
-        UpdateUserLastKnownLocIfNeeded(ActualLoc.getLatitude(), ActualLoc.getLongitude());
-        // y la paso a ParseGeoPoint para poder calcular distancias al resto de usuarios
+        // ParseGeoPoint para poder calcular distancias al resto de usuarios
         ParseGeoPoint ActualgeoPoint = new ParseGeoPoint(ActualLoc.getLatitude(), ActualLoc.getLongitude());
 
         User user = new User();
@@ -490,7 +489,7 @@ public class ParseHelper {
         user.setDescription(pUser.getString("description"));
         user.setGeopoint(pUser.getParseGeoPoint("geopoint"));
 
-        // OJO !!. APROVECHO PARA CALCULAR LA DISTANCIA EN Km ENTRE LA POSICION DEL USUARIO TRANSFORMADO Y LA ACTUAL
+        // APROVECHO PARA CALCULAR LA DISTANCIA EN Km ENTRE LA POSICION DEL USUARIO TRANSFORMADO Y LA ACTUAL
         user.setDistance(ActualgeoPoint.distanceInKilometersTo(pUser.getParseGeoPoint("geopoint")));
         return user;
     }

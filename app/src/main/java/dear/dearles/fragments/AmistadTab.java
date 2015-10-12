@@ -64,6 +64,7 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                                     @Override
                                     public void run() {
                                         swipeRefreshLayout.setRefreshing(true);
+                                        app.UpdateUserLastKnownLocIfNeeded();
                                         new RemoteDataTask().execute();
                                     }
                                 }
@@ -74,6 +75,7 @@ public class AmistadTab extends Fragment implements SwipeRefreshLayout.OnRefresh
 
     @Override
     public void onRefresh() {
+        app.UpdateUserLastKnownLocIfNeeded();
         new RemoteDataTask().execute();
     }
 
