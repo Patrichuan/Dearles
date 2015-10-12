@@ -263,6 +263,49 @@ public class DearApp extends Application {
         }
     }
 
+    public String CreateChatRoomNumber (String str1, String str2) {
+        String ChatRoomName = "";
+        String ChatRoomNumber = "";
+        // Transformo en minusculas ambos usernames
+        int compare = str1.toLowerCase().compareTo(str2.toLowerCase());
+        // Ordeno por orden alfabetico los usernames de los 2 participantes
+        //str1 is smaller
+        if (compare < 0) {
+            ChatRoomName += str1 + "_" + str2;
+        }
+        else {
+            //str1 is larger
+            if (compare > 0) {
+                ChatRoomName += str2 + "_" + str1;
+            }
+            //str1 is equal to str2
+            else {
+                ChatRoomName += str1 + "_" + str2;
+            }
+        }
+        // Y cambio caracteres por numeros apoyandome en sus codigos ascii
+        for(char c : ChatRoomName.toCharArray())
+        {
+            int value;
+            value = c - 'a' + 1;
+            ChatRoomNumber += value;
+        }
+        return ChatRoomNumber;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static Context getContext() {
         return instance.getApplicationContext();
     }

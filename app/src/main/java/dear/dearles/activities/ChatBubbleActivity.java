@@ -53,16 +53,16 @@ public class ChatBubbleActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         MyUsername = app.getCurrentUserName();
-
         MyProfilePicture = app.getCurrentUserProfilePicture();
 
         HerUsername = i.getStringExtra("herusername");
         HerProfilePicture = i.getStringExtra("profilePicture");
 
         // Setup our Firebase mFirebaseRef
-        //String ChatName = MyUsername+"to"+HerUsername;
-        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
-                //.child(ChatName);
+
+        String ChatRoomNumber = app.CreateChatRoomNumber(MyUsername, HerUsername);
+
+        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat").child(ChatRoomNumber);
 
         listView = (ListView) findViewById(R.id.listView1);
 

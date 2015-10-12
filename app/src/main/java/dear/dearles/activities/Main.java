@@ -37,6 +37,8 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.main_layout);
 
         app = (DearApp) getApplication();
+
+        // TODO - Evitar que esto ocurra cuando vienes de un 'back' de otra activity
         // Una vez dentro logeo en FireBase para el posterior uso del chat
         app.SignInFireUser(app.getUserFromSharedpref());
 
